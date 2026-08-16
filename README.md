@@ -5,319 +5,181 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Cube Rush</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 *{box-sizing:border-box}
 
 html,body{
- margin:0;
- width:100%;
- height:100%;
- overflow:hidden;
- background:#03050b;
- color:white;
- font-family:Arial,sans-serif;
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#02040a;
+    color:white;
+    font-family:Arial,sans-serif;
 }
 
 canvas{
- position:fixed;
- inset:0;
- width:100%;
- height:100%;
- touch-action:none;
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
 }
 
 .screen{
- position:fixed;
- inset:0;
- z-index:20;
- display:flex;
- flex-direction:column;
- align-items:center;
- justify-content:center;
- padding:20px;
- background:
- radial-gradient(circle at 50% 20%,#073454,#02050c 65%);
- overflow:auto;
+    position:fixed;
+    inset:0;
+    z-index:10;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:linear-gradient(#07182d,#02040a);
+    overflow:auto;
 }
 
-.hidden{display:none!important}
+.hidden{
+    display:none!important;
+}
 
 .logo{
- font-size:45px;
- font-weight:1000;
- letter-spacing:3px;
- color:#00eaff;
- text-shadow:0 0 12px #00eaff,0 0 35px #00eaff;
- text-align:center;
+    font-size:45px;
+    font-weight:900;
+    color:#00eaff;
+    text-shadow:0 0 30px #00eaff;
+    margin-bottom:5px;
+    text-align:center;
 }
 
-.subtitle{
- color:#8bbbc9;
- letter-spacing:4px;
- margin-bottom:20px;
+h1{
+    color:#00eaff;
+    text-shadow:0 0 20px #00eaff;
 }
 
 input{
- width:320px;
- max-width:92vw;
- padding:15px;
- margin:6px;
- border-radius:12px;
- border:1px solid #00eaff;
- outline:none;
- background:#071421;
- color:white;
- font-size:16px;
-}
-
-input:focus{
- box-shadow:0 0 18px #00eaff66;
+    width:300px;
+    max-width:90%;
+    padding:14px;
+    margin:6px;
+    border-radius:12px;
+    border:1px solid #00eaff;
+    background:#081522;
+    color:white;
+    font-size:16px;
 }
 
 button{
- padding:13px 22px;
- margin:6px;
- border:0;
- border-radius:12px;
- background:#00eaff;
- color:#001018;
- font-weight:900;
- font-size:15px;
- cursor:pointer;
+    padding:13px 22px;
+    margin:6px;
+    border:0;
+    border-radius:12px;
+    background:#00eaff;
+    color:#001018;
+    font-weight:bold;
+    font-size:15px;
+    cursor:pointer;
 }
 
 button:active{
- transform:scale(.95);
-}
-
-button.secondary{
- background:#102331;
- color:#8eefff;
- border:1px solid #00eaff55;
-}
-
-.msg{
- min-height:24px;
- max-width:350px;
- color:#a9d5df;
- text-align:center;
- margin:8px;
+    transform:scale(.95);
 }
 
 .coins{
- color:#ffd900;
- font-weight:900;
- font-size:20px;
- margin:10px;
+    color:#ffd900;
+    font-weight:bold;
+    font-size:20px;
+    margin:10px;
 }
 
 .card{
- width:180px;
- min-height:220px;
- display:inline-flex;
- flex-direction:column;
- justify-content:space-between;
- align-items:center;
- margin:7px;
- padding:14px;
- background:linear-gradient(145deg,#0b1d2b,#06101a);
- border:1px solid #00eaff55;
- border-radius:18px;
- text-align:center;
- overflow:hidden;
-}
-
-.preview{
- width:130px;
- height:105px;
- border-radius:15px;
- position:relative;
- overflow:hidden;
- margin-bottom:8px;
- border:1px solid #ffffff22;
-}
-
-.avatar{
- width:55px;
- height:55px;
- position:absolute;
- left:50%;
- top:50%;
- transform:translate(-50%,-50%) rotate(45deg);
- border-radius:10px;
- box-shadow:0 0 25px currentColor;
-}
-
-.avatar:after{
- content:"";
- position:absolute;
- width:12px;
- height:12px;
- border-radius:50%;
- background:white;
- left:10px;
- top:10px;
- box-shadow:22px 22px 0 white;
-}
-
-.avatar.blue{background:#00eaff;color:#00eaff}
-.avatar.red{background:#ff3158;color:#ff3158}
-.avatar.purple{background:#9b4dff;color:#9b4dff}
-.avatar.green{background:#25ff9a;color:#25ff9a}
-.avatar.gold{background:#ffd400;color:#ffd400}
-.avatar.white{background:#ffffff;color:#ffffff}
-.avatar.black{background:#10131a;color:#8c95a0}
-.avatar.orange{background:#ff7b22;color:#ff7b22}
-
-.cityPreview{
- width:150px;
- height:105px;
- border-radius:15px;
- position:relative;
- overflow:hidden;
- border:1px solid #ffffff33;
-}
-
-.cityPreview span{
- position:absolute;
- bottom:0;
- width:22%;
- background:#ffffff33;
- border-top:2px solid #ffffff55;
-}
-
-.cityPreview span:nth-child(1){left:3%;height:45%}
-.cityPreview span:nth-child(2){left:27%;height:70%}
-.cityPreview span:nth-child(3){left:51%;height:55%}
-.cityPreview span:nth-child(4){left:75%;height:82%}
-
-.city-neon{
- background:linear-gradient(#16003b,#00b9d9);
-}
-
-.city-tokyo{
- background:linear-gradient(#280014,#ff236e);
-}
-
-.city-dubai{
- background:linear-gradient(#321400,#ff9d25);
-}
-
-.city-newyork{
- background:linear-gradient(#061b3c,#4b83ff);
-}
-
-.city-galaxy{
- background:radial-gradient(circle,#7435ff,#05001a 70%);
+    display:inline-block;
+    width:170px;
+    min-height:170px;
+    margin:5px;
+    padding:12px;
+    background:#091522;
+    border:1px solid #00eaff55;
+    border-radius:15px;
+    text-align:center;
 }
 
 .rank{
- width:370px;
- max-width:94vw;
- display:flex;
- justify-content:space-between;
- align-items:center;
- padding:13px;
- margin:4px;
- background:#091522;
- border:1px solid #ffffff0b;
- border-radius:11px;
-}
-
-.rank:nth-child(1){
- border-color:#ffd700;
- box-shadow:0 0 15px #ffd70033;
-}
-
-.rank:nth-child(2){
- border-color:#c9d2d7;
-}
-
-.rank:nth-child(3){
- border-color:#cd7f32;
-}
-
-.rankName{
- font-weight:800;
-}
-
-.rankScore{
- color:#00eaff;
- font-weight:900;
+    width:350px;
+    max-width:90vw;
+    display:flex;
+    justify-content:space-between;
+    padding:12px;
+    margin:4px;
+    background:#091522;
+    border-radius:10px;
 }
 
 #hud{
- position:fixed;
- z-index:10;
- top:10px;
- left:10px;
- right:10px;
- display:none;
- justify-content:space-between;
- gap:5px;
- pointer-events:none;
+    position:fixed;
+    z-index:5;
+    top:10px;
+    left:10px;
+    right:10px;
+    display:none;
+    justify-content:space-between;
+    pointer-events:none;
+    gap:5px;
 }
 
 .hud{
- background:#06121ddd;
- border:1px solid #00eaff66;
- padding:8px 10px;
- border-radius:10px;
- font-weight:bold;
+    background:#06121dcc;
+    border:1px solid #00eaff66;
+    padding:8px 12px;
+    border-radius:10px;
+    font-weight:bold;
 }
 
 #pause{
- position:fixed;
- z-index:12;
- top:60px;
- right:10px;
- display:none;
+    position:fixed;
+    z-index:6;
+    top:60px;
+    right:10px;
+    display:none;
 }
 
-.powerHUD{
- position:fixed;
- z-index:11;
- top:105px;
- left:50%;
- transform:translateX(-50%);
- display:none;
- gap:7px;
+.msg{
+    min-height:20px;
+    color:#a9c5d0;
+    text-align:center;
 }
 
-.power{
- background:#06121de8;
- border:1px solid #00eaff77;
- padding:7px 10px;
- border-radius:10px;
- font-weight:bold;
+.cityPreview{
+    width:250px;
+    height:100px;
+    border-radius:15px;
+    margin:auto;
+    border:2px solid #00eaff;
+    box-shadow:0 0 20px #00eaff66;
 }
 
-.power.magnet{
- color:#00eaff;
+.cityNeon{
+    background:
+    linear-gradient(90deg,#07182d,#00eaff22,#07182d);
 }
 
-.power.double{
- color:#ffd900;
+.cityTokyo{
+    background:
+    linear-gradient(90deg,#190020,#ff005522,#21003b);
 }
 
-.scroll{
- max-width:95vw;
- text-align:center;
+.cityDubai{
+    background:
+    linear-gradient(90deg,#201000,#ff9d0022,#392000);
 }
 
-#characterList,
-#cityList{
- max-width:950px;
- display:flex;
- justify-content:center;
- flex-wrap:wrap;
+.cityNewYork{
+    background:
+    linear-gradient(90deg,#001529,#0077ff33,#001529);
 }
 
-.small{
- color:#88a7b0;
- font-size:13px;
+.cityGalaxy{
+    background:
+    linear-gradient(90deg,#100020,#8b00ff55,#001e38);
 }
 </style>
 </head>
@@ -327,2236 +189,2442 @@ button.secondary{
 <canvas id="game"></canvas>
 
 <div id="hud">
- <div class="hud">COINS <span id="coins">0</span></div>
- <div class="hud">SCORE <span id="score">0</span></div>
- <div class="hud"><span id="cityName">Neon City</span></div>
+    <div class="hud">🪙 <span id="coins">0</span></div>
+    <div class="hud">🏆 <span id="score">0</span></div>
+    <div class="hud">🌆 <span id="cityName">Neon City</span></div>
 </div>
 
-<div id="powerHUD" class="powerHUD">
- <div id="magnetHUD" class="power magnet hidden">
-  MAGNET <span id="magnetTime">30</span>s
- </div>
- <div id="doubleHUD" class="power double hidden">
-  x2 COINS <span id="doubleTime">30</span>s
- </div>
-</div>
-
-<button id="pause">PAUSE</button>
+<button id="pause">⏸</button>
 
 <!-- LOGIN -->
-
 <div id="login" class="screen">
 
- <div class="logo">CUBE RUSH</div>
- <div class="subtitle">ONLINE EDITION</div>
+    <div class="logo">CUBE RUSH</div>
+    <p>ONLINE EDITION</p>
 
- <input
-  id="username"
-  placeholder="Benutzername"
-  maxlength="18"
-  autocomplete="username"
- >
+    <input id="username"
+           placeholder="Benutzername"
+           maxlength="18">
 
- <input
-  id="email"
-  type="email"
-  placeholder="E-Mail"
-  autocomplete="email"
- >
+    <input id="email"
+           type="email"
+           placeholder="E-Mail">
 
- <input
-  id="password"
-  type="password"
-  placeholder="Passwort"
-  minlength="6"
-  autocomplete="current-password"
- >
+    <input id="password"
+           type="password"
+           placeholder="Passwort">
 
- <button onclick="registerUser()">REGISTRIEREN</button>
- <button onclick="loginUser()">ANMELDEN</button>
+    <button onclick="register()">REGISTRIEREN</button>
+    <button onclick="loginUser()">ANMELDEN</button>
 
- <div id="loginMsg" class="msg"></div>
-
+    <div id="loginMsg" class="msg"></div>
 </div>
 
 <!-- MENU -->
-
 <div id="menu" class="screen hidden">
 
- <div class="logo">CUBE RUSH</div>
+    <div class="logo">CUBE RUSH</div>
 
- <p>
-  Spieler:
-  <b id="player"></b>
- </p>
+    <p>
+        Spieler:
+        <b id="player"></b>
+    </p>
 
- <div class="coins">
-  COINS <span id="menuCoins">0</span>
- </div>
+    <div class="coins">
+        🪙 <span id="menuCoins">0</span>
+    </div>
 
- <button onclick="startGame()">SPIEL STARTEN</button>
- <button onclick="charactersMenu()">CHARAKTERE</button>
- <button onclick="citiesMenu()">STÄDTE</button>
- <button onclick="rankingMenu()">RANGLISTE</button>
- <button onclick="codeMenu()">ADMIN-CODE</button>
- <button class="secondary" onclick="logout()">ABMELDEN</button>
+    <button onclick="startGame()">▶ SPIEL STARTEN</button>
+    <button onclick="charactersMenu()">🧊 CHARAKTERE</button>
+    <button onclick="citiesMenu()">🌆 STÄDTE</button>
+    <button onclick="rankingMenu()">🏆 RANGLISTE</button>
+    <button onclick="codeMenu()">🔐 CODE</button>
+    <button onclick="logout()">ABMELDEN</button>
 
 </div>
 
 <!-- CHARACTERS -->
-
 <div id="characters" class="screen hidden">
 
- <h1>CHARAKTERE</h1>
+    <h1>🧊 CHARAKTERE</h1>
 
- <div class="coins">
-  COINS <span id="charCoins">0</span>
- </div>
+    <div class="coins">
+        🪙 <span id="charCoins">0</span>
+    </div>
 
- <div id="characterList"></div>
+    <div id="characterList"></div>
 
- <button onclick="showMenu()">ZURÜCK</button>
+    <button onclick="showMenu()">ZURÜCK</button>
 
 </div>
 
 <!-- CITIES -->
-
 <div id="cities" class="screen hidden">
 
- <h1>STÄDTE</h1>
+    <h1>🌆 STÄDTE</h1>
 
- <div id="cityList"></div>
+    <div id="cityList"></div>
 
- <button onclick="showMenu()">ZURÜCK</button>
+    <button onclick="showMenu()">ZURÜCK</button>
 
 </div>
 
 <!-- RANKING -->
-
 <div id="ranking" class="screen hidden">
 
- <h1>RANGLISTE</h1>
+    <h1>🏆 RANGLISTE</h1>
 
- <div id="rankingList">
-  Lade Rangliste...
- </div>
+    <div id="rankingList">
+        Lade Rangliste...
+    </div>
 
- <button onclick="rankingMenu()">AKTUALISIEREN</button>
- <button onclick="showMenu()">ZURÜCK</button>
+    <button onclick="showMenu()">ZURÜCK</button>
 
 </div>
 
 <!-- CODE -->
-
 <div id="codes" class="screen hidden">
 
- <h1>ADMIN-CODE</h1>
+    <h1>🔐 CODE</h1>
 
- <input
-  id="secretCode"
-  inputmode="numeric"
-  maxlength="3"
-  placeholder="Code"
- >
+    <input id="secretCode"
+           inputmode="numeric"
+           maxlength="3"
+           placeholder="Code">
 
- <button onclick="redeemCode()">EINLÖSEN</button>
+    <button onclick="redeemCode()">EINLÖSEN</button>
 
- <div id="codeMsg" class="msg"></div>
+    <div id="codeMsg" class="msg"></div>
 
- <button onclick="showMenu()">ZURÜCK</button>
+    <button onclick="showMenu()">ZURÜCK</button>
 
 </div>
 
 <!-- PAUSE -->
-
 <div id="pauseScreen" class="screen hidden">
 
- <h1>PAUSE</h1>
+    <h1>⏸ PAUSE</h1>
 
- <button onclick="resumeGame()">WEITERSPIELEN</button>
- <button onclick="quitGame()">MENÜ</button>
+    <button onclick="resumeGame()">
+        WEITERSPIELEN
+    </button>
+
+    <button onclick="quitGame()">
+        MENÜ
+    </button>
 
 </div>
 
 <!-- GAME OVER -->
-
 <div id="gameOver" class="screen hidden">
 
- <h1>CRASH!</h1>
+    <h1>💥 CRASH!</h1>
 
- <div id="gameOverText"></div>
+    <div id="gameOverText"></div>
 
- <button onclick="restartGame()">NOCHMAL</button>
- <button onclick="showMenu()">MENÜ</button>
+    <button onclick="restartGame()">
+        🔄 NOCHMAL
+    </button>
+
+    <button onclick="showMenu()">
+        MENÜ
+    </button>
 
 </div>
 
+
 <script>
 
-/* =========================================================
+/* =====================================================
    SUPABASE
-========================================================= */
+   ===================================================== */
 
 const SUPABASE_URL =
 "https://lfsifdmaftztykpckdsh.supabase.co";
 
-const SUPABASE_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxmc2lmZG1hZnR6dHlrcGNrZHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDczMTksImV4cCI6MjEwMjQ4MzMxOX0.dfMS0zgHO_IYU7_YmR2Si6DVkD8MWiJJUt6iSJXZfio";
+/*
+   HIER deinen ANON/PUBLIC KEY einsetzen.
 
-const supabaseClient =
-window.supabase.createClient(
- SUPABASE_URL,
- SUPABASE_KEY
-);
+   NICHT den service_role Key benutzen!
+*/
+const SUPABASE_ANON_KEY =
+"DEIN_ANON_PUBLIC_KEY_HIER";
 
-/* =========================================================
-   PLAYER
-========================================================= */
 
-let playerData={
- id:"",
- username:"",
- email:"",
- coins:0,
- highscore:0,
- characters:[0],
- cities:[0],
- character:0,
- city:0
+/* =====================================================
+   SPIELER
+   ===================================================== */
+
+let playerData = {
+    username:"",
+    email:"",
+    coins:0,
+    highscore:0,
+    characters:[0],
+    cities:[0],
+    character:0,
+    city:0
 };
 
-/* =========================================================
-   CITIES
-========================================================= */
 
-const cityData=[
+/* =====================================================
+   STÄDTE
+   ===================================================== */
 
- {
-  name:"Neon City",
-  price:0,
-  min:3,
-  max:6,
-  className:"city-neon"
- },
+/*
+   Jede Münzgruppe hat eine begrenzte Anzahl.
 
- {
-  name:"Tokyo Night",
-  price:5000,
-  min:6,
-  max:10,
-  className:"city-tokyo"
- },
+   Neon City       = 3-6
+   Tokyo Night     = 7-12
+   Cyber Dubai     = 12-18
+   Future New York = 18-25
+   Galaxy City     = 25-35
 
- {
-  name:"Cyber Dubai",
-  price:12000,
-  min:9,
-  max:14,
-  className:"city-dubai"
- },
+   Je teurer die Stadt,
+   desto mehr Münzen kommen.
+*/
 
- {
-  name:"Future New York",
-  price:25000,
-  min:13,
-  max:19,
-  className:"city-newyork"
- },
+const cityData = [
 
- {
-  name:"Galaxy City",
-  price:50000,
-  min:18,
-  max:26,
-  className:"city-galaxy"
- }
+    {
+        name:"Neon City",
+        price:0,
+        min:3,
+        max:6,
+        className:"cityNeon"
+    },
+
+    {
+        name:"Tokyo Night",
+        price:5000,
+        min:7,
+        max:12,
+        className:"cityTokyo"
+    },
+
+    {
+        name:"Cyber Dubai",
+        price:12000,
+        min:12,
+        max:18,
+        className:"cityDubai"
+    },
+
+    {
+        name:"Future New York",
+        price:25000,
+        min:18,
+        max:25,
+        className:"cityNewYork"
+    },
+
+    {
+        name:"Galaxy City",
+        price:50000,
+        min:25,
+        max:35,
+        className:"cityGalaxy"
+    }
+];
+
+
+/* =====================================================
+   CHARAKTERE
+   ===================================================== */
+
+const charData = [
+
+    ["Blue",0],
+    ["Volt",300],
+    ["Fire",700],
+    ["Ice",1200],
+    ["Purple",2000],
+    ["Poison",3000],
+    ["Magma",4500],
+    ["Thunder",6500],
+    ["Void",9000],
+    ["Omega",12000],
+    ["Cyber",16000],
+    ["Gold",22000],
+    ["Ruby",28000],
+    ["Diamond",35000],
+    ["Galaxy",45000],
+    ["Phantom",55000],
+    ["Solar",70000],
+    ["Nebula",85000],
+    ["Aurora",100000],
+    ["Cube God",150000]
 
 ];
 
-/* =========================================================
-   CHARACTERS
-========================================================= */
 
-const charData=[
+/* =====================================================
+   LOCAL SPEICHER
+   ===================================================== */
 
- ["Blue",0,"blue"],
- ["Volt",300,"white"],
- ["Fire",700,"red"],
- ["Ice",1200,"white"],
- ["Purple",2000,"purple"],
- ["Poison",3000,"green"],
- ["Magma",4500,"orange"],
- ["Thunder",6500,"blue"],
- ["Void",9000,"black"],
- ["Omega",12000,"purple"],
- ["Cyber",16000,"blue"],
- ["Gold",22000,"gold"],
- ["Ruby",28000,"red"],
- ["Diamond",35000,"white"],
- ["Galaxy",45000,"purple"],
- ["Phantom",55000,"black"],
- ["Solar",70000,"gold"],
- ["Nebula",85000,"purple"],
- ["Aurora",100000,"green"],
- ["Cube God",150000,"gold"]
+function save(){
 
-];
-
-/* =========================================================
-   SCREEN SYSTEM
-========================================================= */
-
-function hideAll(){
-
- document
- .querySelectorAll(".screen")
- .forEach(x=>{
-  x.classList.add("hidden");
- });
+    localStorage.setItem(
+        "cubeRushPlayer",
+        JSON.stringify(playerData)
+    );
 
 }
 
-function showMenu(){
 
- hideAll();
+function load(){
 
- document
- .getElementById("menu")
- .classList.remove("hidden");
+    const data =
+        localStorage.getItem(
+            "cubeRushPlayer"
+        );
 
- document
- .getElementById("player")
- .textContent=
- playerData.username;
+    if(!data) return false;
 
- document
- .getElementById("menuCoins")
- .textContent=
- playerData.coins.toLocaleString();
+    try{
+
+        playerData =
+            JSON.parse(data);
+
+        return true;
+
+    }catch{
+
+        return false;
+
+    }
 
 }
 
-/* =========================================================
+
+/* =====================================================
    LOGIN
-========================================================= */
+   ===================================================== */
+
+function register(){
+
+    const name =
+        document
+        .getElementById("username")
+        .value
+        .trim();
+
+    const email =
+        document
+        .getElementById("email")
+        .value
+        .trim();
+
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+    if(name.length < 3){
+
+        loginMsg(
+            "Benutzername muss mindestens 3 Zeichen haben."
+        );
+
+        return;
+    }
+
+    if(!email || password.length < 6){
+
+        loginMsg(
+            "E-Mail und Passwort eingeben."
+        );
+
+        return;
+    }
+
+    playerData.username = name;
+    playerData.email = email;
+
+    save();
+
+    showMenu();
+}
+
+
+function loginUser(){
+
+    const name =
+        document
+        .getElementById("username")
+        .value
+        .trim();
+
+    const email =
+        document
+        .getElementById("email")
+        .value
+        .trim();
+
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+    if(!name){
+
+        loginMsg(
+            "Bitte deinen Benutzernamen eingeben."
+        );
+
+        return;
+    }
+
+    if(!email || !password){
+
+        loginMsg(
+            "E-Mail und Passwort eingeben."
+        );
+
+        return;
+    }
+
+    if(load()){
+
+        showMenu();
+
+    }else{
+
+        playerData.username = name;
+        playerData.email = email;
+
+        save();
+
+        showMenu();
+    }
+
+}
+
 
 function loginMsg(text){
 
- document
- .getElementById("loginMsg")
- .textContent=text;
+    document
+    .getElementById("loginMsg")
+    .textContent = text;
 
 }
 
-async function registerUser(){
 
- const name=
- document.getElementById("username")
- .value.trim();
+function logout(){
 
- const email=
- document.getElementById("email")
- .value.trim();
+    save();
 
- const password=
- document.getElementById("password")
- .value;
-
- if(name.length<3){
-
-  loginMsg(
-   "Benutzername muss mindestens 3 Zeichen haben."
-  );
-
-  return;
- }
-
- if(!email){
-
-  loginMsg("Bitte E-Mail eingeben.");
-
-  return;
- }
-
- if(password.length<6){
-
-  loginMsg(
-   "Passwort muss mindestens 6 Zeichen haben."
-  );
-
-  return;
- }
-
- loginMsg("Registrierung läuft...");
-
- const {
-  data,
-  error
- }=
- await supabaseClient.auth.signUp({
-
-  email:email,
-  password:password,
-
-  options:{
-   data:{
-    username:name
-   }
-  }
-
- });
-
- if(error){
-
-  loginMsg(error.message);
-
-  return;
- }
-
- if(!data.user){
-
-  loginMsg(
-   "Registrierung fehlgeschlagen."
-  );
-
-  return;
- }
-
- playerData.id=data.user.id;
- playerData.username=name;
- playerData.email=email;
-
- const {
-  error:insertError
- }=
- await supabaseClient
- .from("Players")
- .insert({
-
-  id:data.user.id,
-  username:name,
-  highscore:0
-
- });
-
- if(insertError &&
-    !insertError.message
-    .toLowerCase()
-    .includes("duplicate")
- ){
-
-  console.log(insertError);
-
- }
-
- if(data.session){
-
-  showMenu();
-
- }else{
-
-  loginMsg(
-   "Registriert! Prüfe deine E-Mail und bestätige den Link."
-  );
-
- }
+    location.reload();
 
 }
 
-async function loginUser(){
 
- const name=
- document.getElementById("username")
- .value.trim();
+/* =====================================================
+   MENÜ
+   ===================================================== */
 
- const email=
- document.getElementById("email")
- .value.trim();
+function hideAll(){
 
- const password=
- document.getElementById("password")
- .value;
-
- if(!name){
-
-  loginMsg(
-   "Bitte Benutzername eingeben."
-  );
-
-  return;
- }
-
- if(!email||!password){
-
-  loginMsg(
-   "Bitte E-Mail und Passwort eingeben."
-  );
-
-  return;
- }
-
- loginMsg("Anmeldung läuft...");
-
- const {
-  data,
-  error
- }=
- await supabaseClient.auth.signInWithPassword({
-
-  email:email,
-  password:password
-
- });
-
- if(error){
-
-  loginMsg(error.message);
-
-  return;
- }
-
- playerData.id=data.user.id;
- playerData.email=data.user.email;
-
- await loadOnlinePlayer();
-
- showMenu();
+    document
+    .querySelectorAll(".screen")
+    .forEach(
+        x => x.classList.add("hidden")
+    );
 
 }
 
-async function loadOnlinePlayer(){
 
- const {
-  data,
-  error
- }=
- await supabaseClient
- .from("Players")
- .select("*")
- .eq("id",playerData.id)
- .maybeSingle();
+function showMenu(){
 
- if(error){
+    hideAll();
 
-  console.log(error);
-  return;
+    document
+    .getElementById("menu")
+    .classList.remove("hidden");
 
- }
+    document
+    .getElementById("player")
+    .textContent =
+        playerData.username;
 
- if(data){
-
-  playerData.username=
-   data.username ||
-   playerData.username;
-
-  playerData.highscore=
-   Number(data.highscore)||0;
-
- }
+    document
+    .getElementById("menuCoins")
+    .textContent =
+        playerData.coins.toLocaleString();
 
 }
 
-async function logout(){
 
- await supabaseClient.auth.signOut();
-
- location.reload();
-
-}
-
-/* =========================================================
-   ONLINE SCORE
-========================================================= */
-
-async function saveOnlineScore(){
-
- if(!playerData.id)
-  return;
-
- const {
-  error
- }=
- await supabaseClient
- .from("Players")
- .upsert({
-
-  id:playerData.id,
-  username:playerData.username,
-  highscore:playerData.highscore
-
- },{
-  onConflict:"id"
- });
-
- if(error){
-
-  console.log(
-   "Highscore konnte nicht gespeichert werden:",
-   error
-  );
-
- }
-
-}
-
-/* =========================================================
-   CHARACTERS
-========================================================= */
+/* =====================================================
+   CHARAKTERE
+   ===================================================== */
 
 function charactersMenu(){
 
- hideAll();
+    hideAll();
 
- const list=
- document.getElementById(
-  "characterList"
- );
+    const list =
+        document.getElementById(
+            "characterList"
+        );
 
- list.innerHTML="";
+    list.innerHTML = "";
 
- document
- .getElementById("charCoins")
- .textContent=
- playerData.coins.toLocaleString();
+    document
+    .getElementById("charCoins")
+    .textContent =
+        playerData.coins.toLocaleString();
 
- charData.forEach(
-  (char,index)=>{
+    charData.forEach(
+        (char,index)=>{
 
-   const card=
-   document.createElement("div");
+            const card =
+                document.createElement("div");
 
-   card.className="card";
+            card.className = "card";
 
-   card.innerHTML=`
+            const unlocked =
+                playerData.characters
+                .includes(index);
 
-    <div class="preview">
+            card.innerHTML = `
+                <h3>${char[0]}</h3>
+                <p>
+                    ${
+                        unlocked
+                        ? "✓ FREIGESCHALTET"
+                        : "🪙 " +
+                          char[1].toLocaleString()
+                    }
+                </p>
+            `;
 
-      <div class="avatar ${char[2]}"></div>
+            const button =
+                document.createElement("button");
 
-    </div>
+            if(unlocked){
 
-    <h3>${char[0]}</h3>
+                button.textContent =
+                    playerData.character === index
+                    ? "✓ AKTIV"
+                    : "AUSWÄHLEN";
 
-    <div class="small">
-      ${
-       playerData.characters.includes(index)
-       ?"FREIGESCHALTET"
-       :char[1].toLocaleString()+" COINS"
-      }
-    </div>
+                button.onclick = ()=>{
 
-   `;
+                    playerData.character = index;
 
-   const button=
-   document.createElement("button");
+                    save();
 
-   const unlocked=
-   playerData.characters
-   .includes(index);
+                    charactersMenu();
 
-   if(unlocked){
+                };
 
-    button.textContent=
-    playerData.character===index
-    ?"AKTIV"
-    :"AUSWÄHLEN";
+            }else{
 
-    button.onclick=()=>{
+                button.textContent = "KAUFEN";
 
-     playerData.character=index;
+                button.onclick = ()=>{
 
-     charactersMenu();
+                    if(
+                        playerData.coins <
+                        char[1]
+                    ){
 
-    };
+                        alert(
+                            "Du hast nicht genug Coins."
+                        );
 
-   }else{
+                        return;
+                    }
 
-    button.textContent="KAUFEN";
+                    playerData.coins -=
+                        char[1];
 
-    button.onclick=()=>{
+                    playerData.characters
+                        .push(index);
 
-     if(
-      playerData.coins<
-      char[1]
-     ){
+                    playerData.character =
+                        index;
 
-      alert(
-       "Nicht genug Coins."
-      );
+                    save();
 
-      return;
+                    charactersMenu();
 
-     }
+                };
 
-     playerData.coins-=char[1];
+            }
 
-     playerData.characters.push(index);
+            card.appendChild(button);
 
-     playerData.character=index;
+            list.appendChild(card);
 
-     charactersMenu();
+        }
+    );
 
-    };
-
-   }
-
-   card.appendChild(button);
-
-   list.appendChild(card);
-
-  }
- );
-
- document
- .getElementById("characters")
- .classList.remove("hidden");
+    document
+    .getElementById("characters")
+    .classList.remove("hidden");
 
 }
 
-/* =========================================================
-   CITIES
-========================================================= */
+
+/* =====================================================
+   STÄDTE
+   ===================================================== */
 
 function citiesMenu(){
 
- hideAll();
+    hideAll();
 
- const list=
- document.getElementById(
-  "cityList"
- );
+    const list =
+        document.getElementById(
+            "cityList"
+        );
 
- list.innerHTML="";
+    list.innerHTML = "";
 
- cityData.forEach(
-  (city,index)=>{
+    cityData.forEach(
+        (city,index)=>{
 
-   const card=
-   document.createElement("div");
+            const card =
+                document.createElement("div");
 
-   card.className="card";
+            card.className = "card";
 
-   card.innerHTML=`
+            const unlocked =
+                playerData.cities
+                .includes(index);
 
-    <div class="cityPreview ${city.className}">
+            card.innerHTML = `
 
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
+                <div class="cityPreview ${city.className}"></div>
 
-    </div>
+                <h3>${city.name}</h3>
 
-    <h3>${city.name}</h3>
+                <p>
+                    🪙 ${city.min}-${city.max}
+                    Münzen pro Gruppe
+                </p>
 
-    <div class="small">
-      ${city.min}–${city.max} Coins pro Gruppe
-    </div>
+                <p>
+                    ${
+                        city.price === 0
+                        ? "KOSTENLOS"
+                        : city.price.toLocaleString()
+                          + " Coins"
+                    }
+                </p>
 
-    <div class="small">
-      ${
-       city.price===0
-       ?"KOSTENLOS"
-       :city.price.toLocaleString()+" COINS"
-      }
-    </div>
+            `;
 
-   `;
+            const button =
+                document.createElement("button");
 
-   const button=
-   document.createElement("button");
+            if(unlocked){
 
-   const unlocked=
-   playerData.cities
-   .includes(index);
+                button.textContent =
+                    playerData.city === index
+                    ? "✓ AKTIV"
+                    : "AUSWÄHLEN";
 
-   if(unlocked){
+                button.onclick = ()=>{
 
-    button.textContent=
-    playerData.city===index
-    ?"AKTIV"
-    :"AUSWÄHLEN";
+                    playerData.city =
+                        index;
 
-    button.onclick=()=>{
+                    save();
 
-     playerData.city=index;
+                    citiesMenu();
 
-     citiesMenu();
+                };
 
-    };
+            }else{
 
-   }else{
+                button.textContent =
+                    "FREISCHALTEN";
 
-    button.textContent="FREISCHALTEN";
+                button.onclick = ()=>{
 
-    button.onclick=()=>{
+                    if(
+                        playerData.coins <
+                        city.price
+                    ){
 
-     if(
-      playerData.coins<
-      city.price
-     ){
+                        alert(
+                            "Du hast nicht genug Coins."
+                        );
 
-      alert(
-       "Nicht genug Coins."
-      );
+                        return;
+                    }
 
-      return;
+                    playerData.coins -=
+                        city.price;
 
-     }
+                    playerData.cities
+                        .push(index);
 
-     playerData.coins-=city.price;
+                    playerData.city =
+                        index;
 
-     playerData.cities.push(index);
+                    save();
 
-     playerData.city=index;
+                    citiesMenu();
 
-     citiesMenu();
+                };
 
-    };
+            }
 
-   }
+            card.appendChild(button);
 
-   card.appendChild(button);
+            list.appendChild(card);
 
-   list.appendChild(card);
+        }
+    );
 
-  }
- );
-
- document
- .getElementById("cities")
- .classList.remove("hidden");
+    document
+    .getElementById("cities")
+    .classList.remove("hidden");
 
 }
 
-/* =========================================================
-   CODES
-========================================================= */
+
+/* =====================================================
+   ADMIN / CODES
+   ===================================================== */
 
 function codeMenu(){
 
- hideAll();
+    hideAll();
 
- document
- .getElementById("secretCode")
- .value="";
+    document
+    .getElementById("secretCode")
+    .value = "";
 
- document
- .getElementById("codeMsg")
- .textContent="";
+    document
+    .getElementById("codeMsg")
+    .textContent = "";
 
- document
- .getElementById("codes")
- .classList.remove("hidden");
-
-}
-
-async function redeemCode(){
-
- const code=
- document
- .getElementById("secretCode")
- .value.trim();
-
- const msg=
- document.getElementById(
-  "codeMsg"
- );
-
- if(code==="110"){
-
-  playerData.highscore=1000000;
-
-  playerData.cities=
-  cityData.map(
-   (_,i)=>i
-  );
-
-  playerData.characters=
-  charData.map(
-   (_,i)=>i
-  );
-
-  playerData.coins=
-  Math.max(
-   playerData.coins,
-   1000000
-  );
-
-  msg.textContent=
-  "Code 110 aktiviert: 1.000.000 Highscore + alle Städte.";
-
- }
-
- else if(code==="112"){
-
-  playerData.highscore=500000;
-
-  playerData.cities=[
-   0,
-   1
-  ];
-
-  playerData.coins=
-  Math.max(
-   playerData.coins,
-   500000
-  );
-
-  msg.textContent=
-  "Code 112 aktiviert: 500.000 Highscore + 2 Städte.";
-
- }
-
- else{
-
-  msg.textContent=
-  "Falscher Code.";
-
-  return;
-
- }
-
- await saveOnlineScore();
+    document
+    .getElementById("codes")
+    .classList.remove("hidden");
 
 }
 
-/* =========================================================
-   ONLINE RANKING
-========================================================= */
+
+function redeemCode(){
+
+    const code =
+        document
+        .getElementById("secretCode")
+        .value;
+
+    const msg =
+        document
+        .getElementById("codeMsg");
+
+
+    /*
+       CODE 110
+
+       1.000.000 Highscore
+       1.000.000 Coins
+       ALLE Charaktere
+       ALLE Städte
+    */
+
+    if(code === "110"){
+
+        playerData.coins +=
+            1000000;
+
+        playerData.highscore =
+            1000000;
+
+        playerData.characters =
+            charData.map(
+                (_,i)=>i
+            );
+
+        playerData.cities =
+            cityData.map(
+                (_,i)=>i
+            );
+
+        msg.textContent =
+            "✅ Code 110 aktiviert! 1.000.000 Highscore + alle Städte + alle Charaktere.";
+
+    }
+
+    /*
+       CODE 112
+
+       500.000 Highscore
+       500.000 Coins
+       5 Charaktere
+       2 Städte
+    */
+
+    else if(code === "112"){
+
+        playerData.coins +=
+            500000;
+
+        playerData.highscore =
+            500000;
+
+        playerData.characters =
+            [0,1,2,3,4];
+
+        playerData.cities =
+            [0,1];
+
+        msg.textContent =
+            "✅ Code 112 aktiviert! 500.000 Highscore + 500.000 Coins + 2 Städte.";
+
+    }
+
+    else{
+
+        msg.textContent =
+            "❌ Falscher Code.";
+
+    }
+
+    document
+    .getElementById("secretCode")
+    .value = "";
+
+    save();
+
+}
+
+
+/* =====================================================
+   SUPABASE RANGLISTE
+   ===================================================== */
+
+async function saveOnlineScore(){
+
+    if(
+        !SUPABASE_ANON_KEY ||
+        SUPABASE_ANON_KEY ===
+        "DEIN_ANON_PUBLIC_KEY_HIER"
+    ){
+
+        return;
+    }
+
+    try{
+
+        await fetch(
+            SUPABASE_URL +
+            "/rest/v1/Players",
+            {
+                method:"POST",
+
+                headers:{
+                    "apikey":
+                        SUPABASE_ANON_KEY,
+
+                    "Authorization":
+                        "Bearer " +
+                        SUPABASE_ANON_KEY,
+
+                    "Content-Type":
+                        "application/json",
+
+                    "Prefer":
+                        "resolution=merge-duplicates"
+                },
+
+                body:JSON.stringify({
+
+                    username:
+                        playerData.username,
+
+                    highscore:
+                        playerData.highscore
+
+                })
+            }
+        );
+
+    }catch(error){
+
+        console.log(
+            "Online-Speicherung nicht verfügbar."
+        );
+
+    }
+
+}
+
 
 async function rankingMenu(){
 
- hideAll();
+    hideAll();
 
- const list=
- document.getElementById(
-  "rankingList"
- );
+    const list =
+        document.getElementById(
+            "rankingList"
+        );
 
- list.innerHTML=
- "Rangliste wird geladen...";
+    list.innerHTML =
+        "⏳ Rangliste wird geladen...";
 
- const {
-  data,
-  error
- }=
- await supabaseClient
- .from("Players")
- .select("username,highscore")
- .order("highscore",{
-  ascending:false
- })
- .limit(50);
 
- if(error){
+    if(
+        !SUPABASE_ANON_KEY ||
+        SUPABASE_ANON_KEY ===
+        "DEIN_ANON_PUBLIC_KEY_HIER"
+    ){
 
-  list.innerHTML=
-  "Rangliste konnte nicht geladen werden.";
+        list.innerHTML =
+            "⚠️ Supabase-Key wurde noch nicht eingetragen.";
 
-  console.log(error);
+        document
+        .getElementById("ranking")
+        .classList.remove("hidden");
 
- }else{
+        return;
+    }
 
-  list.innerHTML="";
 
-  if(!data.length){
+    try{
 
-   list.textContent=
-   "Noch keine Spieler.";
+        const response =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/Players" +
+                "?select=username,highscore" +
+                "&order=highscore.desc" +
+                "&limit=50",
+                {
+                    headers:{
+                        "apikey":
+                            SUPABASE_ANON_KEY,
 
-  }
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_ANON_KEY
+                    }
+                }
+            );
 
-  data.forEach(
-   (p,index)=>{
 
-    const row=
-    document.createElement("div");
+        if(!response.ok){
 
-    row.className="rank";
+            throw new Error(
+                "Supabase Fehler"
+            );
 
-    row.innerHTML=`
+        }
 
-     <span class="rankName">
-      #${index+1} ${escapeHTML(p.username)}
-     </span>
 
-     <span class="rankScore">
-      ${Number(p.highscore||0).toLocaleString()}
-     </span>
+        const players =
+            await response.json();
 
-    `;
 
-    list.appendChild(row);
+        list.innerHTML = "";
 
-   }
-  );
 
- }
+        if(players.length === 0){
 
- document
- .getElementById("ranking")
- .classList.remove("hidden");
+            list.innerHTML =
+                "Noch keine Spieler.";
+
+        }
+
+
+        players.forEach(
+            (p,i)=>{
+
+                const row =
+                    document
+                    .createElement("div");
+
+                row.className = "rank";
+
+                row.innerHTML = `
+
+                    <span>
+                        ${i+1}. ${escapeHTML(p.username)}
+                    </span>
+
+                    <b>
+                        ${Number(
+                            p.highscore || 0
+                        ).toLocaleString()}
+                    </b>
+
+                `;
+
+                list.appendChild(row);
+
+            }
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        list.innerHTML =
+            "❌ Rangliste konnte nicht geladen werden.";
+
+    }
+
+
+    document
+    .getElementById("ranking")
+    .classList.remove("hidden");
 
 }
+
 
 function escapeHTML(text){
 
- return String(text)
- .replaceAll("&","&amp;")
- .replaceAll("<","&lt;")
- .replaceAll(">","&gt;")
- .replaceAll('"',"&quot;")
- .replaceAll("'","&#039;");
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
 
 }
 
-/* =========================================================
-   GAME
-========================================================= */
 
-const canvas=
-document.getElementById("game");
+/* =====================================================
+   SPIEL
+   ===================================================== */
 
-const ctx=
-canvas.getContext("2d");
+const canvas =
+    document.getElementById("game");
+
+const ctx =
+    canvas.getContext("2d");
+
 
 function resize(){
 
- canvas.width=innerWidth;
- canvas.height=innerHeight;
+    canvas.width =
+        window.innerWidth;
+
+    canvas.height =
+        window.innerHeight;
 
 }
 
 addEventListener(
- "resize",
- resize
+    "resize",
+    resize
 );
 
 resize();
 
-let running=false;
-let paused=false;
 
-let score=0;
-let runCoins=0;
+let running = false;
+let paused = false;
 
-let lane=0;
-let playerX=0;
+let score = 0;
+let runCoins = 0;
 
-let objects=[];
+let lane = 0;
+let playerX = 0;
 
-let speed=250;
+let objects = [];
 
-let last=
-performance.now();
+let speed = 250;
 
-let magnet=0;
-let doubleCoins=0;
+let last =
+    performance.now();
 
-let powerTimer=5;
+let magnet = 0;
+let doubleCoins = 0;
+
+let powerTimer = 10;
+
+
+/* =====================================================
+   STRASSEN
+   ===================================================== */
 
 function road(){
 
- const width=
- Math.min(
-  innerWidth*.84,
- 600
- );
+    const width =
+        Math.min(
+            innerWidth * .84,
+            600
+        );
 
- return{
+    return{
 
-  left:
-  (innerWidth-width)/2,
+        left:
+            (innerWidth-width)/2,
 
-  width:width
+        width:width
 
- };
+    };
 
 }
+
+
+/*
+   WICHTIG:
+
+   -1 = LINKS
+    0 = MITTE
+    1 = RECHTS
+
+   Die Berechnung ist jetzt sauber
+   auf genau drei Spuren verteilt.
+*/
 
 function laneX(n){
 
- const r=road();
+    const r =
+        road();
 
- return r.left+
- r.width*(n+0.5)/3;
+    const laneWidth =
+        r.width / 3;
+
+    return (
+        r.left +
+        laneWidth * n +
+        laneWidth / 2
+    );
 
 }
 
-/* =========================================================
-   GAME START
-========================================================= */
+
+/* =====================================================
+   SPIEL START
+   ===================================================== */
 
 function startGame(){
 
- hideAll();
+    hideAll();
 
- running=true;
- paused=false;
+    running = true;
+    paused = false;
 
- score=0;
- runCoins=0;
+    score = 0;
+    runCoins = 0;
 
- lane=0;
+    lane = 0;
 
- playerX=
- laneX(0);
+    playerX =
+        laneX(0);
 
- objects=[];
+    objects = [];
 
- speed=250;
+    speed = 250;
 
- magnet=0;
- doubleCoins=0;
+    magnet = 0;
+    doubleCoins = 0;
 
- powerTimer=5;
+    powerTimer = 10;
 
- document
- .getElementById("hud")
- .style.display="flex";
+    document
+    .getElementById("hud")
+    .style.display = "flex";
 
- document
- .getElementById("pause")
- .style.display="block";
+    document
+    .getElementById("pause")
+    .style.display = "block";
 
- last=
- performance.now();
+    last =
+        performance.now();
 
 }
 
-/* =========================================================
-   WORLD
-========================================================= */
+
+/* =====================================================
+   STADT HINTERGRUND
+   ===================================================== */
+
+function drawCityBackground(){
+
+    const city =
+        playerData.city;
+
+    let top =
+        "#02040a";
+
+    let bottom =
+        "#050814";
+
+    if(city === 1){
+
+        top = "#180018";
+        bottom = "#050008";
+
+    }
+
+    if(city === 2){
+
+        top = "#211000";
+        bottom = "#080400";
+
+    }
+
+    if(city === 3){
+
+        top = "#00182e";
+        bottom = "#02050a";
+
+    }
+
+    if(city === 4){
+
+        top = "#16002b";
+        bottom = "#02000a";
+
+    }
+
+
+    const gradient =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            innerHeight
+        );
+
+    gradient.addColorStop(
+        0,
+        top
+    );
+
+    gradient.addColorStop(
+        1,
+        bottom
+    );
+
+    ctx.fillStyle =
+        gradient;
+
+    ctx.fillRect(
+        0,
+        0,
+        innerWidth,
+        innerHeight
+    );
+
+
+    /* Gebäude */
+
+    const r =
+        road();
+
+    const buildingWidth = 55;
+
+    for(
+        let x = 0;
+        x < innerWidth;
+        x += buildingWidth
+    ){
+
+        if(
+            x >
+            r.left - 70 &&
+            x <
+            r.left+r.width+70
+        ) continue;
+
+
+        const h =
+            80 +
+            ((x*17)%180);
+
+        ctx.fillStyle =
+            city === 2
+            ? "#302010"
+            : city === 4
+            ? "#180e2e"
+            : "#091522";
+
+        ctx.fillRect(
+            x,
+            innerHeight-h,
+            buildingWidth-8,
+            h
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   WELT
+   ===================================================== */
 
 function drawWorld(){
 
- const city=
- cityData[playerData.city];
+    drawCityBackground();
 
- let top="#02040a";
- let bottom="#030912";
+    const r =
+        road();
 
- if(city.name==="Tokyo Night"){
 
-  top="#19000e";
-  bottom="#050006";
+    /* Straße */
 
- }
+    ctx.fillStyle =
+        "#111820";
 
- if(city.name==="Cyber Dubai"){
+    ctx.fillRect(
+        r.left,
+        0,
+        r.width,
+        innerHeight
+    );
 
-  top="#2a1000";
-  bottom="#080400";
 
- }
+    /* Straßenrand */
 
- if(city.name==="Future New York"){
+    ctx.fillStyle =
+        "#00eaff";
 
-  top="#06183b";
-  bottom="#020611";
+    ctx.fillRect(
+        r.left,
+        0,
+        3,
+        innerHeight
+    );
 
- }
+    ctx.fillRect(
+        r.left+r.width-3,
+        0,
+        3,
+        innerHeight
+    );
 
- if(city.name==="Galaxy City"){
 
-  top="#16002f";
-  bottom="#02000a";
+    /* Spuren */
 
- }
+    const lw =
+        r.width / 3;
 
- const gradient=
- ctx.createLinearGradient(
-  0,0,
-  0,innerHeight
- );
+    const offset =
+        (score * 4) % 100;
 
- gradient.addColorStop(0,top);
- gradient.addColorStop(1,bottom);
 
- ctx.fillStyle=gradient;
+    ctx.fillStyle =
+        "#ffffff55";
 
- ctx.fillRect(
-  0,0,
-  innerWidth,
-  innerHeight
- );
 
- const r=road();
+    for(
+        let y=-100+offset;
+        y<innerHeight;
+        y+=100
+    ){
 
- ctx.fillStyle="#111820";
+        ctx.fillRect(
+            r.left+lw-2,
+            y,
+            4,
+            55
+        );
 
- ctx.fillRect(
-  r.left,
-  0,
-  r.width,
-  innerHeight
- );
+        ctx.fillRect(
+            r.left+lw*2-2,
+            y,
+            4,
+            55
+        );
 
- ctx.fillStyle=
- city.name==="Tokyo Night"
- ?" #ff236e"
- :"#00eaff";
-
- ctx.fillRect(
-  r.left,
-  0,
-  3,
-  innerHeight
- );
-
- ctx.fillRect(
-  r.left+r.width-3,
-  0,
-  3,
-  innerHeight
- );
-
- const lw=
- r.width/3;
-
- const offset=
- (score*7)%110;
-
- ctx.fillStyle="#ffffff66";
-
- for(
-  let y=-110+offset;
-  y<innerHeight;
-  y+=110
- ){
-
-  ctx.fillRect(
-   r.left+lw-2,
-   y,
-   4,
-   58
-  );
-
-  ctx.fillRect(
-   r.left+lw*2-2,
-   y,
-   4,
-   58
-  );
-
- }
+    }
 
 }
 
-/* =========================================================
-   PLAYER
-========================================================= */
+
+/* =====================================================
+   SPIELER
+   ===================================================== */
 
 function drawPlayer(){
 
- const y=
- innerHeight*.78;
+    const y =
+        innerHeight*.72;
 
- ctx.save();
+    ctx.save();
 
- ctx.translate(
-  playerX,
-  y
- );
+    ctx.translate(
+        playerX,
+        y
+    );
 
- let color="#00eaff";
 
- const c=
- charData[playerData.character];
+    ctx.fillStyle =
+        "#00eaff";
 
- if(c){
+    ctx.shadowColor =
+        "#00eaff";
 
-  const map={
-   blue:"#00eaff",
-   red:"#ff3158",
-   purple:"#9b4dff",
-   green:"#25ff9a",
-   gold:"#ffd400",
-   white:"#ffffff",
-   black:"#151820",
-   orange:"#ff7b22"
-  };
+    ctx.shadowBlur =
+        25;
 
-  color=
-  map[c[2]]||
-  "#00eaff";
 
- }
+    ctx.fillRect(
+        -28,
+        -28,
+        56,
+        56
+    );
 
- ctx.fillStyle=color;
- ctx.shadowColor=color;
- ctx.shadowBlur=25;
 
- ctx.beginPath();
+    ctx.shadowBlur = 0;
 
- ctx.roundRect(
-  -28,
-  -28,
-  56,
-  56,
-  9
- );
+    ctx.fillStyle =
+        "#fff";
 
- ctx.fill();
 
- ctx.shadowBlur=0;
+    ctx.fillRect(
+        -18,
+        -15,
+        12,
+        7
+    );
 
- ctx.fillStyle="#061018";
+    ctx.fillRect(
+        7,
+        -15,
+        12,
+        7
+    );
 
- ctx.fillRect(
-  -17,
-  -14,
-  11,
-  7
- );
 
- ctx.fillRect(
-  6,
-  -14,
-  11,
-  7
- );
-
- ctx.restore();
+    ctx.restore();
 
 }
 
-/* =========================================================
-   CARS
-========================================================= */
+
+/* =====================================================
+   AUTOS
+   ===================================================== */
+
+
+/*
+   Autos bekommen jetzt einen Mindestabstand.
+
+   Dadurch können zwei Autos nicht
+   direkt ineinander spawnen.
+*/
+
+const MIN_CAR_DISTANCE = 190;
+
+
+function canSpawnCar(newLane){
+
+    for(const o of objects){
+
+        if(
+            o.type !== "car"
+        ) continue;
+
+
+        if(
+            o.lane === newLane &&
+            Math.abs(o.y + 150)
+            < MIN_CAR_DISTANCE
+        ){
+
+            return false;
+
+        }
+
+    }
+
+    return true;
+
+}
+
 
 function spawnCar(){
 
- /*
-  Autos werden nur erzeugt,
-  wenn die Spur weit genug vom
-  letzten Auto entfernt ist.
- */
+    const possible =
+        [-1,0,1].filter(
+            l => canSpawnCar(l)
+        );
 
- const possible=[-1,0,1]
- .sort(()=>Math.random()-.5);
 
- for(const chosenLane of possible){
+    if(
+        possible.length === 0
+    ){
 
-  const sameLane=
-  objects.some(
-   o=>
-    o.type==="car" &&
-    o.lane===chosenLane &&
-    o.y<260
-  );
+        return;
 
-  if(sameLane)
-   continue;
+    }
 
-  objects.push({
 
-   type:"car",
+    const selected =
+        possible[
+            Math.floor(
+                Math.random() *
+                possible.length
+            )
+        ];
 
-   lane:chosenLane,
 
-   y:-180,
+    objects.push({
 
-   color:[
-    "#ff1744",
-    "#168cff",
-    "#ffffff",
-    "#ff9900",
-    "#8b4dff",
-    "#25d6c7"
-   ][
-    Math.floor(
-     Math.random()*6
-    )
-   ]
+        type:"car",
 
-  });
+        lane:selected,
 
-  return;
+        y:-150,
 
- }
+        color:[
+            "#ff1744",
+            "#168cff",
+            "#ffffff",
+            "#ff9900",
+            "#8b4dff"
+        ][
+            Math.floor(
+                Math.random()*5
+            )
+        ]
+
+    });
 
 }
+
 
 function drawCar(car){
 
- const x=
- laneX(car.lane);
+    const x =
+        laneX(car.lane);
 
- ctx.save();
+    ctx.save();
 
- ctx.translate(
-  x,
-  car.y
- );
+    ctx.translate(
+        x,
+        car.y
+    );
 
- ctx.fillStyle=
- car.color;
 
- ctx.shadowColor=
- car.color;
+    ctx.fillStyle =
+        car.color;
 
- ctx.shadowBlur=18;
+    ctx.shadowColor =
+        car.color;
 
- ctx.beginPath();
+    ctx.shadowBlur =
+        18;
 
- ctx.roundRect(
-  -32,
-  -58,
-  64,
-  116,
-  12
- );
 
- ctx.fill();
+    ctx.beginPath();
 
- ctx.shadowBlur=0;
+    ctx.roundRect(
+        -32,
+        -50,
+        64,
+        100,
+        10
+    );
 
- ctx.fillStyle="#102331";
+    ctx.fill();
 
- ctx.beginPath();
 
- ctx.roundRect(
-  -22,
-  -37,
-  44,
-  34,
-  8
- );
+    ctx.shadowBlur = 0;
 
- ctx.fill();
+    ctx.fillStyle =
+        "#102331";
 
- ctx.fillStyle="#dffcff";
 
- ctx.fillRect(
-  -23,
-  31,
-  14,
-  7
- );
+    ctx.beginPath();
 
- ctx.fillRect(
-  9,
-  31,
-  14,
-  7
- );
+    ctx.roundRect(
+        -21,
+        -31,
+        42,
+        28,
+        7
+    );
 
- ctx.restore();
+    ctx.fill();
+
+
+    ctx.fillStyle =
+        "#fff";
+
+
+    ctx.fillRect(
+        -22,
+        28,
+        14,
+        7
+    );
+
+    ctx.fillRect(
+        8,
+        28,
+        14,
+        7
+    );
+
+
+    ctx.restore();
 
 }
 
-/* =========================================================
-   COINS
-========================================================= */
+
+/* =====================================================
+   MÜNZEN
+   ===================================================== */
+
+
+/*
+   Es wird immer nur EINE Münzgruppe
+   erzeugt.
+
+   Die Anzahl kommt direkt aus der Stadt.
+*/
 
 function spawnCoins(){
 
- const city=
- cityData[playerData.city];
+    const city =
+        cityData[
+            playerData.city
+        ];
 
- const amount=
- city.min+
- Math.floor(
-  Math.random()*
-  (
-   city.max-
-   city.min+
-   1
-  )
- );
 
- const randomLane=
- Math.floor(
-  Math.random()*3
- )-1;
+    const amount =
+        city.min +
+        Math.floor(
+            Math.random() *
+            (
+                city.max -
+                city.min +
+                1
+            )
+        );
 
- /*
-  Münzen werden in einer Reihe
-  mit Abstand erzeugt.
- */
 
- for(
-  let i=0;
-  i<amount;
-  i++
- ){
+    const randomLane =
+        [-1,0,1][
+            Math.floor(
+                Math.random()*3
+            )
+        ];
 
-  objects.push({
 
-   type:"coin",
+    /*
+       Eine Gruppe mit Abstand.
+       Dadurch sind die Münzen sichtbar
+       und nicht übereinander.
+    */
 
-   lane:randomLane,
+    for(
+        let i=0;
+        i<amount;
+        i++
+    ){
 
-   y:-40-i*72
+        objects.push({
 
-  });
+            type:"coin",
 
- }
+            lane:randomLane,
+
+            y:
+                -50 -
+                i*55
+
+        });
+
+    }
 
 }
+
 
 function drawCoin(o,time){
 
- let x=
- laneX(o.lane);
+    let x =
+        laneX(o.lane);
 
- let y=o.y;
+    let y =
+        o.y;
 
- if(magnet>0){
 
-  x+=
-  (playerX-x)*.18;
+    if(magnet > 0){
 
-  y+=
-  (innerHeight*.78-y)*.18;
+        x +=
+            (playerX-x)*.18;
 
- }
+        y +=
+            (
+                innerHeight*.72-y
+            )*.18;
 
- const rotation=
- Math.cos(
-  time*.008
- );
+    }
 
- ctx.save();
 
- ctx.translate(
-  x,
-  y
- );
+    const scale =
+        .5 +
+        Math.abs(
+            Math.cos(
+                time*.008
+            )
+        )*.5;
 
- ctx.scale(
-  Math.abs(rotation)*.7+.3,
-  1
- );
 
- ctx.fillStyle="#ffd900";
+    ctx.save();
 
- ctx.shadowColor="#ffd900";
+    ctx.translate(
+        x,
+        y
+    );
 
- ctx.shadowBlur=18;
+    ctx.scale(
+        scale,
+        1
+    );
 
- ctx.beginPath();
 
- ctx.arc(
-  0,
-  0,
-  14,
-  0,
-  Math.PI*2
- );
+    ctx.fillStyle =
+        "#ffd900";
 
- ctx.fill();
+    ctx.shadowColor =
+        "#ffd900";
 
- ctx.shadowBlur=0;
+    ctx.shadowBlur =
+        20;
 
- ctx.fillStyle="#9b7200";
 
- ctx.beginPath();
+    ctx.beginPath();
 
- ctx.arc(
-  0,
-  0,
-  6,
-  0,
-  Math.PI*2
- );
+    ctx.arc(
+        0,
+        0,
+        15,
+        0,
+        Math.PI*2
+    );
 
- ctx.fill();
+    ctx.fill();
 
- ctx.restore();
+
+    ctx.restore();
 
 }
 
-/* =========================================================
+
+/* =====================================================
    POWERUPS
-========================================================= */
+   ===================================================== */
 
 function spawnPower(){
 
- objects.push({
+    objects.push({
 
-  type:
-  Math.random()<.5
-  ?"magnet"
-  :"double",
+        type:
+            Math.random()<.5
+            ? "magnet"
+            : "double",
 
-  lane:
-  Math.floor(
-   Math.random()*3
-  )-1,
+        lane:
+            [-1,0,1][
+                Math.floor(
+                    Math.random()*3
+                )
+            ],
 
-  y:-80
+        y:-80
 
- });
+    });
 
 }
+
 
 function drawPower(o){
 
- const x=
- laneX(o.lane);
+    const x =
+        laneX(o.lane);
 
- ctx.save();
+    ctx.save();
 
- ctx.translate(
-  x,
-  o.y
- );
+    ctx.translate(
+        x,
+        o.y
+    );
 
- ctx.fillStyle=
- o.type==="magnet"
- ?"rgba(0,234,255,.18)"
- :"rgba(255,217,0,.18)";
+    ctx.font =
+        "34px Arial";
 
- ctx.strokeStyle=
- o.type==="magnet"
- ?" #00eaff"
- :"#ffd900";
+    ctx.textAlign =
+        "center";
 
- ctx.lineWidth=3;
+    ctx.textBaseline =
+        "middle";
 
- ctx.beginPath();
+    ctx.shadowBlur =
+        20;
 
- ctx.arc(
-  0,
-  0,
-  25,
-  0,
-  Math.PI*2
- );
+    ctx.shadowColor =
+        o.type === "magnet"
+        ? "cyan"
+        : "yellow";
 
- ctx.fill();
- ctx.stroke();
 
- ctx.fillStyle=
- o.type==="magnet"
- ?" #00eaff"
- :"#ffd900";
+    ctx.fillText(
+        o.type === "magnet"
+        ? "🧲"
+        : "✕2",
+        0,
+        0
+    );
 
- ctx.font="bold 22px Arial";
-
- ctx.textAlign="center";
- ctx.textBaseline="middle";
-
- ctx.fillText(
-  o.type==="magnet"
-  ?"M"
-  :"x2",
-  0,
-  0
- );
-
- ctx.restore();
+    ctx.restore();
 
 }
 
-/* =========================================================
+
+/* =====================================================
    UPDATE
-========================================================= */
+   ===================================================== */
 
 function update(dt){
 
- if(!running||paused)
-  return;
+    if(
+        !running ||
+        paused
+    ) return;
 
- const seconds=
- dt/1000;
 
- score+=
- seconds*10;
+    const seconds =
+        dt/1000;
 
- speed=
- Math.min(
-  700,
-  speed+
-  seconds*4
- );
 
- playerX+=
- (
-  laneX(lane)-
-  playerX
- )*
- Math.min(
-  1,
-  seconds*12
- );
+    score +=
+        seconds*10;
 
- if(magnet>0)
-  magnet=
-  Math.max(
-   0,
-   magnet-seconds
-  );
 
- if(doubleCoins>0)
-  doubleCoins=
-  Math.max(
-   0,
-   doubleCoins-seconds
-  );
+    speed =
+        Math.min(
+            700,
+            speed +
+            seconds*4
+        );
 
- updatePowerHUD();
 
- powerTimer-=seconds;
+    /*
+       Spieler folgt exakt
+       der ausgewählten Spur.
+    */
 
- if(powerTimer<=0){
+    playerX +=
+        (
+            laneX(lane) -
+            playerX
+        ) *
+        Math.min(
+            1,
+            seconds*12
+        );
 
-  spawnPower();
 
-  powerTimer=
-  10+
-  Math.random()*8;
+    if(magnet>0)
+        magnet-=seconds;
 
- }
+    if(doubleCoins>0)
+        doubleCoins-=seconds;
 
- for(
-  let i=objects.length-1;
-  i>=0;
-  i--
- ){
 
-  const o=
-  objects[i];
+    powerTimer-=seconds;
 
-  o.y+=
-  speed*seconds;
 
-  if(
-   o.y>
-   innerHeight+200
-  ){
+    if(powerTimer<=0){
 
-   objects.splice(i,1);
+        spawnPower();
 
-   continue;
+        powerTimer =
+            15 +
+            Math.random()*15;
 
-  }
+    }
 
-  /* POWERUP */
 
-  if(
-   (
-    o.type==="magnet"||
-    o.type==="double"
-   )&&
-   Math.abs(
-    o.y-
-    innerHeight*.78
-   )<55&&
-   Math.abs(
-    laneX(o.lane)-
-    playerX
-   )<48
-  ){
+    for(
+        let i=objects.length-1;
+        i>=0;
+        i--
+    ){
 
-   if(o.type==="magnet")
-    magnet=30;
+        const o =
+            objects[i];
 
-   if(o.type==="double")
-    doubleCoins=30;
 
-   objects.splice(i,1);
+        o.y +=
+            speed*seconds;
 
-   continue;
 
-  }
+        if(
+            o.y >
+            innerHeight+150
+        ){
 
-  /* COIN */
+            objects.splice(
+                i,
+                1
+            );
 
-  if(
-   o.type==="coin"
-  ){
+            continue;
 
-   if(magnet>0)
-    o.lane=lane;
+        }
 
-   if(
-    Math.abs(
-     o.y-
-     innerHeight*.78
-    )<55&&
-    Math.abs(
-     laneX(o.lane)-
-     playerX
-    )<48
-   ){
 
-    runCoins+=
-    doubleCoins>0
-    ?2
-    :1;
+        /* POWERUP */
 
-    objects.splice(i,1);
+        if(
 
-    continue;
+            (
+                o.type === "magnet" ||
+                o.type === "double"
+            )
 
-   }
+            &&
 
-  }
+            Math.abs(
+                o.y -
+                innerHeight*.72
+            ) < 55
 
-  /* CAR */
+            &&
 
-  if(
-   o.type==="car"&&
-   Math.abs(
-    o.y-
-    innerHeight*.78
-   )<70&&
-   Math.abs(
-    laneX(o.lane)-
-    playerX
-   )<48
-  ){
+            Math.abs(
+                laneX(o.lane) -
+                playerX
+            ) < 45
 
-   endGame();
+        ){
 
-   return;
+            if(
+                o.type === "magnet"
+            )
+                magnet=30;
 
-  }
+            if(
+                o.type === "double"
+            )
+                doubleCoins=30;
 
- }
 
- /*
-  Regelmäßige Autos.
-  Zusätzlich wird verhindert,
-  dass mehrere Autos zu dicht
-  nebeneinander entstehen.
- */
+            objects.splice(
+                i,
+                1
+            );
 
- if(
-  Math.random()<
-  dt/1000/1.25
- ){
+            continue;
 
-  spawnCar();
+        }
 
- }
 
- /*
-  Münzen kommen sehr häufig.
- */
+        /* MAGNET */
 
- if(
-  Math.random()<
-  dt/1000/.65
- ){
+        if(
+            o.type === "coin" &&
+            magnet > 0
+        ){
 
-  spawnCoins();
+            o.lane =
+                lane;
 
- }
+        }
 
- document
- .getElementById("score")
- .textContent=
- Math.floor(score)
- .toLocaleString();
 
- document
- .getElementById("coins")
- .textContent=
- (
-  playerData.coins+
-  runCoins
- ).toLocaleString();
+        /* COIN */
 
- document
- .getElementById("cityName")
- .textContent=
- cityData[
-  playerData.city
- ].name;
+        if(
+
+            o.type === "coin"
+
+            &&
+
+            Math.abs(
+                o.y -
+                innerHeight*.72
+            ) < 50
+
+            &&
+
+            Math.abs(
+                laneX(o.lane) -
+                playerX
+            ) < 45
+
+        ){
+
+            runCoins +=
+                doubleCoins > 0
+                ? 2
+                : 1;
+
+
+            objects.splice(
+                i,
+                1
+            );
+
+            continue;
+
+        }
+
+
+        /* AUTO */
+
+        if(
+
+            o.type === "car"
+
+            &&
+
+            Math.abs(
+                o.y -
+                innerHeight*.72
+            ) < 65
+
+            &&
+
+            Math.abs(
+                laneX(o.lane) -
+                playerX
+            ) < 45
+
+        ){
+
+            endGame();
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+       Autos erscheinen nicht zu dicht.
+    */
+
+    if(
+        Math.random() <
+        dt/1000/1.35
+    ){
+
+        spawnCar();
+
+    }
+
+
+    /*
+       Münzgruppen kommen regelmäßig,
+       aber nicht permanent übereinander.
+    */
+
+    if(
+        Math.random() <
+        dt/1000/2.8
+    ){
+
+        spawnCoins();
+
+    }
+
+
+    document
+    .getElementById("score")
+    .textContent =
+        Math.floor(
+            score
+        ).toLocaleString();
+
+
+    document
+    .getElementById("coins")
+    .textContent =
+        (
+            playerData.coins +
+            runCoins
+        ).toLocaleString();
+
+
+    document
+    .getElementById("cityName")
+    .textContent =
+        cityData[
+            playerData.city
+        ].name;
 
 }
 
-function updatePowerHUD(){
 
- const hud=
- document.getElementById(
-  "powerHUD"
- );
-
- const magnetHUD=
- document.getElementById(
-  "magnetHUD"
- );
-
- const doubleHUD=
- document.getElementById(
-  "doubleHUD"
- );
-
- if(magnet>0){
-
-  hud.style.display="flex";
-
-  magnetHUD.classList.remove(
-   "hidden"
-  );
-
-  document
-  .getElementById("magnetTime")
-  .textContent=
-  Math.ceil(magnet);
-
- }else{
-
-  magnetHUD.classList.add(
-   "hidden"
-  );
-
- }
-
- if(doubleCoins>0){
-
-  hud.style.display="flex";
-
-  doubleHUD.classList.remove(
-   "hidden"
-  );
-
-  document
-  .getElementById("doubleTime")
-  .textContent=
-  Math.ceil(doubleCoins);
-
- }else{
-
-  doubleHUD.classList.add(
-   "hidden"
-  );
-
- }
-
- if(
-  magnet<=0&&
-  doubleCoins<=0
- ){
-
-  hud.style.display="none";
-
- }
-
-}
-
-/* =========================================================
-   LOOP
-========================================================= */
+/* =====================================================
+   GAME LOOP
+   ===================================================== */
 
 function loop(time){
 
- const dt=
- Math.min(
-  40,
-  time-last
- );
+    const dt =
+        Math.min(
+            40,
+            time-last
+        );
 
- last=time;
+    last = time;
 
- drawWorld();
 
- objects.forEach(o=>{
+    drawWorld();
 
-  if(o.type==="car")
-   drawCar(o);
 
-  else if(o.type==="coin")
-   drawCoin(o,time);
+    objects.forEach(
+        o=>{
 
-  else
-   drawPower(o);
+            if(
+                o.type === "car"
+            )
+                drawCar(o);
 
- });
+            else if(
+                o.type === "coin"
+            )
+                drawCoin(o,time);
 
- drawPlayer();
+            else
+                drawPower(o);
 
- update(dt);
+        }
+    );
 
- requestAnimationFrame(loop);
+
+    drawPlayer();
+
+    update(dt);
+
+
+    requestAnimationFrame(
+        loop
+    );
 
 }
+
 
 requestAnimationFrame(loop);
 
-/* =========================================================
-   CONTROLS
-========================================================= */
+
+/* =====================================================
+   STEUERUNG
+   ===================================================== */
 
 document.addEventListener(
- "keydown",
- e=>{
+    "keydown",
+    e=>{
 
-  if(!running||paused)
-   return;
+        if(
+            !running ||
+            paused
+        ) return;
 
-  if(e.key==="ArrowLeft"){
 
-   lane=
-   Math.max(
-    -1,
-    lane-1
-   );
+        if(
+            e.key === "ArrowLeft"
+        ){
 
-  }
+            lane =
+                Math.max(
+                    -1,
+                    lane-1
+                );
 
-  if(e.key==="ArrowRight"){
+        }
 
-   lane=
-   Math.min(
-    1,
-    lane+1
-   );
 
-  }
+        if(
+            e.key === "ArrowRight"
+        ){
 
- }
+            lane =
+                Math.min(
+                    1,
+                    lane+1
+                );
+
+        }
+
+    }
 );
 
-let touchStartX=0;
+
+/* =====================================================
+   TOUCH / SWIPE
+   ===================================================== */
+
+let touchStartX = 0;
+
 
 canvas.addEventListener(
- "touchstart",
- e=>{
+    "touchstart",
+    e=>{
 
-  if(!running||paused)
-   return;
+        if(
+            !running ||
+            paused
+        ) return;
 
-  touchStartX=
-  e.changedTouches[0]
-  .clientX;
 
- },
- {passive:true}
+        touchStartX =
+            e.changedTouches[0]
+            .clientX;
+
+    },
+    {passive:true}
 );
+
 
 canvas.addEventListener(
- "touchend",
- e=>{
+    "touchend",
+    e=>{
 
-  if(!running||paused)
-   return;
+        if(
+            !running ||
+            paused
+        ) return;
 
-  const end=
-  e.changedTouches[0]
-  .clientX;
 
-  const diff=
-  end-touchStartX;
+        const endX =
+            e.changedTouches[0]
+            .clientX;
 
-  if(
-   Math.abs(diff)<30
-  )
-   return;
 
-  if(diff>0){
+        const difference =
+            endX -
+            touchStartX;
 
-   lane=
-   Math.min(
-    1,
-    lane+1
-   );
 
-  }else{
+        if(
+            Math.abs(
+                difference
+            ) < 30
+        ) return;
 
-   lane=
-   Math.max(
-    -1,
-    lane-1
-   );
 
-  }
+        if(
+            difference > 0
+        ){
 
- },
- {passive:true}
+            lane =
+                Math.min(
+                    1,
+                    lane+1
+                );
+
+        }else{
+
+            lane =
+                Math.max(
+                    -1,
+                    lane-1
+                );
+
+        }
+
+    },
+    {passive:true}
 );
 
-/* =========================================================
+
+/* =====================================================
    PAUSE
-========================================================= */
+   ===================================================== */
 
 document
 .getElementById("pause")
-.onclick=()=>{
+.onclick = ()=>{
 
- if(!running)
-  return;
+    if(!running)
+        return;
 
- paused=true;
 
- document
- .getElementById("pause")
- .style.display="none";
+    paused = true;
 
- document
- .getElementById("pauseScreen")
- .classList.remove(
-  "hidden"
- );
+
+    document
+    .getElementById("pause")
+    .style.display =
+        "none";
+
+
+    document
+    .getElementById("pauseScreen")
+    .classList.remove(
+        "hidden"
+    );
 
 };
 
+
 function resumeGame(){
 
- paused=false;
+    paused = false;
 
- document
- .getElementById("pauseScreen")
- .classList.add(
-  "hidden"
- );
 
- document
- .getElementById("pause")
- .style.display="block";
+    document
+    .getElementById("pauseScreen")
+    .classList.add(
+        "hidden"
+    );
 
- last=
- performance.now();
+
+    document
+    .getElementById("pause")
+    .style.display =
+        "block";
+
+
+    last =
+        performance.now();
 
 }
+
 
 function quitGame(){
 
- running=false;
+    running = false;
 
- document
- .getElementById("pauseScreen")
- .classList.add(
-  "hidden"
- );
 
- document
- .getElementById("hud")
- .style.display="none";
+    document
+    .getElementById("pauseScreen")
+    .classList.add(
+        "hidden"
+    );
 
- document
- .getElementById("powerHUD")
- .style.display="none";
 
- showMenu();
+    document
+    .getElementById("hud")
+    .style.display =
+        "none";
+
+
+    showMenu();
 
 }
 
-/* =========================================================
+
+/* =====================================================
    GAME OVER
-========================================================= */
+   ===================================================== */
 
 async function endGame(){
 
- if(!running)
-  return;
+    if(!running)
+        return;
 
- running=false;
 
- playerData.coins+=
- runCoins;
+    running = false;
 
- const finalScore=
- Math.floor(score);
 
- if(
-  finalScore>
-  playerData.highscore
- ){
+    playerData.coins +=
+        runCoins;
 
-  playerData.highscore=
-  finalScore;
 
- }
+    const finalScore =
+        Math.floor(score);
 
- await saveOnlineScore();
 
- document
- .getElementById("hud")
- .style.display="none";
+    if(
+        finalScore >
+        playerData.highscore
+    ){
 
- document
- .getElementById("pause")
- .style.display="none";
+        playerData.highscore =
+            finalScore;
 
- document
- .getElementById("powerHUD")
- .style.display="none";
+    }
 
- document
- .getElementById("gameOverText")
- .innerHTML=`
 
-  <p>
-   SCORE:
-   <b>${finalScore.toLocaleString()}</b>
-  </p>
+    save();
 
-  <p>
-   COINS:
-   <b>${runCoins.toLocaleString()}</b>
-  </p>
 
-  <p>
-   HIGHSCORE:
-   <b>${playerData.highscore.toLocaleString()}</b>
-  </p>
+    /*
+       Score online speichern
+    */
 
- `;
+    await saveOnlineScore();
 
- document
- .getElementById("gameOver")
- .classList.remove(
-  "hidden"
- );
+
+    document
+    .getElementById("hud")
+    .style.display =
+        "none";
+
+
+    document
+    .getElementById("pause")
+    .style.display =
+        "none";
+
+
+    document
+    .getElementById("gameOverText")
+    .innerHTML = `
+
+        <p>
+            🏆 Score:
+            <b>
+                ${finalScore.toLocaleString()}
+            </b>
+        </p>
+
+        <p>
+            🪙 Coins:
+            <b>
+                ${runCoins}
+            </b>
+        </p>
+
+        <p>
+            ⭐ Highscore:
+            <b>
+                ${playerData.highscore.toLocaleString()}
+            </b>
+        </p>
+
+    `;
+
+
+    document
+    .getElementById("gameOver")
+    .classList.remove(
+        "hidden"
+    );
 
 }
+
 
 function restartGame(){
 
- document
- .getElementById("gameOver")
- .classList.add(
-  "hidden"
- );
+    document
+    .getElementById("gameOver")
+    .classList.add(
+        "hidden"
+    );
 
- startGame();
 
-}
-
-/* =========================================================
-   STARTUP
-========================================================= */
-
-async function init(){
-
- const {
-  data
- }=
- await supabaseClient.auth.getSession();
-
- if(data.session){
-
-  playerData.id=
-  data.session.user.id;
-
-  playerData.email=
-  data.session.user.email||"";
-
-  await loadOnlinePlayer();
-
-  if(!playerData.username){
-
-   playerData.username=
-   data.session.user.user_metadata
-   ?.username||
-   "Spieler";
-
-  }
-
-  showMenu();
-
- }
+    startGame();
 
 }
 
-init();
+
+/* =====================================================
+   START
+   ===================================================== */
+
+if(load()){
+
+    showMenu();
+
+}
 
 </script>
 
