@@ -1,4 +1,3 @@
-# Js-Games-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -7,22 +6,23 @@
       content="width=device-width, initial-scale=1.0,
       maximum-scale=1.0, user-scalable=no">
 
-<title>Runner 3D</title>
+<title>Runner Game</title>
 
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #79c9ff;
-    font-family: Arial, sans-serif;
     touch-action: none;
+    font-family: Arial, sans-serif;
+    background: #7dccff;
 }
 
 canvas {
@@ -33,37 +33,38 @@ canvas {
 
 #hud {
     position: fixed;
-    top: 14px;
+    top: 12px;
     left: 12px;
     right: 12px;
-    z-index: 5;
 
     display: none;
     justify-content: space-between;
+
+    z-index: 20;
 
     pointer-events: none;
 }
 
 .hudBox {
+    background: rgba(0,0,0,.58);
+    color: white;
+
     padding: 9px 13px;
     border-radius: 12px;
 
-    color: white;
-    background: rgba(0,0,0,.58);
-
     font-weight: bold;
     font-size: 15px;
-
-    text-shadow: 0 2px 3px black;
 }
 
 .screen {
     position: fixed;
     inset: 0;
-    z-index: 10;
+
+    z-index: 50;
 
     display: flex;
     flex-direction: column;
+
     justify-content: center;
     align-items: center;
 
@@ -79,21 +80,21 @@ canvas {
 
 h1 {
     font-size: 42px;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
     text-shadow: 0 4px 10px black;
 }
 
-.info {
-    line-height: 1.7;
+.instructions {
+    line-height: 1.8;
+    font-size: 16px;
 }
 
 button {
-    margin-top: 22px;
-
     border: none;
-    border-radius: 15px;
+    border-radius: 14px;
 
     padding: 15px 30px;
+    margin-top: 22px;
 
     background: #ffd000;
     color: #111;
@@ -112,73 +113,80 @@ button:active {
 
 <body>
 
-<canvas id="game"></canvas>
+<canvas id="gameCanvas"></canvas>
 
-<!-- HUD -->
 
-<div id="hud">
+<!-- ==============================
+     SPIEL HUD
+============================== -->
+
+<div id="gameHud">
 
     <div class="hudBox">
-        🪙 <span id="coins">0</span>
+        🪙 <span id="coinText">0</span>
     </div>
 
     <div class="hudBox">
-        🏆 <span id="score">0</span>
+        🏆 <span id="scoreText">0</span>
     </div>
 
     <div class="hudBox">
-        ⭐ <span id="highscore">0</span>
+        ⭐ <span id="bestText">0</span>
     </div>
 
 </div>
 
 
-<!-- START -->
+<!-- ==============================
+     STARTMENÜ
+============================== -->
 
-<div id="menu" class="screen">
+<div id="startScreen" class="screen">
 
-    <h1>🏃 RUNNER 3D</h1>
+    <h1>🏃 RUNNER</h1>
 
-    <div class="info">
+    <div class="instructions">
         ⬅️ Nach links wischen<br>
         ➡️ Nach rechts wischen<br>
         ⬆️ Nach oben wischen = Springen
     </div>
 
-    <button id="start">
+    <button id="startGameButton">
         SPIEL STARTEN
     </button>
 
 </div>
 
 
-<!-- GAME OVER -->
+<!-- ==============================
+     GAME OVER
+============================== -->
 
-<div id="gameover" class="screen hidden">
+<div id="gameOverScreen" class="screen hidden">
 
     <h1>💥 GAME OVER</h1>
 
     <p>
         Punkte:
-        <b id="endScore">0</b>
+        <b id="finalScore">0</b>
     </p>
 
     <p>
         Münzen:
-        <b id="endCoins">0</b>
+        <b id="finalCoins">0</b>
     </p>
 
     <p>
         Highscore:
-        <b id="endHighscore">0</b>
+        <b id="finalHighscore">0</b>
     </p>
 
-    <button id="restart">
+    <button id="restartButton">
         NOCHMAL SPIELEN
     </button>
 
-    <button id="menuButton">
-        MENÜ
+    <button id="backToMenuButton">
+        ZUM MENÜ
     </button>
 
 </div>
@@ -186,44 +194,131 @@ button:active {
 
 <script>
 
-/* =====================================================
-   GRUNDSETUP
-===================================================== */
+/* ==========================================
+   CANVAS
+========================================== */
 
 const canvas =
-    document.getElementById("game");
+    document.getElementById("gameCanvas");
 
 const ctx =
     canvas.getContext("2d");
 
-let W;
-let H;
-let DPR;
+
+let width = 0;
+let height = 0;
+let pixelRatio = 1;
 
 
-/* =====================================================
+function resizeCanvas() {
+
+    width =
+        window.innerWidth;
+
+    height =
+        window.innerHeight;
+
+    pixelRatio =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+    canvas.width =
+        width * pixelRatio;
+
+    canvas.height =
+        height * pixelRatio;
+
+    canvas.style.width =
+        width + "px";
+
+    canvas.style.height =
+        height + "px";
+
+    ctx.setTransform(
+        pixelRatio,
+        0,
+        0,
+        pixelRatio,
+        0,
+        0
+    );
+}
+
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+resizeCanvas();
+
+
+/* ==========================================
+   MENÜ-ELEMENTE
+========================================== */
+
+const startScreen =
+    document.getElementById(
+        "startScreen"
+    );
+
+const gameOverScreen =
+    document.getElementById(
+        "gameOverScreen"
+    );
+
+const gameHud =
+    document.getElementById(
+        "gameHud"
+    );
+
+const startGameButton =
+    document.getElementById(
+        "startGameButton"
+    );
+
+const restartButton =
+    document.getElementById(
+        "restartButton"
+    );
+
+const backToMenuButton =
+    document.getElementById(
+        "backToMenuButton"
+    );
+
+
+/* ==========================================
    SPEICHER
-===================================================== */
+========================================== */
 
-let highscore =
+let highScore =
     Number(
-        localStorage.getItem("runnerHighscore")
+        localStorage.getItem(
+            "runnerHighScore"
+        )
     ) || 0;
+
 
 let savedCoins =
     Number(
-        localStorage.getItem("runnerCoins")
+        localStorage.getItem(
+            "runnerCoins"
+        )
     ) || 0;
 
 
-/* =====================================================
+/* ==========================================
    SPIELVARIABLEN
-===================================================== */
+========================================== */
 
-let running = false;
+let gameRunning = false;
 
 let score = 0;
-let currentCoins = 0;
+
+let collectedCoins = 0;
 
 
 /*
@@ -232,161 +327,115 @@ let currentCoins = 0;
     1 = rechts
 */
 
-let lane = 0;
-
-let playerLane = 0;
+let currentLane = 0;
 let targetLane = 0;
+let playerLane = 0;
 
 
-/* Springen */
+/* ==========================================
+   SPRUNG
+========================================== */
 
-let playerJump = 0;
+let jumpHeight = 0;
 let jumpVelocity = 0;
 
-const JUMP_FORCE = 0.018;
-const GRAVITY = 0.000055;
+const JUMP_POWER = 0.020;
+const GRAVITY = 0.000060;
 
 
-/* Geschwindigkeit */
+/* ==========================================
+   GESCHWINDIGKEIT
+========================================== */
 
-let speed = 0.00022;
+let speed = 0.00018;
 
-const START_SPEED = 0.00022;
-const MAX_SPEED = 0.00048;
+const START_SPEED = 0.00018;
+const MAX_SPEED = 0.00040;
 
 
-/* Objekte */
+/* ==========================================
+   OBJEKTE
+========================================== */
 
 let obstacles = [];
-let coinObjects = [];
+let coins = [];
 
 
-/* Zeit */
+/* ==========================================
+   TIMER
+========================================== */
 
-let lastTime = 0;
 let obstacleTimer = 0;
 let coinTimer = 0;
 
-
-/* =====================================================
-   ELEMENTE
-===================================================== */
-
-const menu =
-    document.getElementById("menu");
-
-const gameover =
-    document.getElementById("gameover");
-
-const hud =
-    document.getElementById("hud");
+let lastTime = 0;
 
 
-/* =====================================================
-   CANVAS
-===================================================== */
+/* ==========================================
+   PERSPEKTIVE
+========================================== */
 
-function resize() {
+function getHorizon() {
 
-    DPR =
-        Math.min(
-            window.devicePixelRatio || 1,
-            2
-        );
+    return height * 0.40;
+}
 
-    W =
-        window.innerWidth;
 
-    H =
-        window.innerHeight;
+function getRoadWidth(z) {
 
-    canvas.width =
-        W * DPR;
+    const farWidth =
+        width * 0.30;
 
-    canvas.height =
-        H * DPR;
+    const nearWidth =
+        width * 1.30;
 
-    canvas.style.width =
-        W + "px";
-
-    canvas.style.height =
-        H + "px";
-
-    ctx.setTransform(
-        DPR,
-        0,
-        0,
-        DPR,
-        0,
-        0
+    return (
+        farWidth +
+        (nearWidth - farWidth)
+        * (1 - z)
     );
 }
 
-window.addEventListener(
-    "resize",
-    resize
-);
-
-resize();
-
-
-/* =====================================================
-   PERSPEKTIVE
-===================================================== */
-
-/*
-   Der Horizont bleibt immer an derselben Stelle.
-   Die Straße bewegt sich NICHT als Ganzes.
-
-   z = 1  -> weit entfernt
-   z = 0  -> beim Spieler
-*/
-
-const horizon =
-    0.42;
-
-function roadHorizon() {
-    return H * horizon;
-}
-
-
-/*
-   Position eines Objektes
-*/
 
 function project(z) {
-
-    /*
-       z wird zwischen 0 und 1 gehalten.
-    */
 
     const depth =
         1 - z;
 
-    const y =
-        roadHorizon() +
-        depth *
-        (H * 0.50);
-
-    /*
-       Je näher das Objekt kommt,
-       desto größer wird es.
-    */
-
-    const scale =
-        0.12 +
-        depth * 1.15;
-
     return {
-        y: y,
-        scale: scale
+
+        y:
+            getHorizon() +
+            depth *
+            height *
+            0.52,
+
+        width:
+            getRoadWidth(z)
     };
 }
 
 
-/* =====================================================
+function getLaneX(
+    lane,
+    z
+) {
+
+    const roadWidth =
+        getRoadWidth(z);
+
+    return (
+        width / 2 +
+        lane *
+        roadWidth *
+        0.27
+    );
+}
+
+
+/* ==========================================
    HIMMEL
-===================================================== */
+========================================== */
 
 function drawSky() {
 
@@ -395,22 +444,17 @@ function drawSky() {
             0,
             0,
             0,
-            H
+            height
         );
 
     gradient.addColorStop(
         0,
-        "#4db8ff"
-    );
-
-    gradient.addColorStop(
-        0.45,
-        "#a9e4ff"
+        "#42b9ff"
     );
 
     gradient.addColorStop(
         1,
-        "#e9f8ff"
+        "#e1f7ff"
     );
 
     ctx.fillStyle =
@@ -419,30 +463,48 @@ function drawSky() {
     ctx.fillRect(
         0,
         0,
-        W,
-        H
+        width,
+        height
     );
 }
 
 
-/* =====================================================
+/* ==========================================
+   BODEN
+========================================== */
+
+function drawGround() {
+
+    ctx.fillStyle =
+        "#58a34d";
+
+    ctx.fillRect(
+        0,
+        getHorizon(),
+        width,
+        height
+    );
+}
+
+
+/* ==========================================
    STADT
-===================================================== */
+========================================== */
 
 function drawCity() {
 
-    const hy =
-        roadHorizon();
+    const horizon =
+        getHorizon();
 
     const buildings = [
 
-        [0.01, 75, 140],
-        [0.10, 100, 180],
-        [0.23, 70, 120],
+        [0.02, 80, 150],
+        [0.13, 100, 180],
+        [0.26, 70, 120],
 
-        [0.73, 80, 140],
-        [0.84, 105, 185],
-        [0.96, 75, 130]
+        [0.74, 80, 140],
+        [0.85, 105, 190],
+        [0.97, 75, 140]
 
     ];
 
@@ -451,30 +513,29 @@ function drawCity() {
         function(building, index) {
 
             const x =
-                W * building[0];
+                width * building[0];
 
-            const width =
+            const buildingWidth =
                 building[1];
 
-            const height =
+            const buildingHeight =
                 building[2];
 
 
             ctx.fillStyle =
                 index % 2 === 0
-                ? "#69737e"
-                : "#56616c";
+                ? "#66717c"
+                : "#555f69";
 
 
             ctx.fillRect(
                 x,
-                hy - height,
-                width,
-                height
+                horizon -
+                buildingHeight,
+                buildingWidth,
+                buildingHeight
             );
 
-
-            /* Fenster */
 
             ctx.fillStyle =
                 "rgba(255,220,100,.65)";
@@ -482,85 +543,90 @@ function drawCity() {
 
             for (
                 let y =
-                    hy - height + 15;
+                    horizon -
+                    buildingHeight +
+                    15;
+
                 y <
-                    hy - 10;
-                y += 20
+                    horizon - 10;
+
+                y += 22
             ) {
 
                 for (
-                    let xx =
+                    let x2 =
                         x + 10;
-                    xx <
-                        x + width - 8;
-                    xx += 18
+
+                    x2 <
+                        x +
+                        buildingWidth -
+                        8;
+
+                    x2 += 20
                 ) {
 
                     ctx.fillRect(
-                        xx,
+                        x2,
                         y,
-                        6,
-                        9
+                        7,
+                        10
                     );
                 }
             }
-
         }
     );
 }
 
 
-/* =====================================================
+/* ==========================================
    STRASSE
-===================================================== */
+========================================== */
 
 function drawRoad() {
 
-    const hy =
-        roadHorizon();
+    const top =
+        getHorizon();
 
-    /*
-       Hintergrund / Gras
-    */
+    const topWidth =
+        width * 0.30;
 
-    ctx.fillStyle =
-        "#4d9a48";
-
-    ctx.fillRect(
-        0,
-        hy,
-        W,
-        H - hy
-    );
+    const bottomWidth =
+        width * 1.30;
 
 
     /*
-       Straße
+       Große, gerade, symmetrische Fläche.
+       Keine Außenränder.
     */
 
     ctx.fillStyle =
-        "#303238";
+        "#37393d";
+
 
     ctx.beginPath();
 
     ctx.moveTo(
-        W * 0.43,
-        hy
+        width / 2 -
+        topWidth / 2,
+        top
     );
 
     ctx.lineTo(
-        W * 0.57,
-        hy
+        width / 2 +
+        topWidth / 2,
+        top
     );
 
     ctx.lineTo(
-        W * 0.98,
-        H
+        width / 2 +
+        bottomWidth / 2,
+        height
     );
 
     ctx.lineTo(
-        W * 0.02,
-        H
+        width / 2 -
+        bottomWidth / 2,
+        height
     );
 
     ctx.closePath();
@@ -569,162 +635,99 @@ function drawRoad() {
 
 
     /*
-       Straßenränder
+       Nur die beiden
+       inneren Spurmarkierungen.
     */
 
-    ctx.strokeStyle =
-        "#eeeeee";
-
-    ctx.lineWidth = 5;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        W * 0.43,
-        hy
-    );
-
-    ctx.lineTo(
-        W * 0.02,
-        H
-    );
-
-    ctx.moveTo(
-        W * 0.57,
-        hy
-    );
-
-    ctx.lineTo(
-        W * 0.98,
-        H
-    );
-
-    ctx.stroke();
-
-
-    /*
-       Spur links
-    */
-
-    drawLaneLine(
-        0.43,
-        0.33
-    );
-
-
-    /*
-       Spur rechts
-    */
-
-    drawLaneLine(
-        0.57,
-        0.67
-    );
+    drawLaneLine(-1);
+    drawLaneLine(1);
 }
 
 
-function drawLaneLine(
-    topPercent,
-    bottomPercent
-) {
+function drawLaneLine(side) {
 
-    const hy =
-        roadHorizon();
+    const top =
+        getHorizon();
+
+    const topWidth =
+        width * 0.30;
+
+    const bottomWidth =
+        width * 1.30;
+
+
+    const topX =
+        width / 2 +
+        side *
+        topWidth *
+        0.27;
+
+
+    const bottomX =
+        width / 2 +
+        side *
+        bottomWidth *
+        0.27;
 
 
     ctx.strokeStyle =
-        "rgba(255,255,255,.65)";
+        "rgba(255,255,255,.45)";
 
     ctx.lineWidth = 3;
 
+
     ctx.beginPath();
 
     ctx.moveTo(
-        W * topPercent,
-        hy
+        topX,
+        top
     );
 
     ctx.lineTo(
-        W * bottomPercent,
-        H
+        bottomX,
+        height
     );
 
     ctx.stroke();
 }
 
 
-/* =====================================================
-   SPUR X POSITION
-===================================================== */
-
-function laneX(
-    laneValue,
-    z
-) {
-
-    /*
-       Bei z=1:
-       alle Spuren liegen dicht zusammen.
-
-       Bei z=0:
-       Spuren sind weit auseinander.
-    */
-
-    const perspective =
-        1 - z;
-
-    return (
-        W / 2 +
-        laneValue *
-        W *
-        0.22 *
-        perspective
-    );
-}
-
-
-/* =====================================================
+/* ==========================================
    SPIELER
-===================================================== */
+========================================== */
 
 function drawPlayer() {
 
-    /*
-       Spieler bleibt unten.
-    */
-
     const x =
-        W / 2 +
+        width / 2 +
         playerLane *
-        W *
-        0.22;
+        width *
+        0.27;
 
 
-    const groundY =
-        H * 0.80;
+    const ground =
+        height * 0.81;
 
 
     const y =
-        groundY -
-        playerJump *
-        H *
+        ground -
+        jumpHeight *
+        height *
         0.30;
 
 
-    /*
-       Schatten
-    */
+    /* Schatten */
 
     ctx.fillStyle =
-        "rgba(0,0,0,.32)";
+        "rgba(0,0,0,.30)";
 
     ctx.beginPath();
 
     ctx.ellipse(
         x,
-        groundY + 30,
+        ground + 28,
         32,
-        10,
+        9,
         0,
         0,
         Math.PI * 2
@@ -733,12 +736,10 @@ function drawPlayer() {
     ctx.fill();
 
 
-    /*
-       Beine
-    */
+    /* Beine */
 
     ctx.fillStyle =
-        "#123b9b";
+        "#143d99";
 
     ctx.fillRect(
         x - 17,
@@ -755,12 +756,10 @@ function drawPlayer() {
     );
 
 
-    /*
-       Körper
-    */
+    /* Körper */
 
     ctx.fillStyle =
-        "#1670ff";
+        "#176cff";
 
     ctx.fillRect(
         x - 29,
@@ -770,12 +769,7 @@ function drawPlayer() {
     );
 
 
-    /*
-       Arme
-    */
-
-    ctx.fillStyle =
-        "#1260e0";
+    /* Arme */
 
     ctx.fillRect(
         x - 42,
@@ -792,9 +786,7 @@ function drawPlayer() {
     );
 
 
-    /*
-       Kopf
-    */
+    /* Kopf */
 
     ctx.fillStyle =
         "#ffc49a";
@@ -812,9 +804,7 @@ function drawPlayer() {
     ctx.fill();
 
 
-    /*
-       Haare
-    */
+    /* Haare */
 
     ctx.fillStyle =
         "#222";
@@ -833,74 +823,59 @@ function drawPlayer() {
 }
 
 
-/* =====================================================
-   BLOCK
-===================================================== */
+/* ==========================================
+   ROTER BLOCK
+========================================== */
 
 function drawObstacle(
-    object
+    obstacle
 ) {
 
     const p =
         project(
-            object.z
+            obstacle.z
         );
 
 
     const x =
-        laneX(
-            object.lane,
-            object.z
+        getLaneX(
+            obstacle.lane,
+            obstacle.z
         );
 
 
-    /*
-       Block wird mit zunehmender Nähe größer.
-    */
-
     const size =
-        35 +
-        65 *
-        p.scale;
+        30 +
+        p.width * 0.055;
 
 
     const bottom =
         p.y;
 
-
     const top =
-        bottom -
-        size;
+        bottom - size;
 
 
-    if (
-        object.z < 0 ||
-        object.z > 1
-    )
-        return;
-
-
-    /*
-       Schatten
-    */
+    /* Schatten */
 
     ctx.fillStyle =
         "rgba(0,0,0,.25)";
 
     ctx.fillRect(
-        x - size * .55,
-        bottom - size * .10,
-        size * 1.1,
-        size * .12
+        x - size / 2,
+        bottom - 5,
+        size,
+        8
     );
 
 
     /*
-       Hauptseite
+       Vorderseite:
+       komplett gerade.
     */
 
     ctx.fillStyle =
-        "#d52b2b";
+        "#d92828";
 
     ctx.fillRect(
         x - size / 2,
@@ -911,126 +886,71 @@ function drawObstacle(
 
 
     /*
-       obere Seite
+       Helle Oberkante.
     */
 
     ctx.fillStyle =
-        "#ff5b5b";
+        "#ff5555";
 
-    ctx.beginPath();
-
-    ctx.moveTo(
+    ctx.fillRect(
         x - size / 2,
-        top
+        top,
+        size,
+        size * 0.12
     );
-
-    ctx.lineTo(
-        x - size * .32,
-        top - size * .16
-    );
-
-    ctx.lineTo(
-        x + size * .68,
-        top - size * .16
-    );
-
-    ctx.lineTo(
-        x + size / 2,
-        top
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
 
 
     /*
-       rechte Seite
+       Dunkle rechte Seite.
     */
 
     ctx.fillStyle =
-        "#a91f1f";
+        "#a51d1d";
 
-    ctx.beginPath();
-
-    ctx.moveTo(
-        x + size / 2,
-        top
+    ctx.fillRect(
+        x + size * 0.34,
+        top,
+        size * 0.16,
+        size
     );
-
-    ctx.lineTo(
-        x + size * .68,
-        top - size * .16
-    );
-
-    ctx.lineTo(
-        x + size * .68,
-        bottom - size * .16
-    );
-
-    ctx.lineTo(
-        x + size / 2,
-        bottom
-    );
-
-    ctx.closePath();
-
-    ctx.fill();
 }
 
 
-/* =====================================================
+/* ==========================================
    MÜNZE
-===================================================== */
+========================================== */
 
 function drawCoin(
-    object
+    coin
 ) {
 
     const p =
         project(
-            object.z
+            coin.z
         );
 
 
     const x =
-        laneX(
-            object.lane,
-            object.z
+        getLaneX(
+            coin.lane,
+            coin.z
         );
 
 
-    /*
-       Münze schwebt etwas über der Straße.
-    */
-
     const y =
         p.y -
-        55 *
-        p.scale;
+        p.width * 0.045;
 
 
     const radius =
         Math.max(
             5,
-            8 *
-            p.scale
+            p.width * 0.018
         );
 
 
-    if (
-        object.z < 0 ||
-        object.z > 1
-    )
-        return;
-
-
-    /*
-       Goldener Rand
-    */
-
     ctx.fillStyle =
-        "#e5a900";
+        "#d99f00";
 
     ctx.beginPath();
 
@@ -1044,10 +964,6 @@ function drawCoin(
 
     ctx.fill();
 
-
-    /*
-       Münze
-    */
 
     ctx.fillStyle =
         "#ffd21a";
@@ -1065,12 +981,8 @@ function drawCoin(
     ctx.fill();
 
 
-    /*
-       Glanz
-    */
-
     ctx.fillStyle =
-        "#fff3a0";
+        "#fff4a0";
 
     ctx.beginPath();
 
@@ -1086,15 +998,11 @@ function drawCoin(
 }
 
 
-/* =====================================================
-   OBJEKTE ERZEUGEN
-===================================================== */
+/* ==========================================
+   OBJEKTE
+========================================== */
 
 function createObstacle() {
-
-    /*
-       Block kommt immer weit vorne.
-    */
 
     const randomLane =
         Math.floor(
@@ -1103,13 +1011,18 @@ function createObstacle() {
 
 
     obstacles.push({
-        lane: randomLane,
-        z: 1
+
+        lane:
+            randomLane,
+
+        z:
+            1
+
     });
 }
 
 
-function createCoinLine() {
+function createCoins() {
 
     const randomLane =
         Math.floor(
@@ -1117,90 +1030,92 @@ function createCoinLine() {
         ) - 1;
 
 
-    /*
-       5 Münzen hintereinander
-    */
-
     for (
         let i = 0;
         i < 5;
         i++
     ) {
 
-        coinObjects.push({
-            lane: randomLane,
+        coins.push({
+
+            lane:
+                randomLane,
+
             z:
                 1 -
-                i * 0.075
+                i * 0.08
+
         });
     }
 }
 
 
-/* =====================================================
+/* ==========================================
    STEUERUNG
-===================================================== */
+========================================== */
 
 function moveLeft() {
 
-    if (!running)
+    if (!gameRunning)
         return;
 
 
-    lane--;
+    currentLane--;
 
     if (
-        lane < -1
-    )
-        lane = -1;
+        currentLane < -1
+    ) {
+        currentLane = -1;
+    }
 
 
     targetLane =
-        lane;
+        currentLane;
 }
 
 
 function moveRight() {
 
-    if (!running)
+    if (!gameRunning)
         return;
 
 
-    lane++;
+    currentLane++;
 
     if (
-        lane > 1
-    )
-        lane = 1;
+        currentLane > 1
+    ) {
+        currentLane = 1;
+    }
 
 
     targetLane =
-        lane;
+        currentLane;
 }
 
 
-function doJump() {
+function jumpPlayer() {
 
-    if (!running)
+    if (!gameRunning)
         return;
 
 
     if (
-        playerJump <= 0.001
+        jumpHeight <= 0.001
     ) {
 
         jumpVelocity =
-            JUMP_FORCE;
+            JUMP_POWER;
     }
 }
 
 
-/* =====================================================
-   TOUCH STEUERUNG
-===================================================== */
+/* ==========================================
+   TOUCH
+========================================== */
 
-let touchX = 0;
-let touchY = 0;
+let touchStartX = 0;
+let touchStartY = 0;
 
 
 canvas.addEventListener(
@@ -1210,10 +1125,10 @@ canvas.addEventListener(
         const touch =
             event.changedTouches[0];
 
-        touchX =
+        touchStartX =
             touch.clientX;
 
-        touchY =
+        touchStartY =
             touch.clientY;
 
     },
@@ -1227,7 +1142,7 @@ canvas.addEventListener(
     "touchend",
     function(event) {
 
-        if (!running)
+        if (!gameRunning)
             return;
 
 
@@ -1237,25 +1152,22 @@ canvas.addEventListener(
 
         const dx =
             touch.clientX -
-            touchX;
+            touchStartX;
 
 
         const dy =
             touch.clientY -
-            touchY;
-
-
-        const distance =
-            Math.max(
-                Math.abs(dx),
-                Math.abs(dy)
-            );
+            touchStartY;
 
 
         if (
-            distance < 35
-        )
+            Math.max(
+                Math.abs(dx),
+                Math.abs(dy)
+            ) < 35
+        ) {
             return;
+        }
 
 
         if (
@@ -1263,9 +1175,7 @@ canvas.addEventListener(
             Math.abs(dy)
         ) {
 
-            if (
-                dx > 0
-            ) {
+            if (dx > 0) {
 
                 moveRight();
 
@@ -1276,11 +1186,9 @@ canvas.addEventListener(
 
         } else {
 
-            if (
-                dy < 0
-            ) {
+            if (dy < 0) {
 
-                doJump();
+                jumpPlayer();
             }
         }
 
@@ -1291,9 +1199,9 @@ canvas.addEventListener(
 );
 
 
-/* =====================================================
+/* ==========================================
    TASTATUR
-===================================================== */
+========================================== */
 
 window.addEventListener(
     "keydown",
@@ -1302,7 +1210,6 @@ window.addEventListener(
         if (
             event.key === "ArrowLeft"
         ) {
-
             moveLeft();
         }
 
@@ -1310,7 +1217,6 @@ window.addEventListener(
         if (
             event.key === "ArrowRight"
         ) {
-
             moveRight();
         }
 
@@ -1319,42 +1225,60 @@ window.addEventListener(
             event.key === "ArrowUp" ||
             event.key === " "
         ) {
-
-            doJump();
+            jumpPlayer();
         }
     }
 );
 
 
-/* =====================================================
+/* ==========================================
    SPIEL START
-===================================================== */
+========================================== */
 
 function startGame() {
 
-    running = true;
+    /*
+       WICHTIG:
+       Startmenü sofort verstecken.
+    */
+
+    startScreen.classList.add(
+        "hidden"
+    );
+
+
+    gameOverScreen.classList.add(
+        "hidden"
+    );
+
+
+    gameHud.style.display =
+        "flex";
+
+
+    gameRunning = true;
 
 
     score = 0;
-    currentCoins = 0;
+
+    collectedCoins = 0;
 
 
     speed =
         START_SPEED;
 
 
-    lane = 0;
-
-    playerLane = 0;
+    currentLane = 0;
     targetLane = 0;
+    playerLane = 0;
 
 
-    playerJump = 0;
+    jumpHeight = 0;
     jumpVelocity = 0;
 
 
     obstacles = [];
-    coinObjects = [];
+    coins = [];
 
 
     obstacleTimer = 0;
@@ -1362,74 +1286,60 @@ function startGame() {
 
 
     /*
-       Erste Münzen sichtbar platzieren.
+       Erste Münzen.
     */
 
-    coinObjects.push({
-        lane: -1,
+    coins.push({
+        lane: 0,
         z: 0.82
     });
 
-    coinObjects.push({
-        lane: -1,
+    coins.push({
+        lane: 0,
         z: 0.74
     });
 
-    coinObjects.push({
-        lane: -1,
+    coins.push({
+        lane: 0,
         z: 0.66
     });
 
 
     /*
-       Erstes Hindernis befindet sich
-       auf der rechten Spur.
+       Erstes Hindernis rechts.
     */
 
     obstacles.push({
         lane: 1,
-        z: 0.88
+        z: 0.90
     });
-
-
-    menu.classList.add(
-        "hidden"
-    );
-
-    gameover.classList.add(
-        "hidden"
-    );
-
-    hud.style.display =
-        "flex";
 
 
     updateHUD();
 }
 
 
-/* =====================================================
+/* ==========================================
    UPDATE
-===================================================== */
+========================================== */
 
-function update(dt) {
+function update(delta) {
 
-    if (!running)
+    if (!gameRunning)
         return;
 
 
     /*
-       Langsame Beschleunigung
+       Langsame Beschleunigung.
     */
 
     speed +=
-        dt *
-        0.000000012;
+        delta *
+        0.000000010;
 
 
     if (
-        speed >
-        MAX_SPEED
+        speed > MAX_SPEED
     ) {
 
         speed =
@@ -1438,8 +1348,7 @@ function update(dt) {
 
 
     /*
-       Spieler gleitet sauber
-       zur nächsten Spur.
+       Flüssiger Spurwechsel.
     */
 
     playerLane +=
@@ -1449,103 +1358,95 @@ function update(dt) {
         ) *
         Math.min(
             1,
-            dt * 0.012
+            delta * 0.012
         );
 
 
     /*
-       SPRUNG
+       Sprung.
     */
 
     if (
-        playerJump > 0 ||
+        jumpHeight > 0 ||
         jumpVelocity > 0
     ) {
 
-        playerJump +=
+        jumpHeight +=
             jumpVelocity *
-            dt;
+            delta;
 
 
         jumpVelocity -=
             GRAVITY *
-            dt;
+            delta;
 
 
         if (
-            playerJump <= 0
+            jumpHeight <= 0
         ) {
 
-            playerJump = 0;
+            jumpHeight = 0;
             jumpVelocity = 0;
         }
     }
 
 
-    /*
-       HINDERNISSE
-    */
+    /* ======================================
+       BLÖCKE
+    ====================================== */
 
     for (
         let i =
             obstacles.length - 1;
+
         i >= 0;
+
         i--
     ) {
 
-        const object =
+        const obstacle =
             obstacles[i];
 
 
-        object.z -=
+        obstacle.z -=
             speed *
-            dt;
+            delta;
 
 
         /*
-           Kollisionszone direkt
-           vor dem Spieler.
+           Kollision direkt vor dem Spieler.
         */
 
         if (
-            object.z < 0.105 &&
-            object.z > 0.035
+            obstacle.z < 0.11 &&
+            obstacle.z > 0.03
         ) {
-
-            /*
-               Nur gleiche Spur
-               kann kollidieren.
-            */
 
             if (
                 Math.abs(
-                    object.lane -
+                    obstacle.lane -
                     playerLane
                 ) < 0.35
             ) {
 
                 /*
-                   Springen verhindert
-                   die Kollision.
+                   Springen hilft.
                 */
 
                 if (
-                    playerJump < 0.35
+                    jumpHeight < 0.35
                 ) {
 
                     endGame();
+
                     return;
                 }
             }
         }
 
 
-        /*
-           Objekt ist vorbei.
-        */
-
         if (
-            object.z < 0
+            obstacle.z < 0
         ) {
 
             obstacles.splice(
@@ -1556,50 +1457,52 @@ function update(dt) {
     }
 
 
-    /*
+    /* ======================================
        MÜNZEN
-    */
+    ====================================== */
 
     for (
         let i =
-            coinObjects.length - 1;
+            coins.length - 1;
+
         i >= 0;
+
         i--
     ) {
 
-        const object =
-            coinObjects[i];
+        const coin =
+            coins[i];
 
 
-        object.z -=
+        coin.z -=
             speed *
-            dt;
+            delta;
 
 
         /*
-           Münze wird eingesammelt,
-           wenn sie beim Spieler ist
-           und die Spur stimmt.
+           Einsammelbereich.
         */
 
         if (
-            object.z < 0.13 &&
-            object.z > 0.025
+            coin.z < 0.14 &&
+            coin.z > 0.02
         ) {
 
             if (
                 Math.abs(
-                    object.lane -
+                    coin.lane -
                     playerLane
                 ) < 0.38
             ) {
 
-                currentCoins++;
+                collectedCoins++;
 
-                coinObjects.splice(
+
+                coins.splice(
                     i,
                     1
                 );
+
 
                 continue;
             }
@@ -1607,10 +1510,10 @@ function update(dt) {
 
 
         if (
-            object.z < 0
+            coin.z < 0
         ) {
 
-            coinObjects.splice(
+            coins.splice(
                 i,
                 1
             );
@@ -1618,21 +1521,16 @@ function update(dt) {
     }
 
 
-    /*
-       NEUE HINDERNISSE
-    */
+    /* ======================================
+       NEUE BLÖCKE
+    ====================================== */
 
     obstacleTimer +=
-        dt;
+        delta;
 
-
-    /*
-       Genug Abstand zwischen
-       den Blöcken.
-    */
 
     if (
-        obstacleTimer > 1900
+        obstacleTimer > 2100
     ) {
 
         createObstacle();
@@ -1641,69 +1539,70 @@ function update(dt) {
     }
 
 
-    /*
+    /* ======================================
        NEUE MÜNZEN
-    */
+    ====================================== */
 
     coinTimer +=
-        dt;
+        delta;
 
 
     if (
-        coinTimer > 1200
+        coinTimer > 1400
     ) {
 
-        createCoinLine();
+        createCoins();
 
         coinTimer = 0;
     }
 
 
     /*
-       SCORE
+       Punkte.
     */
 
     score +=
-        dt * 0.012;
+        delta *
+        0.01;
 
 
     updateHUD();
 }
 
 
-/* =====================================================
+/* ==========================================
    HUD
-===================================================== */
+========================================== */
 
 function updateHUD() {
 
     document.getElementById(
-        "coins"
+        "coinText"
     ).textContent =
         savedCoins +
-        currentCoins;
+        collectedCoins;
 
 
     document.getElementById(
-        "score"
+        "scoreText"
     ).textContent =
         Math.floor(score);
 
 
     document.getElementById(
-        "highscore"
+        "bestText"
     ).textContent =
-        highscore;
+        highScore;
 }
 
 
-/* =====================================================
+/* ==========================================
    GAME OVER
-===================================================== */
+========================================== */
 
 function endGame() {
 
-    running = false;
+    gameRunning = false;
 
 
     const finalScore =
@@ -1711,73 +1610,68 @@ function endGame() {
 
 
     savedCoins +=
-        currentCoins;
+        collectedCoins;
 
-
-    /*
-       Highscore speichern
-    */
 
     if (
         finalScore >
-        highscore
+        highScore
     ) {
 
-        highscore =
+        highScore =
             finalScore;
 
+
         localStorage.setItem(
-            "runnerHighscore",
-            highscore
+            "runnerHighScore",
+            String(highScore)
         );
     }
 
 
-    /*
-       Münzen speichern
-    */
-
     localStorage.setItem(
         "runnerCoins",
-        savedCoins
+        String(savedCoins)
     );
 
 
     document.getElementById(
-        "endScore"
+        "finalScore"
     ).textContent =
         finalScore;
 
 
     document.getElementById(
-        "endCoins"
+        "finalCoins"
     ).textContent =
-        currentCoins;
+        collectedCoins;
 
 
     document.getElementById(
-        "endHighscore"
+        "finalHighscore"
     ).textContent =
-        highscore;
+        highScore;
 
 
-    hud.style.display =
+    gameHud.style.display =
         "none";
 
 
-    gameover.classList.remove(
+    gameOverScreen.classList.remove(
         "hidden"
     );
 }
 
 
-/* =====================================================
+/* ==========================================
    ZEICHNEN
-===================================================== */
+========================================== */
 
 function draw() {
 
     drawSky();
+
+    drawGround();
 
     drawCity();
 
@@ -1785,30 +1679,39 @@ function draw() {
 
 
     /*
-       Weit entfernte Objekte zuerst.
-       Nahe Objekte zuletzt.
+       Entfernte Objekte zuerst.
     */
 
     const objects = [];
 
 
     obstacles.forEach(
-        function(object) {
+        function(obstacle) {
 
             objects.push({
-                type: "obstacle",
-                object: object
+
+                type:
+                    "obstacle",
+
+                object:
+                    obstacle
+
             });
         }
     );
 
 
-    coinObjects.forEach(
-        function(object) {
+    coins.forEach(
+        function(coin) {
 
             objects.push({
-                type: "coin",
-                object: object
+
+                type:
+                    "coin",
+
+                object:
+                    coin
+
             });
         }
     );
@@ -1851,11 +1754,11 @@ function draw() {
 }
 
 
-/* =====================================================
+/* ==========================================
    GAME LOOP
-===================================================== */
+========================================== */
 
-function loop(time) {
+function gameLoop(time) {
 
     if (
         lastTime === 0
@@ -1866,22 +1769,20 @@ function loop(time) {
     }
 
 
-    let dt =
+    let delta =
         time -
         lastTime;
 
 
     /*
-       Falls das Handy kurz
-       hängen bleibt, verhindert
-       das einen riesigen Sprung.
+       Schutz vor großen Zeitsprüngen.
     */
 
     if (
-        dt > 40
+        delta > 40
     ) {
 
-        dt = 40;
+        delta = 40;
     }
 
 
@@ -1889,60 +1790,67 @@ function loop(time) {
         time;
 
 
-    update(dt);
+    update(delta);
 
     draw();
 
 
     requestAnimationFrame(
-        loop
+        gameLoop
     );
 }
 
 
 requestAnimationFrame(
-    loop
+    gameLoop
 );
 
 
-/* =====================================================
+/* ==========================================
    BUTTONS
-===================================================== */
+========================================== */
 
-document
-    .getElementById("start")
-    .addEventListener(
-        "click",
-        startGame
-    );
+startGameButton.addEventListener(
+    "click",
+    function() {
 
+        startGame();
 
-document
-    .getElementById("restart")
-    .addEventListener(
-        "click",
-        startGame
-    );
+    }
+);
 
 
-document
-    .getElementById("menuButton")
-    .addEventListener(
-        "click",
-        function() {
+restartButton.addEventListener(
+    "click",
+    function() {
 
-            gameover.classList.add(
-                "hidden"
-            );
+        startGame();
 
-            menu.classList.remove(
-                "hidden"
-            );
+    }
+);
 
-            hud.style.display =
-                "none";
-        }
-    );
+
+backToMenuButton.addEventListener(
+    "click",
+    function() {
+
+        gameRunning = false;
+
+
+        gameOverScreen.classList.add(
+            "hidden"
+        );
+
+
+        startScreen.classList.remove(
+            "hidden"
+        );
+
+
+        gameHud.style.display =
+            "none";
+    }
+);
 
 </script>
 
