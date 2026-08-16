@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-
 <title>Cube Rush</title>
 
 <style>
@@ -44,7 +43,7 @@ canvas{
 
 .hudBox{
     color:white;
-    background:rgba(0,8,18,.8);
+    background:rgba(0,8,18,.82);
     border:1px solid rgba(0,220,255,.4);
     padding:9px 12px;
     border-radius:13px;
@@ -64,8 +63,8 @@ canvas{
     text-align:center;
     color:white;
     background:
-    radial-gradient(circle at 50% 25%,rgba(0,200,255,.2),transparent 40%),
-    #02040a;
+        radial-gradient(circle at 50% 25%,rgba(0,200,255,.2),transparent 40%),
+        #02040a;
 }
 
 .hidden{
@@ -77,9 +76,9 @@ canvas{
     font-weight:1000;
     letter-spacing:4px;
     text-shadow:
-    0 0 10px #00eaff,
-    0 0 30px #008cff,
-    0 0 60px #005eff;
+        0 0 10px #00eaff,
+        0 0 30px #008cff,
+        0 0 60px #005eff;
 }
 
 .sub{
@@ -105,6 +104,21 @@ button:active{
     transform:scale(.94);
 }
 
+#pauseButton{
+    display:none;
+    position:fixed;
+    top:58px;
+    right:12px;
+    z-index:30;
+    margin:0;
+    padding:9px 12px;
+    font-size:10px;
+    background:rgba(0,15,25,.92);
+    color:white;
+    border:1px solid rgba(0,220,255,.5);
+    box-shadow:0 0 15px rgba(0,220,255,.25);
+}
+
 #shopButton{
     display:none;
     position:fixed;
@@ -125,7 +139,7 @@ button:active{
     padding:20px 13px;
     color:white;
     background:
-    radial-gradient(circle at top,#064263,#02040a 70%);
+        radial-gradient(circle at top,#064263,#02040a 70%);
 }
 
 #shop.active{
@@ -192,6 +206,10 @@ button:active{
     display:block;
     margin:18px auto;
 }
+
+#pauseMenu button{
+    min-width:200px;
+}
 </style>
 </head>
 
@@ -199,7 +217,9 @@ button:active{
 
 <canvas id="game"></canvas>
 
+<!-- HUD -->
 <div id="hud">
+
     <div class="hudBox">
         🪙 <span id="coins">0</span>
     </div>
@@ -211,10 +231,16 @@ button:active{
     <div class="hudBox">
         ◆ <span id="charName">BLUE CORE</span>
     </div>
+
 </div>
 
+<!-- Pause -->
+<button id="pauseButton">⏸ PAUSE</button>
+
+<!-- Charakter-Shop Button -->
 <button id="shopButton">◆ CHARAKTERE</button>
 
+<!-- Hauptmenü -->
 <div id="menu" class="screen">
 
     <div class="logo">CUBE RUSH</div>
@@ -225,12 +251,17 @@ button:active{
         🪙 <span id="menuCoins">0</span>
     </div>
 
-    <button id="start">SPIEL STARTEN</button>
+    <button id="start">
+        SPIEL STARTEN
+    </button>
 
-    <button id="menuShop">◆ CHARAKTERE</button>
+    <button id="menuShop">
+        ◆ CHARAKTERE
+    </button>
 
 </div>
 
+<!-- Game Over -->
 <div id="gameOver" class="screen hidden">
 
     <div class="logo" style="font-size:35px;">
@@ -252,12 +283,38 @@ button:active{
         <b id="finalHigh">0</b>
     </p>
 
-    <button id="again">NOCHMAL</button>
+    <button id="again">
+        NOCHMAL
+    </button>
 
-    <button id="menuBack">MENÜ</button>
+    <button id="menuBack">
+        MENÜ
+    </button>
 
 </div>
 
+<!-- PAUSE MENÜ -->
+<div id="pauseMenu" class="screen hidden">
+
+    <div class="logo" style="font-size:35px;">
+        PAUSE
+    </div>
+
+    <p style="margin-top:15px;color:#8eeaff;">
+        Das Spiel ist pausiert.
+    </p>
+
+    <button id="resumeButton">
+        ▶ WEITERSPIELEN
+    </button>
+
+    <button id="quitButton">
+        ✕ AUFGEBEN
+    </button>
+
+</div>
+
+<!-- SHOP -->
 <div id="shop">
 
     <div class="shopTitle">
@@ -294,7 +351,10 @@ function resize(){
     W=innerWidth;
     H=innerHeight;
 
-    DPR=Math.min(devicePixelRatio||1,2);
+    DPR=Math.min(
+        devicePixelRatio||1,
+        2
+    );
 
     canvas.width=W*DPR;
     canvas.height=H*DPR;
@@ -308,7 +368,6 @@ function resize(){
 }
 
 addEventListener("resize",resize);
-
 resize();
 
 
@@ -318,95 +377,95 @@ resize();
 
 const characters=[
 
-{
-    name:"BLUE CORE",
-    price:0,
-    main:"#008cff",
-    light:"#00f4ff",
-    dark:"#00458e",
-    aura:"#00eaff"
-},
+    {
+        name:"BLUE CORE",
+        price:0,
+        main:"#008cff",
+        light:"#00f4ff",
+        dark:"#00458e",
+        aura:"#00eaff"
+    },
 
-{
-    name:"VOLT",
-    price:300,
-    main:"#ffe000",
-    light:"#ffffbc",
-    dark:"#947300",
-    aura:"#ffe000"
-},
+    {
+        name:"VOLT",
+        price:300,
+        main:"#ffe000",
+        light:"#ffffbc",
+        dark:"#947300",
+        aura:"#ffe000"
+    },
 
-{
-    name:"FIRE",
-    price:700,
-    main:"#ff3200",
-    light:"#ffb000",
-    dark:"#8d1100",
-    aura:"#ff2500"
-},
+    {
+        name:"FIRE",
+        price:700,
+        main:"#ff3200",
+        light:"#ffb000",
+        dark:"#8d1100",
+        aura:"#ff2500"
+    },
 
-{
-    name:"POISON",
-    price:1200,
-    main:"#55ff00",
-    light:"#d5ff9c",
-    dark:"#287300",
-    aura:"#55ff00"
-},
+    {
+        name:"POISON",
+        price:1200,
+        main:"#55ff00",
+        light:"#d5ff9c",
+        dark:"#287300",
+        aura:"#55ff00"
+    },
 
-{
-    name:"ICE",
-    price:2000,
-    main:"#00d8ff",
-    light:"#efffff",
-    dark:"#00749b",
-    aura:"#00eaff"
-},
+    {
+        name:"ICE",
+        price:2000,
+        main:"#00d8ff",
+        light:"#efffff",
+        dark:"#00749b",
+        aura:"#00eaff"
+    },
 
-{
-    name:"PURPLE",
-    price:3000,
-    main:"#9c32ff",
-    light:"#e8c0ff",
-    dark:"#481080",
-    aura:"#a83cff"
-},
+    {
+        name:"PURPLE",
+        price:3000,
+        main:"#9c32ff",
+        light:"#e8c0ff",
+        dark:"#481080",
+        aura:"#a83cff"
+    },
 
-{
-    name:"MAGMA",
-    price:4500,
-    main:"#ff4b00",
-    light:"#fff000",
-    dark:"#851800",
-    aura:"#ff4b00"
-},
+    {
+        name:"MAGMA",
+        price:4500,
+        main:"#ff4b00",
+        light:"#fff000",
+        dark:"#851800",
+        aura:"#ff4b00"
+    },
 
-{
-    name:"THUNDER",
-    price:6500,
-    main:"#f1e900",
-    light:"#ffffff",
-    dark:"#706900",
-    aura:"#ffff00"
-},
+    {
+        name:"THUNDER",
+        price:6500,
+        main:"#f1e900",
+        light:"#ffffff",
+        dark:"#706900",
+        aura:"#ffff00"
+    },
 
-{
-    name:"VOID",
-    price:9000,
-    main:"#171727",
-    light:"#a08aff",
-    dark:"#050509",
-    aura:"#704dff"
-},
+    {
+        name:"VOID",
+        price:9000,
+        main:"#171727",
+        light:"#a08aff",
+        dark:"#050509",
+        aura:"#704dff"
+    },
 
-{
-    name:"OMEGA",
-    price:15000,
-    main:"#ffffff",
-    light:"#00ffff",
-    dark:"#4b4bff",
-    aura:"#00ffff"
-}
+    {
+        name:"OMEGA",
+        price:15000,
+        main:"#ffffff",
+        light:"#00ffff",
+        dark:"#4b4bff",
+        aura:"#00ffff"
+    }
 
 ];
 
@@ -425,41 +484,47 @@ function loadGame(){
     try{
 
         totalCoins=
-        Number(localStorage.getItem(
-            "cubeRushCoins"
-        ))||0;
+            Number(
+                localStorage.getItem(
+                    "cubeRushCoins"
+                )
+            )||0;
 
         highscore=
-        Number(localStorage.getItem(
-            "cubeRushHighscore"
-        ))||0;
+            Number(
+                localStorage.getItem(
+                    "cubeRushHighscore"
+                )
+            )||0;
 
         const savedUnlocked=
-        localStorage.getItem(
-            "cubeRushUnlocked"
-        );
+            localStorage.getItem(
+                "cubeRushUnlocked"
+            );
 
         if(savedUnlocked){
 
             const data=
-            JSON.parse(savedUnlocked);
+                JSON.parse(savedUnlocked);
 
             if(Array.isArray(data)){
 
                 unlocked=
-                data.filter(
-                    n =>
-                    Number.isInteger(n) &&
-                    n>=0 &&
-                    n<characters.length
-                );
+                    data.filter(
+                        n =>
+                            Number.isInteger(n) &&
+                            n>=0 &&
+                            n<characters.length
+                    );
             }
         }
 
         const savedSelected=
-        Number(localStorage.getItem(
-            "cubeRushSelected"
-        ));
+            Number(
+                localStorage.getItem(
+                    "cubeRushSelected"
+                )
+            );
 
         if(
             Number.isInteger(savedSelected) &&
@@ -529,7 +594,9 @@ window.addEventListener(
 document.addEventListener(
     "visibilitychange",
     ()=>{
-        if(document.visibilityState==="hidden"){
+        if(
+            document.visibilityState==="hidden"
+        ){
             saveGame();
         }
     }
@@ -537,10 +604,11 @@ document.addEventListener(
 
 
 /* =====================================================
-   SPIEL
+   SPIELVARIABLEN
 ===================================================== */
 
 let running=false;
+let paused=false;
 
 let score=0;
 let runCoins=0;
@@ -558,7 +626,7 @@ let coinTimer=0;
 
 
 /* =====================================================
-   3 SPUREN
+   STRASSEN
 ===================================================== */
 
 function getRoad(){
@@ -568,7 +636,8 @@ function getRoad(){
         600
     );
 
-    const left=(W-width)/2;
+    const left=
+        (W-width)/2;
 
     return{
         left:left,
@@ -586,10 +655,11 @@ function laneX(number){
 
     const r=getRoad();
 
-    const laneWidth=r.width/3;
+    const laneWidth=
+        r.width/3;
 
     return r.left+
-    laneWidth*(number+1.5);
+        laneWidth*(number+1.5);
 }
 
 
@@ -600,9 +670,9 @@ function laneX(number){
 function drawWorld(time){
 
     const sky=
-    ctx.createLinearGradient(
-        0,0,0,H
-    );
+        ctx.createLinearGradient(
+            0,0,0,H
+        );
 
     sky.addColorStop(
         0,
@@ -630,14 +700,20 @@ function drawWorld(time){
 
     for(let i=0;i<22;i++){
 
-        const bw=30+(i*19)%48;
-        const bh=100+(i*57)%240;
+        const bw=
+            30+(i*19)%48;
 
-        const x=i*70-20;
-        const y=H*.39-bh;
+        const bh=
+            100+(i*57)%240;
+
+        const x=
+            i*70-20;
+
+        const y=
+            H*.39-bh;
 
         ctx.fillStyle=
-        "rgba(4,13,25,.95)";
+            "rgba(4,13,25,.95)";
 
         ctx.fillRect(
             x,y,bw,bh
@@ -650,7 +726,7 @@ function drawWorld(time){
         ){
 
             ctx.fillStyle=
-            "rgba(0,210,255,.3)";
+                "rgba(0,210,255,.3)";
 
             ctx.fillRect(
                 x+7,
@@ -698,7 +774,7 @@ function drawWorld(time){
     );
 
 
-    /* Rand */
+    /* Straßenrand */
 
     ctx.fillStyle="#00dfff";
 
@@ -722,16 +798,16 @@ function drawWorld(time){
     ctx.shadowBlur=0;
 
 
-    /* Genau 2 Linien = 3 Spuren */
+    /* 3 Spuren */
 
     const laneWidth=
-    r.width/3;
+        r.width/3;
 
     const dash=50;
     const gap=35;
 
     const offset=
-    (score*3)%(dash+gap);
+        (score*3)%(dash+gap);
 
     for(
         let y=-dash+offset;
@@ -746,7 +822,7 @@ function drawWorld(time){
         ){
 
             ctx.fillStyle=
-            "rgba(0,210,255,.5)";
+                "rgba(0,210,255,.5)";
 
             ctx.shadowColor="#00dfff";
             ctx.shadowBlur=8;
@@ -767,7 +843,7 @@ function drawWorld(time){
     /* Seitenlichter */
 
     const lightOffset=
-    (score*2)%80;
+        (score*2)%80;
 
     for(
         let y=-80+lightOffset;
@@ -776,7 +852,7 @@ function drawWorld(time){
     ){
 
         ctx.fillStyle=
-        "rgba(0,220,255,.75)";
+            "rgba(0,220,255,.75)";
 
         ctx.shadowColor="#00dfff";
         ctx.shadowBlur=14;
@@ -819,10 +895,10 @@ function drawCube(
 
 
     const aura=
-    ctx.createRadialGradient(
-        0,0,2,
-        0,0,size*1.8
-    );
+        ctx.createRadialGradient(
+            0,0,2,
+            0,0,size*1.8
+        );
 
     aura.addColorStop(
         0,
@@ -853,7 +929,7 @@ function drawCube(
     /* Schatten */
 
     ctx.fillStyle=
-    "rgba(0,0,0,.5)";
+        "rgba(0,0,0,.5)";
 
     ctx.beginPath();
 
@@ -1027,10 +1103,11 @@ function drawCube(
 
 function drawPlayer(){
 
-    const c=characters[selected];
+    const c=
+        characters[selected];
 
     playerX+=
-    (laneX(targetLane)-playerX)*.22;
+        (laneX(targetLane)-playerX)*.22;
 
     const y=H-115;
 
@@ -1057,25 +1134,27 @@ function spawnCar(){
     ];
 
     const possible=
-    lanes.filter(l=>
-        !objects.some(o=>
-            o.type==="car" &&
-            o.lane===l &&
-            o.y<170
-        )
-    );
+        lanes.filter(
+            l =>
+                !objects.some(
+                    o =>
+                        o.type==="car" &&
+                        o.lane===l &&
+                        o.y<170
+                )
+        );
 
     if(
         possible.length===0
     )
-    return;
+        return;
 
     const l=
-    possible[
-        Math.floor(
-            Math.random()*possible.length
-        )
-    ];
+        possible[
+            Math.floor(
+                Math.random()*possible.length
+            )
+        ];
 
     objects.push({
 
@@ -1086,21 +1165,21 @@ function spawnCar(){
         y:-160,
 
         size:
-        58+
-        Math.random()*9,
+            58+
+            Math.random()*9,
 
         color:
-        [
-            "#ff2148",
-            "#009fff",
-            "#ffffff",
-            "#ffb000",
-            "#9b3cff"
-        ][
-            Math.floor(
-                Math.random()*5
-            )
-        ]
+            [
+                "#ff2148",
+                "#009fff",
+                "#ffffff",
+                "#ffb000",
+                "#9b3cff"
+            ][
+                Math.floor(
+                    Math.random()*5
+                )
+            ]
     });
 }
 
@@ -1125,7 +1204,7 @@ function drawCar(o){
     /* Schatten */
 
     ctx.fillStyle=
-    "rgba(0,0,0,.5)";
+        "rgba(0,0,0,.5)";
 
     ctx.beginPath();
 
@@ -1252,56 +1331,42 @@ function spawnCoins(){
     ];
 
 
-    /*
-       Suche freie Spuren.
-       Eine Münze darf nicht dort entstehen,
-       wo gerade ein Auto ist.
-    */
+    /* Nur freie Spuren */
 
     const freeLanes=
-    lanes.filter(lane=>{
-
-        return !objects.some(o=>
-
-            o.type==="car" &&
-            o.lane===lane &&
-
-            o.y>-180 &&
-            o.y<120
-
+        lanes.filter(
+            lane =>
+                !objects.some(
+                    o =>
+                        o.type==="car" &&
+                        o.lane===lane &&
+                        o.y>-180 &&
+                        o.y<120
+                )
         );
-    });
 
 
     if(
         freeLanes.length===0
     )
-    return;
+        return;
 
-
-    /*
-       Zufällige freie Spur.
-    */
 
     const lane=
-    freeLanes[
-        Math.floor(
-            Math.random()*
-            freeLanes.length
-        )
-    ];
+        freeLanes[
+            Math.floor(
+                Math.random()*
+                freeLanes.length
+            )
+        ];
 
 
-    /*
-       Viel weniger Münzen:
-       meistens 1,
-       manchmal 2.
-    */
+    /* Weniger Münzen */
 
     const amount=
-    Math.random()<.75
-    ?1
-    :2;
+        Math.random()<.75
+        ?1
+        :2;
 
 
     for(
@@ -1311,23 +1376,20 @@ function spawnCoins(){
     ){
 
         const coinY=
-        -60-i*65;
+            -60-i*65;
 
 
-        /*
-           Sicherheitsprüfung:
-           niemals in ein Auto.
-        */
+        /* Extra Auto-Prüfung */
 
         const carThere=
-        objects.some(o=>
-
-            o.type==="car" &&
-            o.lane===lane &&
-            Math.abs(
-                o.y-coinY
-            )<75
-        );
+            objects.some(
+                o =>
+                    o.type==="car" &&
+                    o.lane===lane &&
+                    Math.abs(
+                        o.y-coinY
+                    )<75
+            );
 
 
         if(!carThere){
@@ -1337,11 +1399,6 @@ function spawnCoins(){
                 type:"coin",
 
                 lane:lane,
-
-                /*
-                   Exakt mittig
-                   auf der Spur.
-                */
 
                 y:coinY
             });
@@ -1356,11 +1413,11 @@ function drawCoin(o,time){
     const y=o.y;
 
     const spin=
-    Math.abs(
-        Math.cos(
-            time*.007
-        )
-    );
+        Math.abs(
+            Math.cos(
+                time*.007
+            )
+        );
 
     ctx.save();
 
@@ -1422,26 +1479,31 @@ function drawCoin(o,time){
 function update(dt){
 
     if(!running)
-    return;
+        return;
+
+    /* Während Pause absolut nichts bewegen */
+
+    if(paused)
+        return;
 
     const seconds=dt/1000;
 
 
-    /* Bewegung */
+    /* Spieler */
 
     lane+=
-    (targetLane-lane)*
-    Math.min(
-        1,
-        seconds*14
-    );
+        (targetLane-lane)*
+        Math.min(
+            1,
+            seconds*14
+        );
 
     playerX+=
-    (laneX(targetLane)-playerX)*
-    Math.min(
-        1,
-        seconds*14
-    );
+        (laneX(targetLane)-playerX)*
+        Math.min(
+            1,
+            seconds*14
+        );
 
 
     /* Geschwindigkeit */
@@ -1464,19 +1526,20 @@ function update(dt){
 
         const o=objects[i];
 
-        o.y+=speed*seconds;
+        o.y+=
+            speed*seconds;
 
 
-        /*
-           Hinter dem Spieler
-           sofort verschwinden.
-        */
+        /* Hinter Spieler sofort löschen */
 
         if(
             o.y>H+120
         ){
 
-            objects.splice(i,1);
+            objects.splice(
+                i,
+                1
+            );
 
             continue;
         }
@@ -1491,19 +1554,20 @@ function update(dt){
             const playerY=H-115;
 
             const sameLane=
-            Math.abs(
-                playerX-
-                laneX(o.lane)
-            )<30;
+                Math.abs(
+                    playerX-
+                    laneX(o.lane)
+                )<30;
 
             const near=
-            Math.abs(
-                o.y-playerY
-            )<57;
+                Math.abs(
+                    o.y-playerY
+                )<57;
 
 
             if(
-                sameLane&&near
+                sameLane &&
+                near
             ){
 
                 gameOver();
@@ -1522,19 +1586,20 @@ function update(dt){
             const playerY=H-115;
 
             const sameLane=
-            Math.abs(
-                playerX-
-                laneX(o.lane)
-            )<31;
+                Math.abs(
+                    playerX-
+                    laneX(o.lane)
+                )<31;
 
             const near=
-            Math.abs(
-                o.y-playerY
-            )<45;
+                Math.abs(
+                    o.y-playerY
+                )<45;
 
 
             if(
-                sameLane&&near
+                sameLane &&
+                near
             ){
 
                 runCoins++;
@@ -1553,10 +1618,10 @@ function update(dt){
     carTimer+=dt;
 
     const carDelay=
-    Math.max(
-        600,
-        1450-score*1.5
-    );
+        Math.max(
+            600,
+            1450-score*1.5
+        );
 
 
     if(
@@ -1573,12 +1638,6 @@ function update(dt){
 
     coinTimer+=dt;
 
-
-    /*
-       Größerer Abstand =
-       weniger Münzen.
-    */
-
     if(
         coinTimer>1700
     ){
@@ -1591,7 +1650,8 @@ function update(dt){
 
     /* Punkte */
 
-    score+=seconds*10;
+    score+=
+        seconds*10;
 
     updateHUD();
 }
@@ -1604,14 +1664,11 @@ function update(dt){
 function gameOver(){
 
     running=false;
+    paused=false;
 
     const finalScore=
-    Math.floor(score);
+        Math.floor(score);
 
-
-    /*
-       Münzen dauerhaft hinzufügen.
-    */
 
     totalCoins+=runCoins;
 
@@ -1620,7 +1677,8 @@ function gameOver(){
         finalScore>highscore
     ){
 
-        highscore=finalScore;
+        highscore=
+            finalScore;
     }
 
 
@@ -1629,29 +1687,145 @@ function gameOver(){
 
     document.getElementById(
         "finalScore"
-    ).textContent=finalScore;
+    ).textContent=
+        finalScore;
 
     document.getElementById(
         "finalCoins"
-    ).textContent=runCoins;
+    ).textContent=
+        runCoins;
 
     document.getElementById(
         "finalHigh"
-    ).textContent=highscore;
+    ).textContent=
+        highscore;
+
 
     document.getElementById(
         "hud"
     ).style.display="none";
 
     document.getElementById(
+        "pauseButton"
+    ).style.display="none";
+
+    document.getElementById(
         "shopButton"
     ).style.display="none";
+
 
     document.getElementById(
         "gameOver"
     ).classList.remove(
         "hidden"
     );
+}
+
+
+/* =====================================================
+   PAUSE
+===================================================== */
+
+function pauseGame(){
+
+    if(!running)
+        return;
+
+    paused=true;
+
+    document.getElementById(
+        "pauseMenu"
+    ).classList.remove(
+        "hidden"
+    );
+
+    document.getElementById(
+        "pauseButton"
+    ).style.display="none";
+}
+
+
+function resumeGame(){
+
+    if(!running)
+        return;
+
+    paused=false;
+
+    document.getElementById(
+        "pauseMenu"
+    ).classList.add(
+        "hidden"
+    );
+
+    document.getElementById(
+        "pauseButton"
+    ).style.display="block";
+
+
+    /*
+       Wichtig:
+       Dadurch gibt es beim Weiterlaufen
+       keinen riesigen Zeit-Sprung.
+    */
+
+    last=
+        performance.now();
+}
+
+
+function quitGame(){
+
+    paused=false;
+    running=false;
+
+
+    /* Bereits gesammelte Münzen behalten */
+
+    totalCoins+=runCoins;
+
+
+    if(
+        Math.floor(score)>highscore
+    ){
+
+        highscore=
+            Math.floor(score);
+    }
+
+
+    saveGame();
+
+
+    document.getElementById(
+        "pauseMenu"
+    ).classList.add(
+        "hidden"
+    );
+
+    document.getElementById(
+        "hud"
+    ).style.display="none";
+
+    document.getElementById(
+        "pauseButton"
+    ).style.display="none";
+
+    document.getElementById(
+        "shopButton"
+    ).style.display="none";
+
+
+    objects=[];
+
+
+    document.getElementById(
+        "menu"
+    ).classList.remove(
+        "hidden"
+    );
+
+    updateHUD();
 }
 
 
@@ -1664,27 +1838,27 @@ function updateHUD(){
     document.getElementById(
         "coins"
     ).textContent=
-    totalCoins+runCoins;
+        totalCoins+runCoins;
 
     document.getElementById(
         "score"
     ).textContent=
-    Math.floor(score);
+        Math.floor(score);
 
     document.getElementById(
         "charName"
     ).textContent=
-    characters[selected].name;
+        characters[selected].name;
 
     document.getElementById(
         "menuCoins"
     ).textContent=
-    totalCoins;
+        totalCoins;
 
     document.getElementById(
         "shopCoinAmount"
     ).textContent=
-    totalCoins;
+        totalCoins;
 }
 
 
@@ -1702,9 +1876,9 @@ function draw(time){
 
 
     const sorted=
-    [...objects].sort(
-        (a,b)=>a.y-b.y
-    );
+        [...objects].sort(
+            (a,b)=>a.y-b.y
+        );
 
 
     for(
@@ -1740,10 +1914,10 @@ let last=performance.now();
 function loop(time){
 
     const dt=
-    Math.min(
-        time-last,
-        40
-    );
+        Math.min(
+            time-last,
+            40
+        );
 
     last=time;
 
@@ -1751,7 +1925,9 @@ function loop(time){
 
     draw(time);
 
-    requestAnimationFrame(loop);
+    requestAnimationFrame(
+        loop
+    );
 }
 
 requestAnimationFrame(loop);
@@ -1768,8 +1944,14 @@ canvas.addEventListener(
     "touchstart",
     e=>{
 
+        if(
+            !running ||
+            paused
+        )
+            return;
+
         const t=
-        e.changedTouches[0];
+            e.changedTouches[0];
 
         startX=t.clientX;
         startY=t.clientY;
@@ -1783,30 +1965,32 @@ canvas.addEventListener(
     "touchend",
     e=>{
 
-        if(!running)
-        return;
+        if(
+            !running ||
+            paused
+        )
+            return;
 
         const t=
-        e.changedTouches[0];
+            e.changedTouches[0];
 
         const dx=
-        t.clientX-startX;
+            t.clientX-startX;
 
         const dy=
-        t.clientY-startY;
+            t.clientY-startY;
 
 
         if(
             Math.abs(dx)<40
         )
-        return;
-
+            return;
 
         if(
             Math.abs(dx)<
             Math.abs(dy)
         )
-        return;
+            return;
 
 
         if(dx>0){
@@ -1819,19 +2003,14 @@ canvas.addEventListener(
         }
 
 
-        /*
-           Niemals außerhalb
-           der 3 Spuren.
-        */
-
         targetLane=
-        Math.max(
-            -1,
-            Math.min(
-                1,
-                targetLane
-            )
-        );
+            Math.max(
+                -1,
+                Math.min(
+                    1,
+                    targetLane
+                )
+            );
 
     },
     {passive:true}
@@ -1846,33 +2025,39 @@ addEventListener(
     "keydown",
     e=>{
 
-        if(!running)
-        return;
+        if(
+            !running ||
+            paused
+        )
+            return;
+
 
         if(
-            e.key==="ArrowLeft"||
+            e.key==="ArrowLeft" ||
             e.key.toLowerCase()==="a"
         ){
 
             targetLane--;
         }
 
+
         if(
-            e.key==="ArrowRight"||
+            e.key==="ArrowRight" ||
             e.key.toLowerCase()==="d"
         ){
 
             targetLane++;
         }
 
+
         targetLane=
-        Math.max(
-            -1,
-            Math.min(
-                1,
-                targetLane
-            )
-        );
+            Math.max(
+                -1,
+                Math.min(
+                    1,
+                    targetLane
+                )
+            );
     }
 );
 
@@ -1932,6 +2117,7 @@ function drawPreview(p,c){
 
     p.fill();
 
+
     p.fillStyle=c.light;
 
     p.globalAlpha=.8;
@@ -1960,13 +2146,16 @@ function drawPreview(p,c){
 
     p.globalAlpha=1;
 
+
     p.fillStyle="#fff";
 
     p.beginPath();
 
     p.arc(
-        -11,-11,7,
-        0,Math.PI*2
+        -11,-11,
+        7,
+        0,
+        Math.PI*2
     );
 
     p.fill();
@@ -1978,9 +2167,9 @@ function drawPreview(p,c){
 function renderShop(){
 
     const grid=
-    document.getElementById(
-        "characterGrid"
-    );
+        document.getElementById(
+            "characterGrid"
+        );
 
     grid.innerHTML="";
 
@@ -1989,9 +2178,9 @@ function renderShop(){
         (c,i)=>{
 
             const card=
-            document.createElement(
-                "div"
-            );
+                document.createElement(
+                    "div"
+                );
 
             card.className="card";
 
@@ -2007,19 +2196,21 @@ function renderShop(){
 
 
             const preview=
-            document.createElement(
-                "canvas"
-            );
+                document.createElement(
+                    "canvas"
+                );
 
             preview.className="preview";
 
             preview.width=210;
             preview.height=210;
 
+
             drawPreview(
                 preview.getContext("2d"),
                 c
             );
+
 
             card.appendChild(
                 preview
@@ -2027,38 +2218,38 @@ function renderShop(){
 
 
             const name=
-            document.createElement(
-                "div"
-            );
+                document.createElement(
+                    "div"
+                );
 
             name.className=
-            "charName";
+                "charName";
 
             name.textContent=
-            c.name;
+                c.name;
 
             card.appendChild(name);
 
 
             const price=
-            document.createElement(
-                "div"
-            );
+                document.createElement(
+                    "div"
+                );
 
             price.className="price";
 
             price.textContent=
-            c.price===0
-            ?"STARTER"
-            :"🪙 "+c.price;
+                c.price===0
+                ?"STARTER"
+                :"🪙 "+c.price;
 
             card.appendChild(price);
 
 
             const button=
-            document.createElement(
-                "button"
-            );
+                document.createElement(
+                    "button"
+                );
 
 
             if(
@@ -2066,9 +2257,9 @@ function renderShop(){
             ){
 
                 button.textContent=
-                selected===i
-                ?"✓ AUSGEWÄHLT"
-                :"AUSWÄHLEN";
+                    selected===i
+                    ?"✓ AUSGEWÄHLT"
+                    :"AUSWÄHLEN";
 
 
                 button.onclick=()=>{
@@ -2086,7 +2277,7 @@ function renderShop(){
             }else{
 
                 button.textContent=
-                "KAUFEN";
+                    "KAUFEN";
 
 
                 button.onclick=()=>{
@@ -2108,7 +2299,8 @@ function renderShop(){
                     }
 
 
-                    totalCoins-=c.price;
+                    totalCoins-=
+                        c.price;
 
 
                     if(
@@ -2121,12 +2313,6 @@ function renderShop(){
 
                     selected=i;
 
-
-                    /*
-                       Sofort speichern,
-                       damit der gekaufte Charakter
-                       nicht verloren geht.
-                    */
 
                     saveGame();
 
@@ -2168,8 +2354,21 @@ function startGame(){
     );
 
     document.getElementById(
+        "pauseMenu"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
         "hud"
     ).style.display="flex";
+
+
+    document.getElementById(
+        "pauseButton"
+    ).style.display="block";
+
 
     document.getElementById(
         "shopButton"
@@ -2177,24 +2376,27 @@ function startGame(){
 
 
     running=true;
+    paused=false;
 
     score=0;
-
     runCoins=0;
 
     lane=0;
-
     targetLane=0;
 
-    playerX=laneX(0);
+    playerX=
+        laneX(0);
 
     objects=[];
 
     speed=230;
 
     carTimer=0;
-
     coinTimer=500;
+
+
+    last=
+        performance.now();
 
     updateHUD();
 }
@@ -2206,12 +2408,32 @@ function startGame(){
 
 document.getElementById(
     "start"
-).onclick=startGame;
+).onclick=
+    startGame;
 
 
 document.getElementById(
     "again"
-).onclick=startGame;
+).onclick=
+    startGame;
+
+
+document.getElementById(
+    "pauseButton"
+).onclick=
+    pauseGame;
+
+
+document.getElementById(
+    "resumeButton"
+).onclick=
+    resumeGame;
+
+
+document.getElementById(
+    "quitButton"
+).onclick=
+    quitGame;
 
 
 document.getElementById(
@@ -2234,7 +2456,15 @@ document.getElementById(
 };
 
 
+/* =====================================================
+   SHOP ÖFFNEN
+===================================================== */
+
 function openShop(){
+
+    if(running){
+        return;
+    }
 
     saveGame();
 
@@ -2250,12 +2480,14 @@ function openShop(){
 
 document.getElementById(
     "shopButton"
-).onclick=openShop;
+).onclick=
+    openShop;
 
 
 document.getElementById(
     "menuShop"
-).onclick=openShop;
+).onclick=
+    openShop;
 
 
 document.getElementById(
