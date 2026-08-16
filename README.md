@@ -3,2876 +3,1110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>Cube Rush</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Endless Runner 3D</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-  margin:0;
-  overflow:hidden;
-  background:#050814;
-  color:white;
-  font-family:Arial,sans-serif;
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #111;
+    font-family: Arial, sans-serif;
+    touch-action: none;
 }
 
-canvas{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
+#game {
+    position: fixed;
+    inset: 0;
 }
 
-.screen{
-  position:fixed;
-  inset:0;
-  z-index:10;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:linear-gradient(#07182d,#02040a);
-  overflow:auto;
+#hud {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 0 2px 4px black;
+    pointer-events: none;
 }
 
-.hidden{
-  display:none!important;
+.hudBox {
+    background: rgba(0,0,0,.45);
+    padding: 9px 13px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
 }
 
-.logo{
-  font-size:44px;
-  font-weight:900;
-  color:#00eaff;
-  text-shadow:0 0 25px #00eaff;
-  margin-bottom:5px;
-  text-align:center;
+#menu,
+#gameOver {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background:
+        linear-gradient(
+            rgba(0,0,0,.55),
+            rgba(0,0,0,.75)
+        );
 }
 
-h1{
-  color:#00eaff;
-  text-shadow:0 0 20px #00eaff;
-  text-align:center;
+#gameOver {
+    display: none;
 }
 
-input{
-  width:300px;
-  max-width:90%;
-  padding:14px;
-  margin:6px;
-  border-radius:12px;
-  border:1px solid #00eaff;
-  background:#081522;
-  color:white;
-  font-size:16px;
-  outline:none;
+h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
-input:focus{
-  box-shadow:0 0 15px #00eaff55;
+p {
+    margin: 7px;
+    text-align: center;
 }
 
-button{
-  padding:13px 22px;
-  margin:6px;
-  border:0;
-  border-radius:12px;
-  background:#00eaff;
-  color:#001018;
-  font-weight:bold;
-  font-size:15px;
-  cursor:pointer;
+button {
+    border: none;
+    margin-top: 20px;
+    padding: 15px 30px;
+    border-radius: 14px;
+    background: #ffcc00;
+    color: #111;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-button:active{
-  transform:scale(.95);
+button:active {
+    transform: scale(.95);
 }
 
-.msg{
-  min-height:25px;
-  max-width:340px;
-  color:#a9c5d0;
-  text-align:center;
-  margin:8px;
+#characters {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
 }
 
-.coins{
-  color:#ffd900;
-  font-weight:bold;
-  font-size:20px;
-  margin:10px;
+.character {
+    width: 75px;
+    height: 75px;
+    border-radius: 15px;
+    border: 2px solid rgba(255,255,255,.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    background: rgba(255,255,255,.15);
 }
 
-.card{
-  display:inline-flex;
-  flex-direction:column;
-  justify-content:space-between;
-  vertical-align:top;
-  width:160px;
-  min-height:180px;
-  margin:5px;
-  padding:12px;
-  background:#091522;
-  border:1px solid #00eaff55;
-  border-radius:15px;
-  text-align:center;
-}
-
-.card h3{
-  margin:5px 0;
-}
-
-.preview{
-  width:80px;
-  height:80px;
-  margin:5px auto 10px;
-  border-radius:18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:32px;
-  font-weight:bold;
-  box-shadow:0 0 20px #00eaff55;
-}
-
-#characterList,
-#cityList{
-  max-width:900px;
-  text-align:center;
-}
-
-.rank{
-  width:350px;
-  max-width:90vw;
-  display:flex;
-  justify-content:space-between;
-  padding:12px;
-  margin:4px;
-  background:#091522;
-  border-radius:10px;
-}
-
-#hud{
-  position:fixed;
-  z-index:5;
-  top:10px;
-  left:10px;
-  right:10px;
-  display:none;
-  justify-content:space-between;
-  pointer-events:none;
-  gap:5px;
-}
-
-.hud{
-  background:#06121dcc;
-  border:1px solid #00eaff66;
-  padding:8px 12px;
-  border-radius:10px;
-  font-weight:bold;
-}
-
-#pause{
-  position:fixed;
-  z-index:6;
-  top:60px;
-  right:10px;
-  display:none;
-}
-
-.small{
-  font-size:13px;
-  color:#9db0ba;
+.locked {
+    opacity: .45;
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="game"></canvas>
+<div id="game"></div>
 
 <div id="hud">
-  <div class="hud">COINS: <span id="coins">0</span></div>
-  <div class="hud">SCORE: <span id="score">0</span></div>
-  <div class="hud"><span id="cityName">Neon City</span></div>
+    <div class="hudBox">
+        🪙 <span id="coins">0</span>
+    </div>
+
+    <div class="hudBox">
+        🏆 <span id="score">0</span>
+    </div>
+
+    <div class="hudBox">
+        👤 <span id="characterName">Runner</span>
+    </div>
 </div>
 
-<button id="pause">PAUSE</button>
+<div id="menu">
 
+    <h1>ENDLESS RUNNER 3D</h1>
 
-<!-- ================= LOGIN ================= -->
+    <p>Wische ⬅️ ➡️ zum Ausweichen</p>
+    <p>Wische ⬆️ zum Springen</p>
+    <p>PC: ← → und Leertaste</p>
 
-<div id="login" class="screen">
+    <div id="characters">
 
-  <div class="logo">CUBE RUSH</div>
+        <div class="character" id="char1">
+            🧑
+        </div>
 
-  <p>ONLINE EDITION</p>
+        <div class="character locked" id="char2">
+            🔒
+        </div>
 
-  <input
-    id="username"
-    placeholder="Benutzername"
-    maxlength="18"
-    autocomplete="username">
+        <div class="character locked" id="char3">
+            🔒
+        </div>
 
-  <input
-    id="email"
-    type="email"
-    placeholder="E-Mail"
-    autocomplete="email">
+    </div>
 
-  <input
-    id="password"
-    type="password"
-    placeholder="Passwort"
-    minlength="6"
-    autocomplete="current-password">
-
-  <button id="registerBtn">
-    REGISTRIEREN
-  </button>
-
-  <button id="loginBtn">
-    ANMELDEN
-  </button>
-
-  <div id="loginMsg" class="msg"></div>
+    <button id="startButton">
+        SPIEL STARTEN
+    </button>
 
 </div>
 
+<div id="gameOver">
 
-<!-- ================= MENU ================= -->
+    <h1>GAME OVER</h1>
 
-<div id="menu" class="screen hidden">
+    <p>
+        Punkte:
+        <strong id="finalScore">0</strong>
+    </p>
 
-  <div class="logo">CUBE RUSH</div>
+    <p>
+        Münzen:
+        <strong id="finalCoins">0</strong>
+    </p>
 
-  <p>
-    Spieler:
-    <b id="player"></b>
-  </p>
+    <p>
+        Highscore:
+        <strong id="highScore">0</strong>
+    </p>
 
-  <div class="coins">
-    COINS:
-    <span id="menuCoins">0</span>
-  </div>
-
-  <button id="startBtn">
-    STARTEN
-  </button>
-
-  <button id="charactersBtn">
-    CHARAKTERE
-  </button>
-
-  <button id="citiesBtn">
-    STÄDTE
-  </button>
-
-  <button id="rankingBtn">
-    RANGLISTE
-  </button>
-
-  <button id="codeBtn">
-    CODE
-  </button>
-
-  <button id="logoutBtn">
-    ABMELDEN
-  </button>
+    <button id="restartButton">
+        NOCHMAL SPIELEN
+    </button>
 
 </div>
 
-
-<!-- ================= CHARACTERS ================= -->
-
-<div id="characters" class="screen hidden">
-
-  <h1>CHARAKTERE</h1>
-
-  <div class="coins">
-    COINS:
-    <span id="charCoins">0</span>
-  </div>
-
-  <div id="characterList"></div>
-
-  <button id="charactersBack">
-    ZURÜCK
-  </button>
-
-</div>
-
-
-<!-- ================= CITIES ================= -->
-
-<div id="cities" class="screen hidden">
-
-  <h1>STÄDTE</h1>
-
-  <div id="cityList"></div>
-
-  <button id="citiesBack">
-    ZURÜCK
-  </button>
-
-</div>
-
-
-<!-- ================= RANKING ================= -->
-
-<div id="ranking" class="screen hidden">
-
-  <h1>RANGLISTE</h1>
-
-  <div class="small">
-    Rangliste nach Coins
-  </div>
-
-  <div id="rankingList">
-    Lade Rangliste...
-  </div>
-
-  <button id="rankingBack">
-    ZURÜCK
-  </button>
-
-</div>
-
-
-<!-- ================= CODE ================= -->
-
-<div id="codes" class="screen hidden">
-
-  <h1>CODE</h1>
-
-  <input
-    id="secretCode"
-    inputmode="numeric"
-    maxlength="3"
-    placeholder="Code">
-
-  <button id="redeemBtn">
-    EINLÖSEN
-  </button>
-
-  <div id="codeMsg" class="msg"></div>
-
-  <button id="codeBack">
-    ZURÜCK
-  </button>
-
-</div>
-
-
-<!-- ================= PAUSE ================= -->
-
-<div id="pauseScreen" class="screen hidden">
-
-  <h1>PAUSE</h1>
-
-  <button id="resumeBtn">
-    WEITERSPIELEN
-  </button>
-
-  <button id="quitBtn">
-    MENÜ
-  </button>
-
-</div>
-
-
-<!-- ================= GAME OVER ================= -->
-
-<div id="gameOver" class="screen hidden">
-
-  <h1>CRASH!</h1>
-
-  <div id="gameOverText"></div>
-
-  <button id="restartBtn">
-    NOCHMAL
-  </button>
-
-  <button id="gameOverMenuBtn">
-    MENÜ
-  </button>
-
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
 
 <script>
 
-/* =====================================================
-   SUPABASE
-===================================================== */
+let scene;
+let camera;
+let renderer;
 
-const SUPABASE_URL =
-"https://lfsifdmaftztykpckdsh.supabase.co";
+let player;
 
-const SUPABASE_KEY =
-"sb_publishable_LaQ9ibF7A_s6pZUucnnuaw_yHVf0lvc";
-
-const supabaseClient =
-window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-
-
-/* =====================================================
-   SPIELER
-===================================================== */
-
-let playerData = {
-  id:null,
-  username:"",
-  email:"",
-  coins:0,
-  highscore:0,
-  characters:[0],
-  cities:[0],
-  character:0,
-  city:0
-};
-
-let currentUser = null;
-
-
-/* =====================================================
-   STÄDTE
-===================================================== */
-
-const cityData = [
-
-  {
-    name:"Neon City",
-    price:0,
-    min:3,
-    max:6,
-    sky:"#061b30"
-  },
-
-  {
-    name:"Tokyo Night",
-    price:5000,
-    min:7,
-    max:10,
-    sky:"#19062c"
-  },
-
-  {
-    name:"Cyber Dubai",
-    price:12000,
-    min:10,
-    max:14,
-    sky:"#301507"
-  },
-
-  {
-    name:"Future New York",
-    price:25000,
-    min:14,
-    max:18,
-    sky:"#071c20"
-  },
-
-  {
-    name:"Galaxy City",
-    price:50000,
-    min:18,
-    max:25,
-    sky:"#12052b"
-  }
-
-];
-
-
-/* =====================================================
-   CHARAKTERE
-===================================================== */
-
-const charData = [
-
-  ["Blue",0,"#00eaff"],
-  ["Volt",300,"#00ff88"],
-  ["Fire",700,"#ff3b1f"],
-  ["Ice",1200,"#66ccff"],
-  ["Purple",2000,"#9b4dff"],
-  ["Poison",3000,"#77ff00"],
-  ["Magma",4500,"#ff5a00"],
-  ["Thunder",6500,"#ffff00"],
-  ["Void",9000,"#5c5c7a"],
-  ["Omega",12000,"#ffffff"],
-  ["Cyber",16000,"#00ffcc"],
-  ["Gold",22000,"#ffd700"],
-  ["Ruby",28000,"#ff1744"],
-  ["Diamond",35000,"#aaf7ff"],
-  ["Galaxy",45000,"#a855ff"],
-  ["Phantom",55000,"#707070"],
-  ["Solar",70000,"#ff9900"],
-  ["Nebula",85000,"#ff55dd"],
-  ["Aurora",100000,"#55ffaa"],
-  ["Cube God",150000,"#ffffff"]
-
-];
-
-
-/* =====================================================
-   HILFSFUNKTIONEN
-===================================================== */
-
-function showMessage(text){
-
-  document.getElementById(
-    "loginMsg"
-  ).textContent = text;
-
-}
-
-
-function hideAll(){
-
-  document
-    .querySelectorAll(".screen")
-    .forEach(x =>
-      x.classList.add("hidden")
-    );
-
-}
-
-
-function showMenu(){
-
-  hideAll();
-
-  document
-    .getElementById("menu")
-    .classList.remove("hidden");
-
-  document
-    .getElementById("player")
-    .textContent =
-    playerData.username;
-
-  document
-    .getElementById("menuCoins")
-    .textContent =
-    playerData.coins.toLocaleString();
-
-}
-
-
-/* =====================================================
-   PROFILE AUS SUPABASE LADEN
-===================================================== */
-
-async function loadProfile(){
-
-  if(!currentUser)
-    return;
-
-  const { data, error } =
-    await supabaseClient
-      .from("profiles")
-      .select("*")
-      .eq("id", currentUser.id)
-      .maybeSingle();
-
-  if(error){
-
-    console.error(error);
-
-    showMessage(
-      "Profil konnte nicht geladen werden: "+
-      error.message
-    );
-
-    return;
-
-  }
-
-  if(data){
-
-    playerData.id =
-      data.id;
-
-    playerData.username =
-      data.username || "";
-
-    playerData.email =
-      currentUser.email || "";
-
-    playerData.coins =
-      Number(data.coins || 0);
-
-  }else{
-
-    playerData.id =
-      currentUser.id;
-
-    playerData.username =
-      currentUser.user_metadata?.username ||
-      "Spieler";
-
-    playerData.email =
-      currentUser.email || "";
-
-    playerData.coins = 0;
-
-    await saveProfile();
-
-  }
-
-}
-
-
-/* =====================================================
-   PROFILE SPEICHERN
-===================================================== */
-
-async function saveProfile(){
-
-  if(!currentUser)
-    return;
-
-  const { error } =
-    await supabaseClient
-      .from("profiles")
-      .upsert({
-
-        id:currentUser.id,
-
-        username:
-          playerData.username,
-
-        coins:
-          playerData.coins
-
-      });
-
-  if(error){
-
-    console.error(
-      "Profil speichern:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   REGISTRIEREN
-===================================================== */
-
-async function register(){
-
-  const name =
-    document
-      .getElementById("username")
-      .value
-      .trim();
-
-  const email =
-    document
-      .getElementById("email")
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById("password")
-      .value;
-
-
-  if(name.length < 3){
-
-    showMessage(
-      "Benutzername muss mindestens 3 Zeichen haben."
-    );
-
-    return;
-
-  }
-
-
-  if(!email){
-
-    showMessage(
-      "Bitte E-Mail eingeben."
-    );
-
-    return;
-
-  }
-
-
-  if(password.length < 6){
-
-    showMessage(
-      "Passwort muss mindestens 6 Zeichen haben."
-    );
-
-    return;
-
-  }
-
-
-  showMessage(
-    "Registrierung läuft..."
-  );
-
-
-  const { data, error } =
-    await supabaseClient.auth.signUp({
-
-      email:email,
-
-      password:password,
-
-      options:{
-        data:{
-          username:name
-        }
-      }
-
-    });
-
-
-  if(error){
-
-    showMessage(
-      "Fehler: "+
-      error.message
-    );
-
-    return;
-
-  }
-
-
-  if(!data.user){
-
-    showMessage(
-      "Registrierung fehlgeschlagen."
-    );
-
-    return;
-
-  }
-
-
-  currentUser =
-    data.user;
-
-
-  playerData.id =
-    data.user.id;
-
-  playerData.username =
-    name;
-
-  playerData.email =
-    email;
-
-
-  /*
-    Falls E-Mail-Bestätigung aktiviert ist,
-    gibt Supabase möglicherweise noch keine Session zurück.
-  */
-
-  if(!data.session){
-
-    showMessage(
-      "Registriert! Prüfe deine E-Mail und bestätige dein Konto."
-    );
-
-    return;
-
-  }
-
-
-  await saveProfile();
-
-  showMenu();
-
-}
-
-
-/* =====================================================
-   ANMELDEN
-===================================================== */
-
-async function loginUser(){
-
-  const name =
-    document
-      .getElementById("username")
-      .value
-      .trim();
-
-  const email =
-    document
-      .getElementById("email")
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById("password")
-      .value;
-
-
-  if(!name){
-
-    showMessage(
-      "Bitte Benutzernamen eingeben."
-    );
-
-    return;
-
-  }
-
-
-  if(!email){
-
-    showMessage(
-      "Bitte E-Mail eingeben."
-    );
-
-    return;
-
-  }
-
-
-  if(!password){
-
-    showMessage(
-      "Bitte Passwort eingeben."
-    );
-
-    return;
-
-  }
-
-
-  showMessage(
-    "Anmeldung läuft..."
-  );
-
-
-  const { data, error } =
-    await supabaseClient.auth.signInWithPassword({
-
-      email:email,
-
-      password:password
-
-    });
-
-
-  if(error){
-
-    showMessage(
-      "Anmeldung fehlgeschlagen: "+
-      error.message
-    );
-
-    return;
-
-  }
-
-
-  currentUser =
-    data.user;
-
-
-  await loadProfile();
-
-
-  if(
-    !playerData.username
-  ){
-
-    playerData.username =
-      name;
-
-    await saveProfile();
-
-  }
-
-
-  showMenu();
-
-}
-
-
-/* =====================================================
-   ABMELDEN
-===================================================== */
-
-async function logout(){
-
-  await supabaseClient
-    .auth
-    .signOut();
-
-  currentUser = null;
-
-  location.reload();
-
-}
-
-
-/* =====================================================
-   CHARAKTERE
-===================================================== */
-
-function charactersMenu(){
-
-  hideAll();
-
-  const list =
-    document.getElementById(
-      "characterList"
-    );
-
-  list.innerHTML = "";
-
-  document
-    .getElementById("charCoins")
-    .textContent =
-    playerData.coins.toLocaleString();
-
-
-  charData.forEach(
-    (char,index)=>{
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-      card.className =
-        "card";
-
-
-      const unlocked =
-        playerData.characters
-          .includes(index);
-
-
-      card.innerHTML = `
-
-        <div
-          class="preview"
-          style="
-            background:${char[2]};
-            color:#06121d;
-            box-shadow:0 0 25px ${char[2]};
-          "
-        >
-          C
-        </div>
-
-        <h3>${char[0]}</h3>
-
-        <p>
-          ${
-            unlocked
-              ? "FREIGESCHALTET"
-              : char[1].toLocaleString()+" Coins"
-          }
-        </p>
-
-      `;
-
-
-      const button =
-        document.createElement(
-          "button"
-        );
-
-
-      if(unlocked){
-
-        button.textContent =
-          playerData.character === index
-            ? "AKTIV"
-            : "AUSWÄHLEN";
-
-
-        button.onclick = ()=>{
-
-          playerData.character =
-            index;
-
-          charactersMenu();
-
-        };
-
-      }else{
-
-        button.textContent =
-          "KAUFEN";
-
-
-        button.onclick = async ()=>{
-
-          if(
-            playerData.coins <
-            char[1]
-          ){
-
-            alert(
-              "Du hast nicht genug Coins."
-            );
-
-            return;
-
-          }
-
-
-          playerData.coins -=
-            char[1];
-
-          playerData.characters
-            .push(index);
-
-          playerData.character =
-            index;
-
-
-          await saveProfile();
-
-          charactersMenu();
-
-        };
-
-      }
-
-
-      card.appendChild(
-        button
-      );
-
-      list.appendChild(
-        card
-      );
-
-    }
-  );
-
-
-  document
-    .getElementById("characters")
-    .classList.remove("hidden");
-
-}
-
-
-/* =====================================================
-   STÄDTE
-===================================================== */
-
-function citiesMenu(){
-
-  hideAll();
-
-  const list =
-    document.getElementById(
-      "cityList"
-    );
-
-  list.innerHTML = "";
-
-
-  cityData.forEach(
-    (city,index)=>{
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-      card.className =
-        "card";
-
-
-      const unlocked =
-        playerData.cities
-          .includes(index);
-
-
-      card.innerHTML = `
-
-        <div
-          class="preview"
-          style="
-            background:${city.sky};
-            border:2px solid #00eaff;
-          "
-        >
-          ${index+1}
-        </div>
-
-        <h3>${city.name}</h3>
-
-        <p>
-          ${city.min}-${city.max} Coins
-        </p>
-
-        <p>
-          ${
-            city.price===0
-              ? "KOSTENLOS"
-              : city.price.toLocaleString()+" Coins"
-          }
-        </p>
-
-      `;
-
-
-      const button =
-        document.createElement(
-          "button"
-        );
-
-
-      if(unlocked){
-
-        button.textContent =
-          playerData.city === index
-            ? "AKTIV"
-            : "AUSWÄHLEN";
-
-
-        button.onclick = ()=>{
-
-          playerData.city =
-            index;
-
-          citiesMenu();
-
-        };
-
-      }else{
-
-        button.textContent =
-          "FREISCHALTEN";
-
-
-        button.onclick =
-          async ()=>{
-
-            if(
-              playerData.coins <
-              city.price
-            ){
-
-              alert(
-                "Du hast nicht genug Coins."
-              );
-
-              return;
-
-            }
-
-
-            playerData.coins -=
-              city.price;
-
-            playerData.cities
-              .push(index);
-
-            playerData.city =
-              index;
-
-
-            await saveProfile();
-
-            citiesMenu();
-
-          };
-
-      }
-
-
-      card.appendChild(
-        button
-      );
-
-      list.appendChild(
-        card
-      );
-
-    }
-  );
-
-
-  document
-    .getElementById("cities")
-    .classList.remove("hidden");
-
-}
-
-
-/* =====================================================
-   CODE
-===================================================== */
-
-function codeMenu(){
-
-  hideAll();
-
-  document
-    .getElementById("secretCode")
-    .value = "";
-
-  document
-    .getElementById("codeMsg")
-    .textContent = "";
-
-  document
-    .getElementById("codes")
-    .classList.remove(
-      "hidden"
-    );
-
-}
-
-
-async function redeemCode(){
-
-  const code =
-    document
-      .getElementById(
-        "secretCode"
-      )
-      .value;
-
-  const msg =
-    document.getElementById(
-      "codeMsg"
-    );
-
-
-  if(code === "110"){
-
-    playerData.coins +=
-      100000;
-
-    playerData.characters =
-      charData.map(
-        (_,i)=>i
-      );
-
-    playerData.cities =
-      cityData.map(
-        (_,i)=>i
-      );
-
-    msg.textContent =
-      "Code 110 aktiviert!";
-
-  }
-
-  else if(code === "112"){
-
-    playerData.coins +=
-      50000;
-
-    playerData.characters =
-      [0,1,2,3,4];
-
-    msg.textContent =
-      "Code 112 aktiviert!";
-
-  }
-
-  else{
-
-    msg.textContent =
-      "Falscher Code.";
-
-    return;
-
-  }
-
-
-  await saveProfile();
-
-}
-
-
-/* =====================================================
-   RANGLISTE
-===================================================== */
-
-async function rankingMenu(){
-
-  hideAll();
-
-  const list =
-    document.getElementById(
-      "rankingList"
-    );
-
-  list.innerHTML =
-    "Lade Rangliste...";
-
-
-  const { data, error } =
-    await supabaseClient
-      .from("profiles")
-      .select(
-        "username,coins"
-      )
-      .order(
-        "coins",
-        {
-          ascending:false
-        }
-      )
-      .limit(50);
-
-
-  if(error){
-
-    list.innerHTML =
-      "Rangliste konnte nicht geladen werden.";
-
-    console.error(error);
-
-    document
-      .getElementById("ranking")
-      .classList.remove(
-        "hidden"
-      );
-
-    return;
-
-  }
-
-
-  list.innerHTML = "";
-
-
-  if(!data || data.length===0){
-
-    list.innerHTML =
-      "Noch keine Spieler.";
-
-  }
-
-
-  data.forEach(
-    (p,index)=>{
-
-      const row =
-        document.createElement(
-          "div"
-        );
-
-      row.className =
-        "rank";
-
-
-      row.innerHTML = `
-
-        <span>
-          ${index+1}.
-          ${p.username || "Spieler"}
-        </span>
-
-        <b>
-          ${Number(
-            p.coins || 0
-          ).toLocaleString()}
-        </b>
-
-      `;
-
-
-      list.appendChild(
-        row
-      );
-
-    }
-  );
-
-
-  document
-    .getElementById("ranking")
-    .classList.remove(
-      "hidden"
-    );
-
-}
-
-
-/* =====================================================
-   SPIEL
-===================================================== */
-
-const canvas =
-  document.getElementById(
-    "game"
-  );
-
-const ctx =
-  canvas.getContext("2d");
-
-
-function resize(){
-
-  canvas.width =
-    innerWidth;
-
-  canvas.height =
-    innerHeight;
-
-}
-
-addEventListener(
-  "resize",
-  resize
-);
-
-resize();
-
+let obstacles = [];
+let coinsObjects = [];
 
 let running = false;
-let paused = false;
-
-let score = 0;
-let runCoins = 0;
 
 let lane = 0;
-let playerX = 0;
 
-let objects = [];
+const lanes = [-3, 0, 3];
 
-let speed = 250;
+let targetX = 0;
 
-let last =
-  performance.now();
+let playerY = 0;
+let velocityY = 0;
 
-let magnet = 0;
-let doubleCoins = 0;
+const gravity = -0.025;
+const jumpPower = 0.55;
 
-let powerTimer = 10;
+let speed = 0.25;
 
+let score = 0;
+let collectedCoins = 0;
 
-/* =====================================================
-   ROAD
-===================================================== */
+let highScore =
+    Number(localStorage.getItem("runnerHighScore")) || 0;
 
-function road(){
+let savedCoins =
+    Number(localStorage.getItem("runnerCoins")) || 0;
 
-  const width =
-    Math.min(
-      innerWidth*.84,
-      600
-    );
+let spawnTimer = 0;
+let coinTimer = 0;
 
-  return {
+let clock;
 
-    left:
-      (innerWidth-width)/2,
+const coinsText =
+    document.getElementById("coins");
 
-    width
+const scoreText =
+    document.getElementById("score");
 
-  };
+const menu =
+    document.getElementById("menu");
 
-}
+const gameOver =
+    document.getElementById("gameOver");
 
+const startButton =
+    document.getElementById("startButton");
 
-function laneX(n){
+const restartButton =
+    document.getElementById("restartButton");
 
-  const r =
-    road();
+const finalScore =
+    document.getElementById("finalScore");
 
-  return r.left +
-    r.width *
-    (n+1.5)/3;
+const finalCoins =
+    document.getElementById("finalCoins");
 
-}
+const highScoreText =
+    document.getElementById("highScore");
 
+init();
 
-/* =====================================================
-   START
-===================================================== */
+function init() {
 
-function startGame(){
+    scene = new THREE.Scene();
 
-  hideAll();
+    scene.background =
+        new THREE.Color(0x87ceeb);
 
-  running = true;
-  paused = false;
+    scene.fog =
+        new THREE.Fog(0x87ceeb, 30, 180);
 
-  score = 0;
-  runCoins = 0;
-
-  lane = 0;
-
-  playerX =
-    laneX(0);
-
-  objects = [];
-
-  speed = 250;
-
-  magnet = 0;
-  doubleCoins = 0;
-
-  powerTimer = 10;
-
-  document
-    .getElementById("hud")
-    .style.display =
-    "flex";
-
-  document
-    .getElementById("pause")
-    .style.display =
-    "block";
-
-  last =
-    performance.now();
-
-}
-
-
-/* =====================================================
-   WELT
-===================================================== */
-
-function drawWorld(){
-
-  const r =
-    road();
-
-
-  const city =
-    cityData[
-      playerData.city
-    ];
-
-
-  ctx.fillStyle =
-    city.sky;
-
-  ctx.fillRect(
-    0,
-    0,
-    innerWidth,
-    innerHeight
-  );
-
-
-  ctx.fillStyle =
-    "#111820";
-
-  ctx.fillRect(
-    r.left,
-    0,
-    r.width,
-    innerHeight
-  );
-
-
-  ctx.fillStyle =
-    "#00eaff";
-
-  ctx.fillRect(
-    r.left,
-    0,
-    3,
-    innerHeight
-  );
-
-  ctx.fillRect(
-    r.left+r.width-3,
-    0,
-    3,
-    innerHeight
-  );
-
-
-  const lw =
-    r.width/3;
-
-
-  const offset =
-    (score*4)%100;
-
-
-  ctx.fillStyle =
-    "#ffffff55";
-
-
-  for(
-    let y=-100+offset;
-    y<innerHeight;
-    y+=100
-  ){
-
-    ctx.fillRect(
-      r.left+lw-2,
-      y,
-      4,
-      55
-    );
-
-    ctx.fillRect(
-      r.left+lw*2-2,
-      y,
-      4,
-      55
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   SPIELER
-===================================================== */
-
-function drawPlayer(){
-
-  const y =
-    innerHeight*.72;
-
-  const color =
-    charData[
-      playerData.character
-    ][2];
-
-
-  ctx.save();
-
-  ctx.translate(
-    playerX,
-    y
-  );
-
-
-  ctx.fillStyle =
-    color;
-
-  ctx.shadowColor =
-    color;
-
-  ctx.shadowBlur =
-    25;
-
-
-  ctx.beginPath();
-
-  ctx.roundRect(
-    -28,
-    -28,
-    56,
-    56,
-    12
-  );
-
-  ctx.fill();
-
-
-  ctx.shadowBlur = 0;
-
-
-  ctx.fillStyle =
-    "#06121d";
-
-
-  ctx.fillRect(
-    -18,
-    -15,
-    12,
-    7
-  );
-
-  ctx.fillRect(
-    7,
-    -15,
-    12,
-    7
-  );
-
-
-  ctx.restore();
-
-}
-
-
-/* =====================================================
-   AUTOS
-===================================================== */
-
-function spawnCar(){
-
-  /*
-    Autos bekommen eine eigene Spur
-    und werden nicht zusammen mit Coins
-    am gleichen Punkt erzeugt.
-  */
-
-  objects.push({
-
-    type:"car",
-
-    lane:
-      Math.floor(
-        Math.random()*3
-      )-1,
-
-    y:-160,
-
-    color:[
-      "#ff1744",
-      "#168cff",
-      "#ffffff",
-      "#ff9900",
-      "#8b4dff"
-    ][
-      Math.floor(
-        Math.random()*5
-      )
-    ]
-
-  });
-
-}
-
-
-function drawCar(car){
-
-  const x =
-    laneX(
-      car.lane
-    );
-
-
-  ctx.save();
-
-  ctx.translate(
-    x,
-    car.y
-  );
-
-
-  ctx.fillStyle =
-    car.color;
-
-  ctx.shadowColor =
-    car.color;
-
-  ctx.shadowBlur =
-    18;
-
-
-  ctx.beginPath();
-
-  ctx.roundRect(
-    -32,
-    -50,
-    64,
-    100,
-    10
-  );
-
-  ctx.fill();
-
-
-  ctx.shadowBlur = 0;
-
-
-  ctx.fillStyle =
-    "#102331";
-
-
-  ctx.beginPath();
-
-  ctx.roundRect(
-    -21,
-    -31,
-    42,
-    28,
-    7
-  );
-
-  ctx.fill();
-
-
-  ctx.fillStyle =
-    "#fff";
-
-
-  ctx.fillRect(
-    -22,
-    28,
-    14,
-    7
-  );
-
-  ctx.fillRect(
-    8,
-    28,
-    14,
-    7
-  );
-
-
-  ctx.restore();
-
-}
-
-
-/* =====================================================
-   COINS
-===================================================== */
-
-function spawnCoins(){
-
-  const city =
-    cityData[
-      playerData.city
-    ];
-
-
-  const amount =
-    city.min +
-    Math.floor(
-      Math.random() *
-      (
-        city.max-city.min+1
-      )
-    );
-
-
-  /*
-    Coins werden auf einer anderen
-    Spur als das zuletzt erzeugte Auto
-    erzeugt.
-  */
-
-  let randomLane =
-    Math.floor(
-      Math.random()*3
-    )-1;
-
-
-  const cars =
-    objects.filter(
-      o =>
-        o.type==="car" &&
-        o.y < 150
-    );
-
-
-  if(
-    cars.some(
-      c =>
-        c.lane === randomLane
-    )
-  ){
-
-    randomLane =
-      [-1,0,1].find(
-        l =>
-          !cars.some(
-            c =>
-              c.lane === l
-          )
-      ) ?? randomLane;
-
-  }
-
-
-  for(
-    let i=0;
-    i<amount;
-    i++
-  ){
-
-    objects.push({
-
-      type:"coin",
-
-      lane:randomLane,
-
-      y:-60-i*75
-
-    });
-
-  }
-
-}
-
-
-function drawCoin(o,time){
-
-  let x =
-    laneX(
-      o.lane
-    );
-
-  let y =
-    o.y;
-
-
-  if(magnet>0){
-
-    x +=
-      (playerX-x)*.18;
-
-    y +=
-      (
-        innerHeight*.72-y
-      )*.18;
-
-  }
-
-
-  const scale =
-    .5+
-    Math.abs(
-      Math.cos(
-        time*.008
-      )
-    )*.5;
-
-
-  ctx.save();
-
-  ctx.translate(
-    x,
-    y
-  );
-
-  ctx.scale(
-    scale,
-    1
-  );
-
-
-  ctx.fillStyle =
-    "#ffd900";
-
-  ctx.shadowColor =
-    "#ffd900";
-
-  ctx.shadowBlur =
-    20;
-
-
-  ctx.beginPath();
-
-  ctx.arc(
-    0,
-    0,
-    15,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fill();
-
-
-  ctx.restore();
-
-}
-
-
-/* =====================================================
-   POWERUPS
-===================================================== */
-
-function spawnPower(){
-
-  objects.push({
-
-    type:
-      Math.random()<.5
-        ? "magnet"
-        : "double",
-
-    lane:
-      Math.floor(
-        Math.random()*3
-      )-1,
-
-    y:-80
-
-  });
-
-}
-
-
-function drawPower(o){
-
-  const x =
-    laneX(
-      o.lane
-    );
-
-
-  ctx.save();
-
-  ctx.translate(
-    x,
-    o.y
-  );
-
-
-  ctx.fillStyle =
-    o.type==="magnet"
-      ? "#00eaff"
-      : "#ffd900";
-
-
-  ctx.shadowColor =
-    ctx.fillStyle;
-
-  ctx.shadowBlur =
-    20;
-
-
-  ctx.beginPath();
-
-  ctx.arc(
-    0,
-    0,
-    22,
-    0,
-    Math.PI*2
-  );
-
-  ctx.fill();
-
-
-  ctx.fillStyle =
-    "#06121d";
-
-  ctx.font =
-    "bold 16px Arial";
-
-  ctx.textAlign =
-    "center";
-
-  ctx.textBaseline =
-    "middle";
-
-
-  ctx.fillText(
-    o.type==="magnet"
-      ? "M"
-      : "x2",
-    0,
-    0
-  );
-
-
-  ctx.restore();
-
-}
-
-
-/* =====================================================
-   UPDATE
-===================================================== */
-
-function update(dt){
-
-  if(
-    !running ||
-    paused
-  )
-    return;
-
-
-  const seconds =
-    dt/1000;
-
-
-  score +=
-    seconds*10;
-
-
-  speed =
-    Math.min(
-      700,
-      speed+
-      seconds*4
-    );
-
-
-  playerX +=
-    (
-      laneX(lane)-
-      playerX
-    )*
-    Math.min(
-      1,
-      seconds*12
-    );
-
-
-  if(magnet>0)
-    magnet -= seconds;
-
-
-  if(doubleCoins>0)
-    doubleCoins -= seconds;
-
-
-  powerTimer -= seconds;
-
-
-  if(
-    powerTimer<=0
-  ){
-
-    spawnPower();
-
-    powerTimer =
-      15+
-      Math.random()*15;
-
-  }
-
-
-  for(
-    let i=objects.length-1;
-    i>=0;
-    i--
-  ){
-
-    const o =
-      objects[i];
-
-
-    o.y +=
-      speed*seconds;
-
-
-    if(
-      o.y >
-      innerHeight+150
-    ){
-
-      objects.splice(
-        i,
-        1
-      );
-
-      continue;
-
-    }
-
-
-    /*
-      POWERUP
-    */
-
-    if(
-      (
-        o.type==="magnet" ||
-        o.type==="double"
-      ) &&
-      Math.abs(
-        o.y-
-        innerHeight*.72
-      )<55 &&
-      Math.abs(
-        laneX(o.lane)-
-        playerX
-      )<50
-    ){
-
-      if(
-        o.type==="magnet"
-      )
-        magnet=30;
-
-
-      if(
-        o.type==="double"
-      )
-        doubleCoins=30;
-
-
-      objects.splice(
-        i,
-        1
-      );
-
-      continue;
-
-    }
-
-
-    /*
-      COIN
-    */
-
-    if(
-      o.type==="coin"
-    ){
-
-      let coinX =
-        laneX(o.lane);
-
-
-      if(magnet>0){
-
-        coinX =
-          playerX;
-
-      }
-
-
-      if(
-        Math.abs(
-          o.y-
-          innerHeight*.72
-        )<50 &&
-        Math.abs(
-          coinX-
-          playerX
-        )<55
-      ){
-
-        runCoins +=
-          doubleCoins>0
-            ? 2
-            : 1;
-
-
-        objects.splice(
-          i,
-          1
+    camera =
+        new THREE.PerspectiveCamera(
+            65,
+            window.innerWidth /
+            window.innerHeight,
+            0.1,
+            500
         );
 
-        continue;
-
-      }
-
-    }
-
-
-    /*
-      AUTO
-    */
-
-    if(
-      o.type==="car" &&
-      Math.abs(
-        o.y-
-        innerHeight*.72
-      )<65 &&
-      Math.abs(
-        laneX(o.lane)-
-        playerX
-      )<45
-    ){
-
-      endGame();
-
-      return;
-
-    }
-
-  }
-
-
-  /*
-    Autos etwas kontrollierter erzeugen.
-  */
-
-  if(
-    Math.random() <
-    dt/1000/1.4
-  ){
-
-    spawnCar();
-
-  }
-
-
-  if(
-    Math.random() <
-    dt/1000/2.0
-  ){
-
-    spawnCoins();
-
-  }
-
-
-  document
-    .getElementById("score")
-    .textContent =
-    Math.floor(
-      score
-    ).toLocaleString();
-
-
-  document
-    .getElementById("coins")
-    .textContent =
-    (
-      playerData.coins+
-      runCoins
-    ).toLocaleString();
-
-
-  document
-    .getElementById("cityName")
-    .textContent =
-    cityData[
-      playerData.city
-    ].name;
-
-}
-
-
-/* =====================================================
-   LOOP
-===================================================== */
-
-function loop(time){
-
-  const dt =
-    Math.min(
-      40,
-      time-last
+    camera.position.set(
+        0,
+        6,
+        12
     );
 
-  last =
-    time;
+    camera.rotation.x =
+        -0.15;
 
+    renderer =
+        new THREE.WebGLRenderer({
+            antialias: true
+        });
 
-  drawWorld();
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
 
+    renderer.setPixelRatio(
+        Math.min(window.devicePixelRatio, 2)
+    );
 
-  objects.forEach(
-    o=>{
-
-      if(
-        o.type==="car"
-      )
-        drawCar(o);
-
-      else if(
-        o.type==="coin"
-      )
-        drawCoin(o,time);
-
-      else
-        drawPower(o);
-
-    }
-  );
-
-
-  drawPlayer();
-
-  update(dt);
-
-
-  requestAnimationFrame(
-    loop
-  );
-
-}
-
-
-requestAnimationFrame(
-  loop
-);
-
-
-/* =====================================================
-   TASTATUR
-===================================================== */
-
-document.addEventListener(
-  "keydown",
-  e=>{
-
-    if(
-      !running ||
-      paused
-    )
-      return;
-
-
-    if(
-      e.key==="ArrowLeft"
-    ){
-
-      lane =
-        Math.max(
-          -1,
-          lane-1
-        );
-
-    }
-
-
-    if(
-      e.key==="ArrowRight"
-    ){
-
-      lane =
-        Math.min(
-          1,
-          lane+1
-        );
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   TOUCH / WISCHEN
-===================================================== */
-
-let touchStart = 0;
-
-
-canvas.addEventListener(
-  "touchstart",
-  e=>{
-
-    if(
-      !running ||
-      paused
-    )
-      return;
-
-
-    touchStart =
-      e.changedTouches[0]
-        .clientX;
-
-  },
-  {
-    passive:true
-  }
-);
-
-
-canvas.addEventListener(
-  "touchend",
-  e=>{
-
-    if(
-      !running ||
-      paused
-    )
-      return;
-
-
-    const end =
-      e.changedTouches[0]
-        .clientX;
-
-
-    const difference =
-      end-touchStart;
-
-
-    if(
-      Math.abs(
-        difference
-      )<30
-    )
-      return;
-
-
-    if(
-      difference>0
-    ){
-
-      lane =
-        Math.min(
-          1,
-          lane+1
-        );
-
-    }else{
-
-      lane =
-        Math.max(
-          -1,
-          lane-1
-        );
-
-    }
-
-  },
-  {
-    passive:true
-  }
-);
-
-
-/* =====================================================
-   PAUSE
-===================================================== */
-
-document
-  .getElementById("pause")
-  .onclick = ()=>{
-
-    if(!running)
-      return;
-
-
-    paused = true;
-
+    renderer.shadowMap.enabled = true;
 
     document
-      .getElementById("pause")
-      .style.display =
-      "none";
+        .getElementById("game")
+        .appendChild(renderer.domElement);
 
+    clock = new THREE.Clock();
 
-    document
-      .getElementById("pauseScreen")
-      .classList.remove(
-        "hidden"
-      );
+    createLights();
 
-  };
+    createWorld();
 
+    createPlayer();
 
-function resumeGame(){
-
-  paused = false;
-
-
-  document
-    .getElementById("pauseScreen")
-    .classList.add(
-      "hidden"
+    window.addEventListener(
+        "resize",
+        resize
     );
 
+    setupControls();
 
-  document
-    .getElementById("pause")
-    .style.display =
-    "block";
-
-
-  last =
-    performance.now();
-
+    animate();
 }
 
+function createLights() {
 
-function quitGame(){
+    const ambient =
+        new THREE.HemisphereLight(
+            0xffffff,
+            0x444444,
+            2
+        );
 
-  running = false;
+    scene.add(ambient);
 
+    const sun =
+        new THREE.DirectionalLight(
+            0xffffff,
+            2.5
+        );
 
-  document
-    .getElementById("pauseScreen")
-    .classList.add(
-      "hidden"
+    sun.position.set(
+        20,
+        30,
+        20
     );
 
+    sun.castShadow = true;
 
-  document
-    .getElementById("hud")
-    .style.display =
-    "none";
-
-
-  showMenu();
-
+    scene.add(sun);
 }
 
+function createWorld() {
 
-/* =====================================================
-   GAME OVER
-===================================================== */
+    const groundGeometry =
+        new THREE.PlaneGeometry(
+            40,
+            500
+        );
 
-async function endGame(){
+    const groundMaterial =
+        new THREE.MeshStandardMaterial({
+            color: 0x303030,
+            roughness: .8
+        });
 
-  if(!running)
-    return;
+    const ground =
+        new THREE.Mesh(
+            groundGeometry,
+            groundMaterial
+        );
 
+    ground.rotation.x =
+        -Math.PI / 2;
 
-  running = false;
+    ground.position.z =
+        -180;
 
+    ground.receiveShadow = true;
 
-  playerData.coins +=
-    runCoins;
+    scene.add(ground);
 
+    createTrack();
 
-  await saveProfile();
-
-
-  const finalScore =
-    Math.floor(
-      score
-    );
-
-
-  if(
-    finalScore >
-    playerData.highscore
-  ){
-
-    playerData.highscore =
-      finalScore;
-
-  }
-
-
-  document
-    .getElementById("hud")
-    .style.display =
-    "none";
-
-
-  document
-    .getElementById("pause")
-    .style.display =
-    "none";
-
-
-  document
-    .getElementById(
-      "gameOverText"
-    )
-    .innerHTML = `
-
-      <p>
-        SCORE:
-        <b>
-          ${finalScore.toLocaleString()}
-        </b>
-      </p>
-
-      <p>
-        COINS:
-        <b>
-          ${runCoins}
-        </b>
-      </p>
-
-      <p>
-        GESAMT:
-        <b>
-          ${playerData.coins.toLocaleString()}
-        </b>
-      </p>
-
-    `;
-
-
-  document
-    .getElementById("gameOver")
-    .classList.remove(
-      "hidden"
-    );
-
+    createBuildings();
 }
 
+function createTrack() {
 
-function restartGame(){
+    for (let i = 0; i < 70; i++) {
 
-  document
-    .getElementById("gameOver")
-    .classList.add(
-      "hidden"
-    );
+        const z =
+            -i * 8;
 
-  startGame();
+        for (let x of lanes) {
 
-}
+            const geometry =
+                new THREE.BoxGeometry(
+                    2.7,
+                    .15,
+                    7
+                );
 
+            const material =
+                new THREE.MeshStandardMaterial({
+                    color: 0x555555
+                });
 
-/* =====================================================
-   BUTTONS
-===================================================== */
+            const block =
+                new THREE.Mesh(
+                    geometry,
+                    material
+                );
 
-document
-  .getElementById("registerBtn")
-  .onclick =
-  register;
+            block.position.set(
+                x,
+                -.1,
+                z
+            );
 
-
-document
-  .getElementById("loginBtn")
-  .onclick =
-  loginUser;
-
-
-document
-  .getElementById("startBtn")
-  .onclick =
-  startGame;
-
-
-document
-  .getElementById("charactersBtn")
-  .onclick =
-  charactersMenu;
-
-
-document
-  .getElementById("citiesBtn")
-  .onclick =
-  citiesMenu;
-
-
-document
-  .getElementById("rankingBtn")
-  .onclick =
-  rankingMenu;
-
-
-document
-  .getElementById("codeBtn")
-  .onclick =
-  codeMenu;
-
-
-document
-  .getElementById("logoutBtn")
-  .onclick =
-  logout;
-
-
-document
-  .getElementById("charactersBack")
-  .onclick =
-  showMenu;
-
-
-document
-  .getElementById("citiesBack")
-  .onclick =
-  showMenu;
-
-
-document
-  .getElementById("rankingBack")
-  .onclick =
-  showMenu;
-
-
-document
-  .getElementById("codeBack")
-  .onclick =
-  showMenu;
-
-
-document
-  .getElementById("redeemBtn")
-  .onclick =
-  redeemCode;
-
-
-document
-  .getElementById("resumeBtn")
-  .onclick =
-  resumeGame;
-
-
-document
-  .getElementById("quitBtn")
-  .onclick =
-  quitGame;
-
-
-document
-  .getElementById("restartBtn")
-  .onclick =
-  restartGame;
-
-
-document
-  .getElementById("gameOverMenuBtn")
-  .onclick =
-  showMenu;
-
-
-/* =====================================================
-   ENTER-TASTE
-===================================================== */
-
-document
-  .getElementById("password")
-  .addEventListener(
-    "keydown",
-    e=>{
-
-      if(
-        e.key==="Enter"
-      ){
-
-        loginUser();
-
-      }
-
+            scene.add(block);
+        }
     }
-  );
-
-
-/* =====================================================
-   AUTOMATISCH EINLOGGEN
-===================================================== */
-
-async function checkLogin(){
-
-  const {
-    data
-  } =
-    await supabaseClient
-      .auth
-      .getSession();
-
-
-  if(
-    data &&
-    data.session
-  ){
-
-    currentUser =
-      data.session.user;
-
-
-    await loadProfile();
-
-    showMenu();
-
-  }
-
 }
 
+function createBuildings() {
 
-checkLogin();
+    for (let i = 0; i < 80; i++) {
+
+        const height =
+            5 + Math.random() * 20;
+
+        const width =
+            4 + Math.random() * 7;
+
+        const depth =
+            4 + Math.random() * 7;
+
+        const material =
+            new THREE.MeshStandardMaterial({
+                color:
+                    new THREE.Color(
+                        Math.random() * .35 +
+                        .25,
+                        Math.random() * .35 +
+                        .25,
+                        Math.random() * .35 +
+                        .25
+                    )
+            });
+
+        const building =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    width,
+                    height,
+                    depth
+                ),
+                material
+            );
+
+        const side =
+            Math.random() > .5
+                ? 1
+                : -1;
+
+        building.position.set(
+            side *
+            (10 + Math.random() * 9),
+            height / 2,
+            -i * 12
+        );
+
+        scene.add(building);
+    }
+}
+
+function createPlayer() {
+
+    const group =
+        new THREE.Group();
+
+    const bodyMaterial =
+        new THREE.MeshStandardMaterial({
+            color: 0x2266ff,
+            roughness: .6
+        });
+
+    const skinMaterial =
+        new THREE.MeshStandardMaterial({
+            color: 0xffc49a
+        });
+
+    const body =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                1.1,
+                1.7,
+                .7
+            ),
+            bodyMaterial
+        );
+
+    body.position.y =
+        1.6;
+
+    body.castShadow = true;
+
+    group.add(body);
+
+    const head =
+        new THREE.Mesh(
+            new THREE.SphereGeometry(
+                .48,
+                20,
+                20
+            ),
+            skinMaterial
+        );
+
+    head.position.y =
+        2.75;
+
+    head.castShadow = true;
+
+    group.add(head);
+
+    const legGeometry =
+        new THREE.BoxGeometry(
+            .35,
+            1.1,
+            .4
+        );
+
+    const leftLeg =
+        new THREE.Mesh(
+            legGeometry,
+            bodyMaterial
+        );
+
+    leftLeg.position.set(
+        -.3,
+        .55,
+        0
+    );
+
+    group.add(leftLeg);
+
+    const rightLeg =
+        new THREE.Mesh(
+            legGeometry,
+            bodyMaterial
+        );
+
+    rightLeg.position.set(
+        .3,
+        .55,
+        0
+    );
+
+    group.add(rightLeg);
+
+    group.position.set(
+        0,
+        0,
+        5
+    );
+
+    scene.add(group);
+
+    player = group;
+}
+
+function createObstacle() {
+
+    const laneIndex =
+        Math.floor(
+            Math.random() * 3
+        );
+
+    const x =
+        lanes[laneIndex];
+
+    const height =
+        .8 + Math.random() * 1.3;
+
+    const geometry =
+        new THREE.BoxGeometry(
+            2.2,
+            height,
+            2
+        );
+
+    const material =
+        new THREE.MeshStandardMaterial({
+            color: 0xcc2222,
+            roughness: .5
+        });
+
+    const obstacle =
+        new THREE.Mesh(
+            geometry,
+            material
+        );
+
+    obstacle.position.set(
+        x,
+        height / 2,
+        -100
+    );
+
+    obstacle.castShadow = true;
+
+    scene.add(obstacle);
+
+    obstacles.push(obstacle);
+}
+
+function createCoin() {
+
+    const laneIndex =
+        Math.floor(
+            Math.random() * 3
+        );
+
+    const coin =
+        new THREE.Mesh(
+            new THREE.TorusGeometry(
+                .55,
+                .15,
+                12,
+                24
+            ),
+            new THREE.MeshStandardMaterial({
+                color: 0xffd700,
+                metalness: .8,
+                roughness: .2
+            })
+        );
+
+    coin.position.set(
+        lanes[laneIndex],
+        .9,
+        -100
+    );
+
+    coin.rotation.x =
+        Math.PI / 2;
+
+    scene.add(coin);
+
+    coinsObjects.push(coin);
+}
+
+function jump() {
+
+    if (
+        playerY <= .01
+    ) {
+
+        velocityY =
+            jumpPower;
+    }
+}
+
+function moveLeft() {
+
+    lane--;
+
+    if (lane < 0)
+        lane = 0;
+
+    targetX =
+        lanes[lane];
+}
+
+function moveRight() {
+
+    lane++;
+
+    if (lane > 2)
+        lane = 2;
+
+    targetX =
+        lanes[lane];
+}
+
+function setupControls() {
+
+    let startX = 0;
+    let startY = 0;
+
+    window.addEventListener(
+        "touchstart",
+        e => {
+
+            const touch =
+                e.changedTouches[0];
+
+            startX =
+                touch.clientX;
+
+            startY =
+                touch.clientY;
+        },
+        { passive: true }
+    );
+
+    window.addEventListener(
+        "touchend",
+        e => {
+
+            if (!running)
+                return;
+
+            const touch =
+                e.changedTouches[0];
+
+            const dx =
+                touch.clientX -
+                startX;
+
+            const dy =
+                touch.clientY -
+                startY;
+
+            const minSwipe =
+                40;
+
+            if (
+                Math.abs(dx) >
+                Math.abs(dy)
+            ) {
+
+                if (dx > minSwipe)
+                    moveRight();
+
+                if (dx < -minSwipe)
+                    moveLeft();
+
+            } else {
+
+                if (dy < -minSwipe)
+                    jump();
+            }
+        },
+        { passive: true }
+    );
+
+    window.addEventListener(
+        "keydown",
+        e => {
+
+            if (e.key === "ArrowLeft")
+                moveLeft();
+
+            if (e.key === "ArrowRight")
+                moveRight();
+
+            if (
+                e.key === " " ||
+                e.key === "ArrowUp"
+            )
+                jump();
+        }
+    );
+}
+
+function startGame() {
+
+    running = true;
+
+    score = 0;
+
+    collectedCoins = 0;
+
+    lane = 1;
+
+    targetX = 0;
+
+    player.position.x = 0;
+
+    player.position.y = 0;
+
+    playerY = 0;
+
+    velocityY = 0;
+
+    speed = .25;
+
+    spawnTimer = 0;
+
+    coinTimer = 0;
+
+    obstacles.forEach(
+        o => scene.remove(o)
+    );
+
+    coinsObjects.forEach(
+        c => scene.remove(c)
+    );
+
+    obstacles = [];
+
+    coinsObjects = [];
+
+    menu.style.display =
+        "none";
+
+    gameOver.style.display =
+        "none";
+}
+
+function endGame() {
+
+    running = false;
+
+    const currentScore =
+        Math.floor(score);
+
+    if (
+        currentScore >
+        highScore
+    ) {
+
+        highScore =
+            currentScore;
+
+        localStorage.setItem(
+            "runnerHighScore",
+            highScore
+        );
+    }
+
+    savedCoins +=
+        collectedCoins;
+
+    localStorage.setItem(
+        "runnerCoins",
+        savedCoins
+    );
+
+    finalScore.textContent =
+        currentScore;
+
+    finalCoins.textContent =
+        collectedCoins;
+
+    highScoreText.textContent =
+        highScore;
+
+    gameOver.style.display =
+        "flex";
+}
+
+function updatePlayer() {
+
+    player.position.x +=
+        (targetX -
+        player.position.x) *
+        .2;
+
+    velocityY +=
+        gravity;
+
+    playerY +=
+        velocityY;
+
+    if (playerY < 0) {
+
+        playerY = 0;
+
+        velocityY = 0;
+    }
+
+    player.position.y =
+        playerY;
+
+    player.rotation.z =
+        (targetX -
+        player.position.x) *
+        -.05;
+}
+
+function updateObjects() {
+
+    for (
+        let i =
+        obstacles.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const obstacle =
+            obstacles[i];
+
+        obstacle.position.z +=
+            speed;
+
+        if (
+            obstacle.position.z >
+            15
+        ) {
+
+            scene.remove(
+                obstacle
+            );
+
+            obstacles.splice(
+                i,
+                1
+            );
+
+            continue;
+        }
+
+        const dx =
+            Math.abs(
+                obstacle.position.x -
+                player.position.x
+            );
+
+        const dz =
+            Math.abs(
+                obstacle.position.z -
+                player.position.z
+            );
+
+        const dy =
+            playerY;
+
+        if (
+            dx < 1.35 &&
+            dz < 1.4 &&
+            dy < 1.4
+        ) {
+
+            endGame();
+
+            return;
+        }
+    }
+
+    for (
+        let i =
+        coinsObjects.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const coin =
+            coinsObjects[i];
+
+        coin.position.z +=
+            speed;
+
+        coin.rotation.y +=
+            .08;
+
+        if (
+            coin.position.z >
+            15
+        ) {
+
+            scene.remove(coin);
+
+            coinsObjects.splice(
+                i,
+                1
+            );
+
+            continue;
+        }
+
+        const dx =
+            Math.abs(
+                coin.position.x -
+                player.position.x
+            );
+
+        const dz =
+            Math.abs(
+                coin.position.z -
+                player.position.z
+            );
+
+        const dy =
+            Math.abs(
+                coin.position.y -
+                (playerY + 1.4)
+            );
+
+        if (
+            dx < 1.3 &&
+            dz < 1.5 &&
+            dy < 1.5
+        ) {
+
+            collectedCoins++;
+
+            scene.remove(coin);
+
+            coinsObjects.splice(
+                i,
+                1
+            );
+        }
+    }
+}
+
+function updateGame() {
+
+    if (!running)
+        return;
+
+    updatePlayer();
+
+    updateObjects();
+
+    spawnTimer++;
+
+    coinTimer++;
+
+    if (
+        spawnTimer >
+        Math.max(
+            35,
+            75 -
+            speed * 80
+        )
+    ) {
+
+        createObstacle();
+
+        spawnTimer = 0;
+    }
+
+    if (
+        coinTimer >
+        35
+    ) {
+
+        createCoin();
+
+        coinTimer = 0;
+    }
+
+    speed +=
+        .00008;
+
+    score +=
+        speed;
+
+    scoreText.textContent =
+        Math.floor(score);
+
+    coinsText.textContent =
+        savedCoins +
+        collectedCoins;
+}
+
+function animate() {
+
+    requestAnimationFrame(
+        animate
+    );
+
+    updateGame();
+
+    renderer.render(
+        scene,
+        camera
+    );
+}
+
+function resize() {
+
+    camera.aspect =
+        window.innerWidth /
+        window.innerHeight;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
+}
+
+startButton.addEventListener(
+    "click",
+    startGame
+);
+
+restartButton.addEventListener(
+    "click",
+    startGame
+);
 
 </script>
 
