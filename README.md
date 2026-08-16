@@ -2,206 +2,322 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Cube Rush</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
 
 html,body{
-    margin:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#050814;
-    color:white;
-    font-family:Arial,sans-serif;
+ margin:0;
+ width:100%;
+ height:100%;
+ overflow:hidden;
+ background:#03050b;
+ color:white;
+ font-family:Arial,sans-serif;
 }
 
 canvas{
-    position:fixed;
-    inset:0;
-    width:100%;
-    height:100%;
+ position:fixed;
+ inset:0;
+ width:100%;
+ height:100%;
+ touch-action:none;
 }
 
 .screen{
-    position:fixed;
-    inset:0;
-    z-index:20;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    background:linear-gradient(#07182d,#02040a);
-    overflow:auto;
+ position:fixed;
+ inset:0;
+ z-index:20;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+ background:
+ radial-gradient(circle at 50% 20%,#073454,#02050c 65%);
+ overflow:auto;
 }
 
 .hidden{display:none!important}
 
 .logo{
-    font-size:46px;
-    font-weight:900;
-    color:#00eaff;
-    text-shadow:0 0 30px #00eaff;
-    margin-bottom:8px;
-    text-align:center;
+ font-size:45px;
+ font-weight:1000;
+ letter-spacing:3px;
+ color:#00eaff;
+ text-shadow:0 0 12px #00eaff,0 0 35px #00eaff;
+ text-align:center;
 }
 
-h1{
-    color:#00eaff;
-    text-shadow:0 0 20px #00eaff;
-    text-align:center;
+.subtitle{
+ color:#8bbbc9;
+ letter-spacing:4px;
+ margin-bottom:20px;
 }
 
 input{
-    width:320px;
-    max-width:90%;
-    padding:14px;
-    margin:6px;
-    border-radius:12px;
-    border:1px solid #00eaff;
-    background:#081522;
-    color:white;
-    font-size:16px;
-    outline:none;
+ width:320px;
+ max-width:92vw;
+ padding:15px;
+ margin:6px;
+ border-radius:12px;
+ border:1px solid #00eaff;
+ outline:none;
+ background:#071421;
+ color:white;
+ font-size:16px;
+}
+
+input:focus{
+ box-shadow:0 0 18px #00eaff66;
 }
 
 button{
-    padding:13px 22px;
-    margin:6px;
-    border:0;
-    border-radius:12px;
-    background:#00eaff;
-    color:#001018;
-    font-weight:bold;
-    font-size:15px;
-    cursor:pointer;
+ padding:13px 22px;
+ margin:6px;
+ border:0;
+ border-radius:12px;
+ background:#00eaff;
+ color:#001018;
+ font-weight:900;
+ font-size:15px;
+ cursor:pointer;
 }
 
 button:active{
-    transform:scale(.95);
+ transform:scale(.95);
+}
+
+button.secondary{
+ background:#102331;
+ color:#8eefff;
+ border:1px solid #00eaff55;
 }
 
 .msg{
-    min-height:24px;
-    color:#a9c5d0;
-    text-align:center;
-    max-width:340px;
+ min-height:24px;
+ max-width:350px;
+ color:#a9d5df;
+ text-align:center;
+ margin:8px;
 }
 
 .coins{
-    color:#ffd900;
-    font-weight:bold;
-    font-size:20px;
-    margin:10px;
+ color:#ffd900;
+ font-weight:900;
+ font-size:20px;
+ margin:10px;
 }
 
 .card{
-    display:inline-flex;
-    vertical-align:top;
-    flex-direction:column;
-    justify-content:space-between;
-    width:180px;
-    min-height:210px;
-    margin:7px;
-    padding:14px;
-    background:#091522;
-    border:1px solid #00eaff55;
-    border-radius:15px;
-    text-align:center;
-}
-
-.card h3{
-    margin:5px 0 10px;
+ width:180px;
+ min-height:220px;
+ display:inline-flex;
+ flex-direction:column;
+ justify-content:space-between;
+ align-items:center;
+ margin:7px;
+ padding:14px;
+ background:linear-gradient(145deg,#0b1d2b,#06101a);
+ border:1px solid #00eaff55;
+ border-radius:18px;
+ text-align:center;
+ overflow:hidden;
 }
 
 .preview{
-    height:85px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+ width:130px;
+ height:105px;
+ border-radius:15px;
+ position:relative;
+ overflow:hidden;
+ margin-bottom:8px;
+ border:1px solid #ffffff22;
 }
 
 .avatar{
-    width:58px;
-    height:58px;
-    border-radius:12px;
-    box-shadow:0 0 25px currentColor;
-    transform:rotate(5deg);
+ width:55px;
+ height:55px;
+ position:absolute;
+ left:50%;
+ top:50%;
+ transform:translate(-50%,-50%) rotate(45deg);
+ border-radius:10px;
+ box-shadow:0 0 25px currentColor;
 }
+
+.avatar:after{
+ content:"";
+ position:absolute;
+ width:12px;
+ height:12px;
+ border-radius:50%;
+ background:white;
+ left:10px;
+ top:10px;
+ box-shadow:22px 22px 0 white;
+}
+
+.avatar.blue{background:#00eaff;color:#00eaff}
+.avatar.red{background:#ff3158;color:#ff3158}
+.avatar.purple{background:#9b4dff;color:#9b4dff}
+.avatar.green{background:#25ff9a;color:#25ff9a}
+.avatar.gold{background:#ffd400;color:#ffd400}
+.avatar.white{background:#ffffff;color:#ffffff}
+.avatar.black{background:#10131a;color:#8c95a0}
+.avatar.orange{background:#ff7b22;color:#ff7b22}
 
 .cityPreview{
-    width:145px;
-    height:75px;
-    position:relative;
-    overflow:hidden;
-    border-radius:10px;
-    border:1px solid #ffffff33;
+ width:150px;
+ height:105px;
+ border-radius:15px;
+ position:relative;
+ overflow:hidden;
+ border:1px solid #ffffff33;
 }
 
-.building{
-    position:absolute;
-    bottom:0;
-    width:20px;
-    background:#18263a;
+.cityPreview span{
+ position:absolute;
+ bottom:0;
+ width:22%;
+ background:#ffffff33;
+ border-top:2px solid #ffffff55;
+}
+
+.cityPreview span:nth-child(1){left:3%;height:45%}
+.cityPreview span:nth-child(2){left:27%;height:70%}
+.cityPreview span:nth-child(3){left:51%;height:55%}
+.cityPreview span:nth-child(4){left:75%;height:82%}
+
+.city-neon{
+ background:linear-gradient(#16003b,#00b9d9);
+}
+
+.city-tokyo{
+ background:linear-gradient(#280014,#ff236e);
+}
+
+.city-dubai{
+ background:linear-gradient(#321400,#ff9d25);
+}
+
+.city-newyork{
+ background:linear-gradient(#061b3c,#4b83ff);
+}
+
+.city-galaxy{
+ background:radial-gradient(circle,#7435ff,#05001a 70%);
 }
 
 .rank{
-    width:350px;
-    max-width:90vw;
-    display:flex;
-    justify-content:space-between;
-    padding:12px;
-    margin:4px;
-    background:#091522;
-    border-radius:10px;
+ width:370px;
+ max-width:94vw;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:13px;
+ margin:4px;
+ background:#091522;
+ border:1px solid #ffffff0b;
+ border-radius:11px;
+}
+
+.rank:nth-child(1){
+ border-color:#ffd700;
+ box-shadow:0 0 15px #ffd70033;
+}
+
+.rank:nth-child(2){
+ border-color:#c9d2d7;
+}
+
+.rank:nth-child(3){
+ border-color:#cd7f32;
+}
+
+.rankName{
+ font-weight:800;
+}
+
+.rankScore{
+ color:#00eaff;
+ font-weight:900;
 }
 
 #hud{
-    position:fixed;
-    z-index:10;
-    top:10px;
-    left:10px;
-    right:10px;
-    display:none;
-    justify-content:space-between;
-    gap:6px;
-    pointer-events:none;
+ position:fixed;
+ z-index:10;
+ top:10px;
+ left:10px;
+ right:10px;
+ display:none;
+ justify-content:space-between;
+ gap:5px;
+ pointer-events:none;
 }
 
 .hud{
-    background:#06121dcc;
-    border:1px solid #00eaff66;
-    padding:8px 12px;
-    border-radius:10px;
-    font-weight:bold;
+ background:#06121ddd;
+ border:1px solid #00eaff66;
+ padding:8px 10px;
+ border-radius:10px;
+ font-weight:bold;
 }
 
 #pause{
-    position:fixed;
-    z-index:11;
-    top:60px;
-    right:10px;
-    display:none;
+ position:fixed;
+ z-index:12;
+ top:60px;
+ right:10px;
+ display:none;
 }
 
-.timer{
-    font-size:14px;
-    color:#fff;
-    margin-top:4px;
+.powerHUD{
+ position:fixed;
+ z-index:11;
+ top:105px;
+ left:50%;
+ transform:translateX(-50%);
+ display:none;
+ gap:7px;
 }
 
 .power{
-    color:#00eaff;
+ background:#06121de8;
+ border:1px solid #00eaff77;
+ padding:7px 10px;
+ border-radius:10px;
+ font-weight:bold;
 }
 
-.menuButtons{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    max-width:500px;
+.power.magnet{
+ color:#00eaff;
+}
+
+.power.double{
+ color:#ffd900;
+}
+
+.scroll{
+ max-width:95vw;
+ text-align:center;
+}
+
+#characterList,
+#cityList{
+ max-width:950px;
+ display:flex;
+ justify-content:center;
+ flex-wrap:wrap;
+}
+
+.small{
+ color:#88a7b0;
+ font-size:13px;
 }
 </style>
 </head>
@@ -211,823 +327,1011 @@ button:active{
 <canvas id="game"></canvas>
 
 <div id="hud">
-    <div class="hud">COINS <span id="coins">0</span></div>
-    <div class="hud">SCORE <span id="score">0</span></div>
-    <div class="hud">CITY <span id="cityName">Neon City</span></div>
-    <div class="hud" id="powerHud"></div>
+ <div class="hud">COINS <span id="coins">0</span></div>
+ <div class="hud">SCORE <span id="score">0</span></div>
+ <div class="hud"><span id="cityName">Neon City</span></div>
+</div>
+
+<div id="powerHUD" class="powerHUD">
+ <div id="magnetHUD" class="power magnet hidden">
+  MAGNET <span id="magnetTime">30</span>s
+ </div>
+ <div id="doubleHUD" class="power double hidden">
+  x2 COINS <span id="doubleTime">30</span>s
+ </div>
 </div>
 
 <button id="pause">PAUSE</button>
 
 <!-- LOGIN -->
+
 <div id="login" class="screen">
-    <div class="logo">CUBE RUSH</div>
-    <p>ONLINE EDITION</p>
 
-    <input id="username"
-           placeholder="Benutzername"
-           maxlength="18"
-           autocomplete="username">
+ <div class="logo">CUBE RUSH</div>
+ <div class="subtitle">ONLINE EDITION</div>
 
-    <input id="email"
-           type="email"
-           placeholder="E-Mail"
-           autocomplete="email">
+ <input
+  id="username"
+  placeholder="Benutzername"
+  maxlength="18"
+  autocomplete="username"
+ >
 
-    <input id="password"
-           type="password"
-           placeholder="Passwort"
-           minlength="6"
-           autocomplete="current-password">
+ <input
+  id="email"
+  type="email"
+  placeholder="E-Mail"
+  autocomplete="email"
+ >
 
-    <button onclick="register()">REGISTRIEREN</button>
-    <button onclick="loginUser()">ANMELDEN</button>
+ <input
+  id="password"
+  type="password"
+  placeholder="Passwort"
+  minlength="6"
+  autocomplete="current-password"
+ >
 
-    <div id="loginMsg" class="msg"></div>
+ <button onclick="registerUser()">REGISTRIEREN</button>
+ <button onclick="loginUser()">ANMELDEN</button>
+
+ <div id="loginMsg" class="msg"></div>
+
 </div>
 
 <!-- MENU -->
+
 <div id="menu" class="screen hidden">
 
-    <div class="logo">CUBE RUSH</div>
+ <div class="logo">CUBE RUSH</div>
 
-    <p>
-        Spieler:
-        <b id="player"></b>
-    </p>
+ <p>
+  Spieler:
+  <b id="player"></b>
+ </p>
 
-    <div class="coins">
-        COINS <span id="menuCoins">0</span>
-    </div>
+ <div class="coins">
+  COINS <span id="menuCoins">0</span>
+ </div>
 
-    <div class="menuButtons">
-        <button onclick="startGame()">SPIEL STARTEN</button>
-        <button onclick="charactersMenu()">CHARAKTERE</button>
-        <button onclick="citiesMenu()">STÄDTE</button>
-        <button onclick="rankingMenu()">RANGLISTE</button>
-        <button onclick="codeMenu()">ADMIN CODE</button>
-        <button onclick="logout()">ABMELDEN</button>
-    </div>
+ <button onclick="startGame()">SPIEL STARTEN</button>
+ <button onclick="charactersMenu()">CHARAKTERE</button>
+ <button onclick="citiesMenu()">STÄDTE</button>
+ <button onclick="rankingMenu()">RANGLISTE</button>
+ <button onclick="codeMenu()">ADMIN-CODE</button>
+ <button class="secondary" onclick="logout()">ABMELDEN</button>
+
 </div>
 
 <!-- CHARACTERS -->
+
 <div id="characters" class="screen hidden">
-    <h1>CHARAKTERE</h1>
 
-    <div class="coins">
-        COINS <span id="charCoins">0</span>
-    </div>
+ <h1>CHARAKTERE</h1>
 
-    <div id="characterList"></div>
+ <div class="coins">
+  COINS <span id="charCoins">0</span>
+ </div>
 
-    <button onclick="showMenu()">ZURÜCK</button>
+ <div id="characterList"></div>
+
+ <button onclick="showMenu()">ZURÜCK</button>
+
 </div>
 
 <!-- CITIES -->
+
 <div id="cities" class="screen hidden">
-    <h1>STÄDTE</h1>
 
-    <div class="coins">
-        COINS <span id="cityCoins">0</span>
-    </div>
+ <h1>STÄDTE</h1>
 
-    <div id="cityList"></div>
+ <div id="cityList"></div>
 
-    <button onclick="showMenu()">ZURÜCK</button>
+ <button onclick="showMenu()">ZURÜCK</button>
+
 </div>
 
 <!-- RANKING -->
+
 <div id="ranking" class="screen hidden">
-    <h1>RANGLISTE</h1>
 
-    <div id="rankingList">
-        Noch keine Spieler.
-    </div>
+ <h1>RANGLISTE</h1>
 
-    <button onclick="showMenu()">ZURÜCK</button>
+ <div id="rankingList">
+  Lade Rangliste...
+ </div>
+
+ <button onclick="rankingMenu()">AKTUALISIEREN</button>
+ <button onclick="showMenu()">ZURÜCK</button>
+
 </div>
 
 <!-- CODE -->
+
 <div id="codes" class="screen hidden">
-    <h1>ADMIN CODE</h1>
 
-    <input id="secretCode"
-           inputmode="numeric"
-           maxlength="3"
-           placeholder="Code">
+ <h1>ADMIN-CODE</h1>
 
-    <button onclick="redeemCode()">EINLÖSEN</button>
+ <input
+  id="secretCode"
+  inputmode="numeric"
+  maxlength="3"
+  placeholder="Code"
+ >
 
-    <div id="codeMsg" class="msg"></div>
+ <button onclick="redeemCode()">EINLÖSEN</button>
 
-    <button onclick="showMenu()">ZURÜCK</button>
+ <div id="codeMsg" class="msg"></div>
+
+ <button onclick="showMenu()">ZURÜCK</button>
+
 </div>
 
 <!-- PAUSE -->
-<div id="pauseScreen" class="screen hidden">
-    <h1>PAUSE</h1>
 
-    <button onclick="resumeGame()">WEITERSPIELEN</button>
-    <button onclick="quitGame()">MENÜ</button>
+<div id="pauseScreen" class="screen hidden">
+
+ <h1>PAUSE</h1>
+
+ <button onclick="resumeGame()">WEITERSPIELEN</button>
+ <button onclick="quitGame()">MENÜ</button>
+
 </div>
 
 <!-- GAME OVER -->
+
 <div id="gameOver" class="screen hidden">
-    <h1>CRASH</h1>
 
-    <div id="gameOverText"></div>
+ <h1>CRASH!</h1>
 
-    <button onclick="restartGame()">NOCHMAL</button>
-    <button onclick="showMenu()">MENÜ</button>
+ <div id="gameOverText"></div>
+
+ <button onclick="restartGame()">NOCHMAL</button>
+ <button onclick="showMenu()">MENÜ</button>
+
 </div>
 
 <script>
 
-/* =====================================================
-   SPIELER
-===================================================== */
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+"https://lfsifdmaftztykpckdsh.supabase.co";
+
+const SUPABASE_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxmc2lmZG1hZnR6dHlrcGNrZHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDczMTksImV4cCI6MjEwMjQ4MzMxOX0.dfMS0zgHO_IYU7_YmR2Si6DVkD8MWiJJUt6iSJXZfio";
+
+const supabaseClient =
+window.supabase.createClient(
+ SUPABASE_URL,
+ SUPABASE_KEY
+);
+
+/* =========================================================
+   PLAYER
+========================================================= */
 
 let playerData={
-    username:"",
-    email:"",
-    coins:0,
-    highscore:0,
-    characters:[0],
-    cities:[0],
-    character:0,
-    city:0
+ id:"",
+ username:"",
+ email:"",
+ coins:0,
+ highscore:0,
+ characters:[0],
+ cities:[0],
+ character:0,
+ city:0
 };
 
-
-/* =====================================================
-   CHARAKTERE
-===================================================== */
-
-const charData=[
-    ["Blue",0,"#00eaff"],
-    ["Volt",300,"#fff200"],
-    ["Fire",700,"#ff3b20"],
-    ["Ice",1200,"#7de8ff"],
-    ["Purple",2000,"#a855ff"],
-    ["Poison",3000,"#51ff00"],
-    ["Magma",4500,"#ff5b00"],
-    ["Thunder",6500,"#ffe600"],
-    ["Void",9000,"#7b00ff"],
-    ["Omega",12000,"#ffffff"],
-    ["Cyber",16000,"#00ffcc"],
-    ["Gold",22000,"#ffd700"],
-    ["Ruby",28000,"#ff003c"],
-    ["Diamond",35000,"#8ffcff"],
-    ["Galaxy",45000,"#c000ff"],
-    ["Phantom",55000,"#566bff"],
-    ["Solar",70000,"#ff9d00"],
-    ["Nebula",85000,"#ff55cc"],
-    ["Aurora",100000,"#55ffcc"],
-    ["Cube God",150000,"#ffffff"]
-];
-
-
-/* =====================================================
-   STÄDTE
-===================================================== */
+/* =========================================================
+   CITIES
+========================================================= */
 
 const cityData=[
 
-    {
-        name:"Neon City",
-        price:0,
-        min:3,
-        max:6,
-        sky:"#071a35",
-        road:"#111820",
-        light:"#00eaff",
-        building:"#102a3d"
-    },
+ {
+  name:"Neon City",
+  price:0,
+  min:3,
+  max:6,
+  className:"city-neon"
+ },
 
-    {
-        name:"Tokyo Night",
-        price:5000,
-        min:8,
-        max:15,
-        sky:"#16051f",
-        road:"#15131d",
-        light:"#ff2cff",
-        building:"#271338"
-    },
+ {
+  name:"Tokyo Night",
+  price:5000,
+  min:6,
+  max:10,
+  className:"city-tokyo"
+ },
 
-    {
-        name:"Cyber Dubai",
-        price:12000,
-        min:15,
-        max:25,
-        sky:"#211006",
-        road:"#191512",
-        light:"#ffb52e",
-        building:"#3b2814"
-    },
+ {
+  name:"Cyber Dubai",
+  price:12000,
+  min:9,
+  max:14,
+  className:"city-dubai"
+ },
 
-    {
-        name:"Future New York",
-        price:25000,
-        min:25,
-        max:40,
-        sky:"#07142b",
-        road:"#11151c",
-        light:"#5e8cff",
-        building:"#182944"
-    },
+ {
+  name:"Future New York",
+  price:25000,
+  min:13,
+  max:19,
+  className:"city-newyork"
+ },
 
-    {
-        name:"Galaxy City",
-        price:50000,
-        min:40,
-        max:60,
-        sky:"#100020",
-        road:"#0b0b15",
-        light:"#c44cff",
-        building:"#25104b"
-    }
+ {
+  name:"Galaxy City",
+  price:50000,
+  min:18,
+  max:26,
+  className:"city-galaxy"
+ }
+
 ];
 
+/* =========================================================
+   CHARACTERS
+========================================================= */
 
-/* =====================================================
-   SPEICHERN
-===================================================== */
+const charData=[
 
-function save(){
+ ["Blue",0,"blue"],
+ ["Volt",300,"white"],
+ ["Fire",700,"red"],
+ ["Ice",1200,"white"],
+ ["Purple",2000,"purple"],
+ ["Poison",3000,"green"],
+ ["Magma",4500,"orange"],
+ ["Thunder",6500,"blue"],
+ ["Void",9000,"black"],
+ ["Omega",12000,"purple"],
+ ["Cyber",16000,"blue"],
+ ["Gold",22000,"gold"],
+ ["Ruby",28000,"red"],
+ ["Diamond",35000,"white"],
+ ["Galaxy",45000,"purple"],
+ ["Phantom",55000,"black"],
+ ["Solar",70000,"gold"],
+ ["Nebula",85000,"purple"],
+ ["Aurora",100000,"green"],
+ ["Cube God",150000,"gold"]
 
-    localStorage.setItem(
-        "cubeRushPlayer",
-        JSON.stringify(playerData)
-    );
+];
 
-    updateRankingStorage();
-}
-
-function load(){
-
-    const data=
-        localStorage.getItem("cubeRushPlayer");
-
-    if(!data) return false;
-
-    try{
-        playerData=JSON.parse(data);
-        return true;
-    }catch{
-        return false;
-    }
-}
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-function register(){
-
-    const name=
-        document.getElementById("username").value.trim();
-
-    const email=
-        document.getElementById("email").value.trim();
-
-    const password=
-        document.getElementById("password").value;
-
-    if(name.length<3){
-        loginMsg("Benutzername muss mindestens 3 Zeichen haben.");
-        return;
-    }
-
-    if(!email.includes("@")){
-        loginMsg("Bitte eine gültige E-Mail eingeben.");
-        return;
-    }
-
-    if(password.length<6){
-        loginMsg("Das Passwort muss mindestens 6 Zeichen haben.");
-        return;
-    }
-
-    playerData={
-        username:name,
-        email:email,
-        coins:0,
-        highscore:0,
-        characters:[0],
-        cities:[0],
-        character:0,
-        city:0
-    };
-
-    save();
-
-    showMenu();
-}
-
-
-function loginUser(){
-
-    const name=
-        document.getElementById("username").value.trim();
-
-    const email=
-        document.getElementById("email").value.trim();
-
-    const password=
-        document.getElementById("password").value;
-
-    if(!name || !email || !password){
-        loginMsg("Bitte Benutzername, E-Mail und Passwort eingeben.");
-        return;
-    }
-
-    const saved=
-        localStorage.getItem("cubeRushPlayer");
-
-    if(saved){
-
-        const old=
-            JSON.parse(saved);
-
-        if(
-            old.username===name &&
-            old.email===email
-        ){
-            playerData=old;
-            showMenu();
-            return;
-        }
-
-        loginMsg("Benutzername oder E-Mail stimmt nicht.");
-        return;
-    }
-
-    playerData.username=name;
-    playerData.email=email;
-
-    save();
-    showMenu();
-}
-
-
-function loginMsg(text){
-
-    document.getElementById("loginMsg").textContent=text;
-}
-
-
-function logout(){
-
-    save();
-    location.reload();
-}
-
-
-/* =====================================================
-   MENÜ
-===================================================== */
+/* =========================================================
+   SCREEN SYSTEM
+========================================================= */
 
 function hideAll(){
 
-    document
-        .querySelectorAll(".screen")
-        .forEach(x=>x.classList.add("hidden"));
-}
+ document
+ .querySelectorAll(".screen")
+ .forEach(x=>{
+  x.classList.add("hidden");
+ });
 
+}
 
 function showMenu(){
 
-    hideAll();
+ hideAll();
 
-    document
-        .getElementById("menu")
-        .classList.remove("hidden");
+ document
+ .getElementById("menu")
+ .classList.remove("hidden");
 
-    document
-        .getElementById("player")
-        .textContent=
-        playerData.username;
+ document
+ .getElementById("player")
+ .textContent=
+ playerData.username;
 
-    document
-        .getElementById("menuCoins")
-        .textContent=
-        playerData.coins.toLocaleString();
+ document
+ .getElementById("menuCoins")
+ .textContent=
+ playerData.coins.toLocaleString();
+
 }
 
+/* =========================================================
+   LOGIN
+========================================================= */
 
-/* =====================================================
-   CHARAKTERE
-===================================================== */
+function loginMsg(text){
+
+ document
+ .getElementById("loginMsg")
+ .textContent=text;
+
+}
+
+async function registerUser(){
+
+ const name=
+ document.getElementById("username")
+ .value.trim();
+
+ const email=
+ document.getElementById("email")
+ .value.trim();
+
+ const password=
+ document.getElementById("password")
+ .value;
+
+ if(name.length<3){
+
+  loginMsg(
+   "Benutzername muss mindestens 3 Zeichen haben."
+  );
+
+  return;
+ }
+
+ if(!email){
+
+  loginMsg("Bitte E-Mail eingeben.");
+
+  return;
+ }
+
+ if(password.length<6){
+
+  loginMsg(
+   "Passwort muss mindestens 6 Zeichen haben."
+  );
+
+  return;
+ }
+
+ loginMsg("Registrierung läuft...");
+
+ const {
+  data,
+  error
+ }=
+ await supabaseClient.auth.signUp({
+
+  email:email,
+  password:password,
+
+  options:{
+   data:{
+    username:name
+   }
+  }
+
+ });
+
+ if(error){
+
+  loginMsg(error.message);
+
+  return;
+ }
+
+ if(!data.user){
+
+  loginMsg(
+   "Registrierung fehlgeschlagen."
+  );
+
+  return;
+ }
+
+ playerData.id=data.user.id;
+ playerData.username=name;
+ playerData.email=email;
+
+ const {
+  error:insertError
+ }=
+ await supabaseClient
+ .from("Players")
+ .insert({
+
+  id:data.user.id,
+  username:name,
+  highscore:0
+
+ });
+
+ if(insertError &&
+    !insertError.message
+    .toLowerCase()
+    .includes("duplicate")
+ ){
+
+  console.log(insertError);
+
+ }
+
+ if(data.session){
+
+  showMenu();
+
+ }else{
+
+  loginMsg(
+   "Registriert! Prüfe deine E-Mail und bestätige den Link."
+  );
+
+ }
+
+}
+
+async function loginUser(){
+
+ const name=
+ document.getElementById("username")
+ .value.trim();
+
+ const email=
+ document.getElementById("email")
+ .value.trim();
+
+ const password=
+ document.getElementById("password")
+ .value;
+
+ if(!name){
+
+  loginMsg(
+   "Bitte Benutzername eingeben."
+  );
+
+  return;
+ }
+
+ if(!email||!password){
+
+  loginMsg(
+   "Bitte E-Mail und Passwort eingeben."
+  );
+
+  return;
+ }
+
+ loginMsg("Anmeldung läuft...");
+
+ const {
+  data,
+  error
+ }=
+ await supabaseClient.auth.signInWithPassword({
+
+  email:email,
+  password:password
+
+ });
+
+ if(error){
+
+  loginMsg(error.message);
+
+  return;
+ }
+
+ playerData.id=data.user.id;
+ playerData.email=data.user.email;
+
+ await loadOnlinePlayer();
+
+ showMenu();
+
+}
+
+async function loadOnlinePlayer(){
+
+ const {
+  data,
+  error
+ }=
+ await supabaseClient
+ .from("Players")
+ .select("*")
+ .eq("id",playerData.id)
+ .maybeSingle();
+
+ if(error){
+
+  console.log(error);
+  return;
+
+ }
+
+ if(data){
+
+  playerData.username=
+   data.username ||
+   playerData.username;
+
+  playerData.highscore=
+   Number(data.highscore)||0;
+
+ }
+
+}
+
+async function logout(){
+
+ await supabaseClient.auth.signOut();
+
+ location.reload();
+
+}
+
+/* =========================================================
+   ONLINE SCORE
+========================================================= */
+
+async function saveOnlineScore(){
+
+ if(!playerData.id)
+  return;
+
+ const {
+  error
+ }=
+ await supabaseClient
+ .from("Players")
+ .upsert({
+
+  id:playerData.id,
+  username:playerData.username,
+  highscore:playerData.highscore
+
+ },{
+  onConflict:"id"
+ });
+
+ if(error){
+
+  console.log(
+   "Highscore konnte nicht gespeichert werden:",
+   error
+  );
+
+ }
+
+}
+
+/* =========================================================
+   CHARACTERS
+========================================================= */
 
 function charactersMenu(){
 
-    hideAll();
+ hideAll();
 
-    const list=
-        document.getElementById("characterList");
+ const list=
+ document.getElementById(
+  "characterList"
+ );
 
-    list.innerHTML="";
+ list.innerHTML="";
 
-    document
-        .getElementById("charCoins")
-        .textContent=
-        playerData.coins.toLocaleString();
+ document
+ .getElementById("charCoins")
+ .textContent=
+ playerData.coins.toLocaleString();
 
-    charData.forEach((char,index)=>{
+ charData.forEach(
+  (char,index)=>{
 
-        const card=
-            document.createElement("div");
+   const card=
+   document.createElement("div");
 
-        card.className="card";
+   card.className="card";
 
-        const unlocked=
-            playerData.characters.includes(index);
+   card.innerHTML=`
 
-        card.innerHTML=`
+    <div class="preview">
 
-            <div class="preview">
-                <div class="avatar"
-                     style="background:${char[2]};color:${char[2]}">
-                </div>
-            </div>
+      <div class="avatar ${char[2]}"></div>
 
-            <h3>${char[0]}</h3>
+    </div>
 
-            <p>
-                ${
-                    unlocked
-                    ?"FREIGESCHALTET"
-                    :"Preis: "+char[1].toLocaleString()+" Coins"
-                }
-            </p>
-        `;
+    <h3>${char[0]}</h3>
 
-        const button=
-            document.createElement("button");
+    <div class="small">
+      ${
+       playerData.characters.includes(index)
+       ?"FREIGESCHALTET"
+       :char[1].toLocaleString()+" COINS"
+      }
+    </div>
 
-        if(unlocked){
+   `;
 
-            button.textContent=
-                playerData.character===index
-                ?"AKTIV"
-                :"AUSWÄHLEN";
+   const button=
+   document.createElement("button");
 
-            button.onclick=()=>{
+   const unlocked=
+   playerData.characters
+   .includes(index);
 
-                playerData.character=index;
+   if(unlocked){
 
-                save();
+    button.textContent=
+    playerData.character===index
+    ?"AKTIV"
+    :"AUSWÄHLEN";
 
-                charactersMenu();
-            };
+    button.onclick=()=>{
 
-        }else{
+     playerData.character=index;
 
-            button.textContent="KAUFEN";
+     charactersMenu();
 
-            button.onclick=()=>{
+    };
 
-                if(playerData.coins<char[1]){
-                    alert("Nicht genug Coins.");
-                    return;
-                }
+   }else{
 
-                playerData.coins-=char[1];
+    button.textContent="KAUFEN";
 
-                playerData.characters.push(index);
+    button.onclick=()=>{
 
-                playerData.character=index;
+     if(
+      playerData.coins<
+      char[1]
+     ){
 
-                save();
+      alert(
+       "Nicht genug Coins."
+      );
 
-                charactersMenu();
-            };
-        }
+      return;
 
-        card.appendChild(button);
+     }
 
-        list.appendChild(card);
-    });
+     playerData.coins-=char[1];
 
-    document
-        .getElementById("characters")
-        .classList.remove("hidden");
+     playerData.characters.push(index);
+
+     playerData.character=index;
+
+     charactersMenu();
+
+    };
+
+   }
+
+   card.appendChild(button);
+
+   list.appendChild(card);
+
+  }
+ );
+
+ document
+ .getElementById("characters")
+ .classList.remove("hidden");
+
 }
 
-
-/* =====================================================
-   STÄDTE
-===================================================== */
-
-function drawCityPreview(city){
-
-    let buildings="";
-
-    for(let i=0;i<7;i++){
-
-        const height=
-            25+Math.random()*45;
-
-        buildings+=`
-            <div class="building"
-                 style="
-                 left:${i*21}px;
-                 height:${height}px;
-                 background:${city.building};
-                 box-shadow:0 0 8px ${city.light};
-                 ">
-            </div>
-        `;
-    }
-
-    return `
-        <div class="cityPreview"
-             style="background:${city.sky}">
-             ${buildings}
-        </div>
-    `;
-}
-
+/* =========================================================
+   CITIES
+========================================================= */
 
 function citiesMenu(){
 
-    hideAll();
+ hideAll();
 
-    const list=
-        document.getElementById("cityList");
+ const list=
+ document.getElementById(
+  "cityList"
+ );
 
-    list.innerHTML="";
+ list.innerHTML="";
 
-    document
-        .getElementById("cityCoins")
-        .textContent=
-        playerData.coins.toLocaleString();
+ cityData.forEach(
+  (city,index)=>{
 
-    cityData.forEach((city,index)=>{
+   const card=
+   document.createElement("div");
 
-        const card=
-            document.createElement("div");
+   card.className="card";
 
-        card.className="card";
+   card.innerHTML=`
 
-        const unlocked=
-            playerData.cities.includes(index);
+    <div class="cityPreview ${city.className}">
 
-        card.innerHTML=`
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
 
-            <div class="preview">
-                ${drawCityPreview(city)}
-            </div>
+    </div>
 
-            <h3>${city.name}</h3>
+    <h3>${city.name}</h3>
 
-            <p>
-                ${city.min}–${city.max} Coins pro Münzgruppe
-            </p>
+    <div class="small">
+      ${city.min}–${city.max} Coins pro Gruppe
+    </div>
 
-            <p>
-                ${
-                    city.price===0
-                    ?"KOSTENLOS"
-                    :city.price.toLocaleString()+" Coins"
-                }
-            </p>
-        `;
+    <div class="small">
+      ${
+       city.price===0
+       ?"KOSTENLOS"
+       :city.price.toLocaleString()+" COINS"
+      }
+    </div>
 
-        const button=
-            document.createElement("button");
+   `;
 
-        if(unlocked){
+   const button=
+   document.createElement("button");
 
-            button.textContent=
-                playerData.city===index
-                ?"AKTIV"
-                :"AUSWÄHLEN";
+   const unlocked=
+   playerData.cities
+   .includes(index);
 
-            button.onclick=()=>{
+   if(unlocked){
 
-                playerData.city=index;
+    button.textContent=
+    playerData.city===index
+    ?"AKTIV"
+    :"AUSWÄHLEN";
 
-                save();
+    button.onclick=()=>{
 
-                citiesMenu();
-            };
+     playerData.city=index;
 
-        }else{
+     citiesMenu();
 
-            button.textContent="FREISCHALTEN";
+    };
 
-            button.onclick=()=>{
+   }else{
 
-                if(playerData.coins<city.price){
+    button.textContent="FREISCHALTEN";
 
-                    alert("Nicht genug Coins.");
+    button.onclick=()=>{
 
-                    return;
-                }
+     if(
+      playerData.coins<
+      city.price
+     ){
 
-                playerData.coins-=city.price;
+      alert(
+       "Nicht genug Coins."
+      );
 
-                playerData.cities.push(index);
+      return;
 
-                playerData.city=index;
+     }
 
-                save();
+     playerData.coins-=city.price;
 
-                citiesMenu();
-            };
-        }
+     playerData.cities.push(index);
 
-        card.appendChild(button);
+     playerData.city=index;
 
-        list.appendChild(card);
-    });
+     citiesMenu();
 
-    document
-        .getElementById("cities")
-        .classList.remove("hidden");
+    };
+
+   }
+
+   card.appendChild(button);
+
+   list.appendChild(card);
+
+  }
+ );
+
+ document
+ .getElementById("cities")
+ .classList.remove("hidden");
+
 }
 
-
-/* =====================================================
-   ADMIN CODES
-===================================================== */
+/* =========================================================
+   CODES
+========================================================= */
 
 function codeMenu(){
 
-    hideAll();
+ hideAll();
 
-    document.getElementById("secretCode").value="";
+ document
+ .getElementById("secretCode")
+ .value="";
 
-    document.getElementById("codeMsg").textContent="";
+ document
+ .getElementById("codeMsg")
+ .textContent="";
 
-    document
-        .getElementById("codes")
-        .classList.remove("hidden");
+ document
+ .getElementById("codes")
+ .classList.remove("hidden");
+
 }
 
+async function redeemCode(){
 
-function redeemCode(){
+ const code=
+ document
+ .getElementById("secretCode")
+ .value.trim();
 
-    const code=
-        document.getElementById("secretCode").value.trim();
+ const msg=
+ document.getElementById(
+  "codeMsg"
+ );
 
-    const msg=
-        document.getElementById("codeMsg");
+ if(code==="110"){
 
-    if(code==="110"){
+  playerData.highscore=1000000;
 
-        playerData.coins+=1000000;
+  playerData.cities=
+  cityData.map(
+   (_,i)=>i
+  );
 
-        playerData.highscore=
-            Math.max(playerData.highscore,1000000);
+  playerData.characters=
+  charData.map(
+   (_,i)=>i
+  );
 
-        playerData.characters=
-            charData.map((_,i)=>i);
+  playerData.coins=
+  Math.max(
+   playerData.coins,
+   1000000
+  );
 
-        playerData.cities=
-            cityData.map((_,i)=>i);
+  msg.textContent=
+  "Code 110 aktiviert: 1.000.000 Highscore + alle Städte.";
 
-        msg.textContent=
-            "Code 110 aktiviert.";
+ }
 
-    }else if(code==="112"){
+ else if(code==="112"){
 
-        playerData.coins+=50000;
+  playerData.highscore=500000;
 
-        playerData.highscore=
-            Math.max(playerData.highscore,500000);
+  playerData.cities=[
+   0,
+   1
+  ];
 
-        playerData.characters=[
-            0,1,2,3,4
-        ];
+  playerData.coins=
+  Math.max(
+   playerData.coins,
+   500000
+  );
 
-        playerData.cities=[
-            0,1
-        ];
+  msg.textContent=
+  "Code 112 aktiviert: 500.000 Highscore + 2 Städte.";
 
-        msg.textContent=
-            "Code 112 aktiviert.";
+ }
 
-    }else{
+ else{
 
-        msg.textContent=
-            "Falscher Code.";
-    }
+  msg.textContent=
+  "Falscher Code.";
 
-    document
-        .getElementById("secretCode")
-        .value="";
+  return;
 
-    save();
+ }
+
+ await saveOnlineScore();
+
 }
 
+/* =========================================================
+   ONLINE RANKING
+========================================================= */
 
-/* =====================================================
-   RANGLISTE
-===================================================== */
+async function rankingMenu(){
 
-function updateRankingStorage(){
+ hideAll();
 
-    let players=
-        JSON.parse(
-            localStorage.getItem("cubeRushPlayers")||"[]"
-        );
+ const list=
+ document.getElementById(
+  "rankingList"
+ );
 
-    const existing=
-        players.find(
-            p=>p.username===playerData.username
-        );
+ list.innerHTML=
+ "Rangliste wird geladen...";
 
-    if(existing){
+ const {
+  data,
+  error
+ }=
+ await supabaseClient
+ .from("Players")
+ .select("username,highscore")
+ .order("highscore",{
+  ascending:false
+ })
+ .limit(50);
 
-        existing.highscore=
-            playerData.highscore;
+ if(error){
 
-    }else{
+  list.innerHTML=
+  "Rangliste konnte nicht geladen werden.";
 
-        players.push({
-            username:playerData.username,
-            highscore:playerData.highscore
-        });
-    }
+  console.log(error);
 
-    players.sort(
-        (a,b)=>b.highscore-a.highscore
-    );
+ }else{
 
-    localStorage.setItem(
-        "cubeRushPlayers",
-        JSON.stringify(players)
-    );
+  list.innerHTML="";
+
+  if(!data.length){
+
+   list.textContent=
+   "Noch keine Spieler.";
+
+  }
+
+  data.forEach(
+   (p,index)=>{
+
+    const row=
+    document.createElement("div");
+
+    row.className="rank";
+
+    row.innerHTML=`
+
+     <span class="rankName">
+      #${index+1} ${escapeHTML(p.username)}
+     </span>
+
+     <span class="rankScore">
+      ${Number(p.highscore||0).toLocaleString()}
+     </span>
+
+    `;
+
+    list.appendChild(row);
+
+   }
+  );
+
+ }
+
+ document
+ .getElementById("ranking")
+ .classList.remove("hidden");
+
 }
 
+function escapeHTML(text){
 
-function rankingMenu(){
+ return String(text)
+ .replaceAll("&","&amp;")
+ .replaceAll("<","&lt;")
+ .replaceAll(">","&gt;")
+ .replaceAll('"',"&quot;")
+ .replaceAll("'","&#039;");
 
-    hideAll();
-
-    updateRankingStorage();
-
-    const list=
-        document.getElementById("rankingList");
-
-    list.innerHTML="";
-
-    let players=
-        JSON.parse(
-            localStorage.getItem("cubeRushPlayers")||"[]"
-        );
-
-    players.sort(
-        (a,b)=>b.highscore-a.highscore
-    );
-
-    players.slice(0,50).forEach((p,i)=>{
-
-        const row=
-            document.createElement("div");
-
-        row.className="rank";
-
-        row.innerHTML=`
-            <span>
-                ${i+1}. ${p.username}
-            </span>
-
-            <b>
-                ${p.highscore.toLocaleString()}
-            </b>
-        `;
-
-        list.appendChild(row);
-    });
-
-    document
-        .getElementById("ranking")
-        .classList.remove("hidden");
 }
 
-
-/* =====================================================
+/* =========================================================
    GAME
-===================================================== */
+========================================================= */
 
 const canvas=
-    document.getElementById("game");
+document.getElementById("game");
 
 const ctx=
-    canvas.getContext("2d");
+canvas.getContext("2d");
 
 function resize(){
 
-    canvas.width=innerWidth;
-    canvas.height=innerHeight;
+ canvas.width=innerWidth;
+ canvas.height=innerHeight;
+
 }
 
-addEventListener("resize",resize);
+addEventListener(
+ "resize",
+ resize
+);
 
 resize();
 
@@ -1044,1202 +1348,1215 @@ let objects=[];
 
 let speed=250;
 
-let last=performance.now();
+let last=
+performance.now();
 
 let magnet=0;
 let doubleCoins=0;
 
-let powerTimer=8;
-
-let coinTimer=0;
-let carTimer=0;
-
-
-/* =====================================================
-   STRASSENBREITE
-===================================================== */
+let powerTimer=5;
 
 function road(){
 
-    const width=
-        Math.min(innerWidth*.84,600);
+ const width=
+ Math.min(
+  innerWidth*.84,
+ 600
+ );
 
-    return{
-        left:(innerWidth-width)/2,
-        width
-    };
+ return{
+
+  left:
+  (innerWidth-width)/2,
+
+  width:width
+
+ };
+
 }
-
 
 function laneX(n){
 
-    const r=road();
+ const r=road();
 
-    return r.left+
-        r.width*(n+1.5)/3;
+ return r.left+
+ r.width*(n+0.5)/3;
+
 }
 
-
-/* =====================================================
-   SPIEL START
-===================================================== */
+/* =========================================================
+   GAME START
+========================================================= */
 
 function startGame(){
 
-    hideAll();
+ hideAll();
 
-    running=true;
-    paused=false;
+ running=true;
+ paused=false;
 
-    score=0;
-    runCoins=0;
+ score=0;
+ runCoins=0;
 
-    lane=0;
+ lane=0;
 
-    playerX=laneX(0);
+ playerX=
+ laneX(0);
 
-    objects=[];
+ objects=[];
 
-    speed=250;
+ speed=250;
 
-    magnet=0;
-    doubleCoins=0;
+ magnet=0;
+ doubleCoins=0;
 
-    powerTimer=8;
+ powerTimer=5;
 
-    coinTimer=.5;
-    carTimer=1;
+ document
+ .getElementById("hud")
+ .style.display="flex";
 
-    document
-        .getElementById("hud")
-        .style.display="flex";
+ document
+ .getElementById("pause")
+ .style.display="block";
 
-    document
-        .getElementById("pause")
-        .style.display="block";
+ last=
+ performance.now();
 
-    last=performance.now();
 }
 
-
-/* =====================================================
-   WELT ZEICHNEN
-===================================================== */
+/* =========================================================
+   WORLD
+========================================================= */
 
 function drawWorld(){
 
-    const r=road();
+ const city=
+ cityData[playerData.city];
 
-    const city=
-        cityData[playerData.city];
+ let top="#02040a";
+ let bottom="#030912";
 
-    /* HIMMEL */
+ if(city.name==="Tokyo Night"){
 
-    const gradient=
-        ctx.createLinearGradient(
-            0,0,
-            0,innerHeight
-        );
+  top="#19000e";
+  bottom="#050006";
 
-    gradient.addColorStop(
-        0,
-        city.sky
-    );
+ }
 
-    gradient.addColorStop(
-        1,
-        "#02040a"
-    );
+ if(city.name==="Cyber Dubai"){
 
-    ctx.fillStyle=gradient;
+  top="#2a1000";
+  bottom="#080400";
 
-    ctx.fillRect(
-        0,0,
-        innerWidth,
-        innerHeight
-    );
+ }
 
+ if(city.name==="Future New York"){
 
-    /* GEBÄUDE */
+  top="#06183b";
+  bottom="#020611";
 
-    const buildingColor=
-        city.building;
+ }
 
-    for(let side=0;side<2;side++){
+ if(city.name==="Galaxy City"){
 
-        for(let i=0;i<10;i++){
+  top="#16002f";
+  bottom="#02000a";
 
-            const w=
-                35+
-                ((i*17)%55);
+ }
 
-            const h=
-                80+
-                ((i*53)%180);
+ const gradient=
+ ctx.createLinearGradient(
+  0,0,
+  0,innerHeight
+ );
 
-            const x=
-                side===0
-                ?i*65-w
-                :innerWidth-i*65;
+ gradient.addColorStop(0,top);
+ gradient.addColorStop(1,bottom);
 
-            const y=
-                innerHeight*.45-h;
+ ctx.fillStyle=gradient;
 
-            ctx.fillStyle=
-                buildingColor;
+ ctx.fillRect(
+  0,0,
+  innerWidth,
+  innerHeight
+ );
 
-            ctx.fillRect(
-                x,
-                y,
-                w,
-                h
-            );
+ const r=road();
 
-            /* FENSTER */
+ ctx.fillStyle="#111820";
 
-            ctx.fillStyle=
-                city.light;
+ ctx.fillRect(
+  r.left,
+  0,
+  r.width,
+  innerHeight
+ );
 
-            for(
-                let wy=y+12;
-                wy<y+h-10;
-                wy+=20
-            ){
+ ctx.fillStyle=
+ city.name==="Tokyo Night"
+ ?" #ff236e"
+ :"#00eaff";
 
-                ctx.fillRect(
-                    x+8,
-                    wy,
-                    5,
-                    7
-                );
+ ctx.fillRect(
+  r.left,
+  0,
+  3,
+  innerHeight
+ );
 
-                if(w>45){
+ ctx.fillRect(
+  r.left+r.width-3,
+  0,
+  3,
+  innerHeight
+ );
 
-                    ctx.fillRect(
-                        x+w-15,
-                        wy,
-                        5,
-                        7
-                    );
-                }
-            }
-        }
-    }
+ const lw=
+ r.width/3;
 
+ const offset=
+ (score*7)%110;
 
-    /* STRASSE */
+ ctx.fillStyle="#ffffff66";
 
-    ctx.fillStyle=
-        city.road;
+ for(
+  let y=-110+offset;
+  y<innerHeight;
+  y+=110
+ ){
 
-    ctx.fillRect(
-        r.left,
-        0,
-        r.width,
-        innerHeight
-    );
+  ctx.fillRect(
+   r.left+lw-2,
+   y,
+   4,
+   58
+  );
 
+  ctx.fillRect(
+   r.left+lw*2-2,
+   y,
+   4,
+   58
+  );
 
-    /* STRASSENRAND */
+ }
 
-    ctx.fillStyle=
-        city.light;
-
-    ctx.fillRect(
-        r.left,
-        0,
-        3,
-        innerHeight
-    );
-
-    ctx.fillRect(
-        r.left+r.width-3,
-        0,
-        3,
-        innerHeight
-    );
-
-
-    /* SPUREN */
-
-    const lw=
-        r.width/3;
-
-    const offset=
-        (score*5)%100;
-
-    ctx.fillStyle="#ffffff55";
-
-    for(
-        let y=-100+offset;
-        y<innerHeight;
-        y+=100
-    ){
-
-        ctx.fillRect(
-            r.left+lw-2,
-            y,
-            4,
-            55
-        );
-
-        ctx.fillRect(
-            r.left+lw*2-2,
-            y,
-            4,
-            55
-        );
-    }
 }
 
-
-/* =====================================================
-   SPIELER
-===================================================== */
+/* =========================================================
+   PLAYER
+========================================================= */
 
 function drawPlayer(){
 
-    const y=
-        innerHeight*.74;
+ const y=
+ innerHeight*.78;
 
-    const char=
-        charData[playerData.character];
+ ctx.save();
 
-    ctx.save();
+ ctx.translate(
+  playerX,
+  y
+ );
 
-    ctx.translate(
-        playerX,
-        y
-    );
+ let color="#00eaff";
 
-    ctx.fillStyle=
-        char[2];
+ const c=
+ charData[playerData.character];
 
-    ctx.shadowColor=
-        char[2];
+ if(c){
 
-    ctx.shadowBlur=28;
+  const map={
+   blue:"#00eaff",
+   red:"#ff3158",
+   purple:"#9b4dff",
+   green:"#25ff9a",
+   gold:"#ffd400",
+   white:"#ffffff",
+   black:"#151820",
+   orange:"#ff7b22"
+  };
 
-    ctx.beginPath();
+  color=
+  map[c[2]]||
+  "#00eaff";
 
-    ctx.roundRect(
-        -28,
-        -28,
-        56,
-        56,
-        10
-    );
+ }
 
-    ctx.fill();
+ ctx.fillStyle=color;
+ ctx.shadowColor=color;
+ ctx.shadowBlur=25;
 
-    ctx.shadowBlur=0;
+ ctx.beginPath();
 
-    /* AUGEN */
+ ctx.roundRect(
+  -28,
+  -28,
+  56,
+  56,
+  9
+ );
 
-    ctx.fillStyle="#061018";
+ ctx.fill();
 
-    ctx.fillRect(
-        -17,
-        -13,
-        11,
-        7
-    );
+ ctx.shadowBlur=0;
 
-    ctx.fillRect(
-        6,
-        -13,
-        11,
-        7
-    );
+ ctx.fillStyle="#061018";
 
-    ctx.restore();
+ ctx.fillRect(
+  -17,
+  -14,
+  11,
+  7
+ );
+
+ ctx.fillRect(
+  6,
+  -14,
+  11,
+  7
+ );
+
+ ctx.restore();
+
 }
 
-
-/* =====================================================
-   AUTOS
-===================================================== */
+/* =========================================================
+   CARS
+========================================================= */
 
 function spawnCar(){
 
-    /*
-       WICHTIG:
-       Autos werden nur erzeugt,
-       wenn ausreichend Abstand
-       zu anderen Autos besteht.
-    */
+ /*
+  Autos werden nur erzeugt,
+  wenn die Spur weit genug vom
+  letzten Auto entfernt ist.
+ */
 
-    const availableLanes=[-1,0,1];
+ const possible=[-1,0,1]
+ .sort(()=>Math.random()-.5);
 
-    availableLanes.sort(
-        ()=>Math.random()-.5
-    );
+ for(const chosenLane of possible){
 
-    for(const selectedLane of availableLanes){
+  const sameLane=
+  objects.some(
+   o=>
+    o.type==="car" &&
+    o.lane===chosenLane &&
+    o.y<260
+  );
 
-        const tooClose=
-            objects.some(o=>
-                o.type==="car" &&
-                o.lane===selectedLane &&
-                o.y<220
-            );
+  if(sameLane)
+   continue;
 
-        if(tooClose) continue;
+  objects.push({
 
-        objects.push({
+   type:"car",
 
-            type:"car",
+   lane:chosenLane,
 
-            lane:selectedLane,
+   y:-180,
 
-            y:-150,
+   color:[
+    "#ff1744",
+    "#168cff",
+    "#ffffff",
+    "#ff9900",
+    "#8b4dff",
+    "#25d6c7"
+   ][
+    Math.floor(
+     Math.random()*6
+    )
+   ]
 
-            color:[
-                "#ff1744",
-                "#168cff",
-                "#ffffff",
-                "#ff9900",
-                "#8b4dff"
-            ][
-                Math.floor(Math.random()*5)
-            ]
-        });
+  });
 
-        return;
-    }
+  return;
+
+ }
+
 }
-
 
 function drawCar(car){
 
-    const x=
-        laneX(car.lane);
+ const x=
+ laneX(car.lane);
 
-    ctx.save();
+ ctx.save();
 
-    ctx.translate(
-        x,
-        car.y
-    );
+ ctx.translate(
+  x,
+  car.y
+ );
 
-    ctx.fillStyle=
-        car.color;
+ ctx.fillStyle=
+ car.color;
 
-    ctx.shadowColor=
-        car.color;
+ ctx.shadowColor=
+ car.color;
 
-    ctx.shadowBlur=18;
+ ctx.shadowBlur=18;
 
-    ctx.beginPath();
+ ctx.beginPath();
 
-    ctx.roundRect(
-        -32,
-        -50,
-        64,
-        100,
-        10
-    );
+ ctx.roundRect(
+  -32,
+  -58,
+  64,
+  116,
+  12
+ );
 
-    ctx.fill();
+ ctx.fill();
 
-    ctx.shadowBlur=0;
+ ctx.shadowBlur=0;
 
-    /* SCHEIBE */
+ ctx.fillStyle="#102331";
 
-    ctx.fillStyle="#102331";
+ ctx.beginPath();
 
-    ctx.beginPath();
+ ctx.roundRect(
+  -22,
+  -37,
+  44,
+  34,
+  8
+ );
 
-    ctx.roundRect(
-        -21,
-        -31,
-        42,
-        28,
-        7
-    );
+ ctx.fill();
 
-    ctx.fill();
+ ctx.fillStyle="#dffcff";
 
-    /* LICHTER */
+ ctx.fillRect(
+  -23,
+  31,
+  14,
+  7
+ );
 
-    ctx.fillStyle="#ffffff";
+ ctx.fillRect(
+  9,
+  31,
+  14,
+  7
+ );
 
-    ctx.fillRect(
-        -22,
-        28,
-        14,
-        7
-    );
+ ctx.restore();
 
-    ctx.fillRect(
-        8,
-        28,
-        14,
-        7
-    );
-
-    ctx.restore();
 }
 
-
-/* =====================================================
-   MÜNZEN
-===================================================== */
+/* =========================================================
+   COINS
+========================================================= */
 
 function spawnCoins(){
 
-    const city=
-        cityData[playerData.city];
+ const city=
+ cityData[playerData.city];
 
-    const amount=
-        city.min+
-        Math.floor(
-            Math.random()*
-            (
-                city.max-
-                city.min+
-                1
-            )
-        );
+ const amount=
+ city.min+
+ Math.floor(
+  Math.random()*
+  (
+   city.max-
+   city.min+
+   1
+  )
+ );
 
-    let selectedLane=
-        Math.floor(Math.random()*3)-1;
+ const randomLane=
+ Math.floor(
+  Math.random()*3
+ )-1;
 
-    /*
-       Münzen werden in mehreren Mustern erzeugt.
-    */
+ /*
+  Münzen werden in einer Reihe
+  mit Abstand erzeugt.
+ */
 
-    const pattern=
-        Math.floor(Math.random()*4);
+ for(
+  let i=0;
+  i<amount;
+  i++
+ ){
 
-    for(let i=0;i<amount;i++){
+  objects.push({
 
-        let coinLane=selectedLane;
+   type:"coin",
 
-        if(pattern===1){
+   lane:randomLane,
 
-            coinLane=
-                i%2===0
-                ?selectedLane
-                :Math.max(-1,
-                    Math.min(1,
-                        selectedLane+(i%3===0?1:-1)
-                    )
-                );
-        }
+   y:-40-i*72
 
-        if(pattern===2){
+  });
 
-            coinLane=
-                Math.max(
-                    -1,
-                    Math.min(
-                        1,
-                        selectedLane+
-                        Math.round(
-                            Math.sin(i)*1
-                        )
-                    )
-                );
-        }
+ }
 
-        if(pattern===3){
-
-            coinLane=
-                [-1,0,1][i%3];
-        }
-
-        /*
-           Münze darf nicht direkt
-           auf einem Auto landen.
-        */
-
-        const coinY=
-            -40-i*55;
-
-        const blocked=
-            objects.some(o=>
-                o.type==="car" &&
-                o.lane===coinLane &&
-                Math.abs(o.y-coinY)<150
-            );
-
-        if(!blocked){
-
-            objects.push({
-                type:"coin",
-                lane:coinLane,
-                y:coinY
-            });
-        }
-    }
 }
-
 
 function drawCoin(o,time){
 
-    let x=
-        laneX(o.lane);
+ let x=
+ laneX(o.lane);
 
-    let y=o.y;
+ let y=o.y;
 
-    if(magnet>0){
+ if(magnet>0){
 
-        x+=
-            (playerX-x)*.18;
+  x+=
+  (playerX-x)*.18;
 
-        y+=
-            (innerHeight*.74-y)*.18;
-    }
+  y+=
+  (innerHeight*.78-y)*.18;
 
-    const scale=
-        .55+
-        Math.abs(
-            Math.cos(time*.008)
-        )*.45;
+ }
 
-    ctx.save();
+ const rotation=
+ Math.cos(
+  time*.008
+ );
 
-    ctx.translate(
-        x,
-        y
-    );
+ ctx.save();
 
-    ctx.scale(
-        scale,
-        1
-    );
+ ctx.translate(
+  x,
+  y
+ );
 
-    ctx.fillStyle="#ffd900";
+ ctx.scale(
+  Math.abs(rotation)*.7+.3,
+  1
+ );
 
-    ctx.shadowColor="#ffd900";
+ ctx.fillStyle="#ffd900";
 
-    ctx.shadowBlur=20;
+ ctx.shadowColor="#ffd900";
 
-    ctx.beginPath();
+ ctx.shadowBlur=18;
 
-    ctx.arc(
-        0,
-        0,
-        15,
-        0,
-        Math.PI*2
-    );
+ ctx.beginPath();
 
-    ctx.fill();
+ ctx.arc(
+  0,
+  0,
+  14,
+  0,
+  Math.PI*2
+ );
 
-    ctx.fillStyle="#7a5200";
+ ctx.fill();
 
-    ctx.fillRect(
-        -4,
-        -8,
-        8,
-        16
-    );
+ ctx.shadowBlur=0;
 
-    ctx.restore();
+ ctx.fillStyle="#9b7200";
+
+ ctx.beginPath();
+
+ ctx.arc(
+  0,
+  0,
+  6,
+  0,
+  Math.PI*2
+ );
+
+ ctx.fill();
+
+ ctx.restore();
+
 }
 
-
-/* =====================================================
+/* =========================================================
    POWERUPS
-===================================================== */
+========================================================= */
 
 function spawnPower(){
 
-    objects.push({
+ objects.push({
 
-        type:
-            Math.random()<.5
-            ?"magnet"
-            :"double",
+  type:
+  Math.random()<.5
+  ?"magnet"
+  :"double",
 
-        lane:
-            Math.floor(Math.random()*3)-1,
+  lane:
+  Math.floor(
+   Math.random()*3
+  )-1,
 
-        y:-80
-    });
+  y:-80
+
+ });
+
 }
-
 
 function drawPower(o){
 
-    const x=
-        laneX(o.lane);
+ const x=
+ laneX(o.lane);
 
-    ctx.save();
+ ctx.save();
 
-    ctx.translate(
-        x,
-        o.y
-    );
+ ctx.translate(
+  x,
+  o.y
+ );
 
-    ctx.lineWidth=5;
+ ctx.fillStyle=
+ o.type==="magnet"
+ ?"rgba(0,234,255,.18)"
+ :"rgba(255,217,0,.18)";
 
-    ctx.strokeStyle=
-        o.type==="magnet"
-        ?"cyan"
-        :"yellow";
+ ctx.strokeStyle=
+ o.type==="magnet"
+ ?" #00eaff"
+ :"#ffd900";
 
-    ctx.shadowColor=
-        ctx.strokeStyle;
+ ctx.lineWidth=3;
 
-    ctx.shadowBlur=20;
+ ctx.beginPath();
 
-    if(o.type==="magnet"){
+ ctx.arc(
+  0,
+  0,
+  25,
+  0,
+  Math.PI*2
+ );
 
-        ctx.beginPath();
+ ctx.fill();
+ ctx.stroke();
 
-        ctx.arc(
-            0,
-            0,
-            20,
-            0,
-            Math.PI
-        );
+ ctx.fillStyle=
+ o.type==="magnet"
+ ?" #00eaff"
+ :"#ffd900";
 
-        ctx.stroke();
+ ctx.font="bold 22px Arial";
 
-        ctx.fillStyle="cyan";
+ ctx.textAlign="center";
+ ctx.textBaseline="middle";
 
-        ctx.fillRect(
-            -20,
-            -2,
-            8,
-            15
-        );
+ ctx.fillText(
+  o.type==="magnet"
+  ?"M"
+  :"x2",
+  0,
+  0
+ );
 
-        ctx.fillRect(
-            12,
-            -2,
-            8,
-            15
-        );
+ ctx.restore();
 
-    }else{
-
-        ctx.fillStyle="#ffe000";
-
-        ctx.font="bold 30px Arial";
-
-        ctx.textAlign="center";
-
-        ctx.textBaseline="middle";
-
-        ctx.fillText(
-            "x2",
-            0,
-            0
-        );
-    }
-
-    ctx.restore();
 }
 
-
-/* =====================================================
+/* =========================================================
    UPDATE
-===================================================== */
+========================================================= */
 
 function update(dt){
 
-    if(!running||paused) return;
+ if(!running||paused)
+  return;
+
+ const seconds=
+ dt/1000;
+
+ score+=
+ seconds*10;
 
-    const seconds=
-        dt/1000;
+ speed=
+ Math.min(
+  700,
+  speed+
+  seconds*4
+ );
 
-    score+=seconds*10;
+ playerX+=
+ (
+  laneX(lane)-
+  playerX
+ )*
+ Math.min(
+  1,
+  seconds*12
+ );
+
+ if(magnet>0)
+  magnet=
+  Math.max(
+   0,
+   magnet-seconds
+  );
+
+ if(doubleCoins>0)
+  doubleCoins=
+  Math.max(
+   0,
+   doubleCoins-seconds
+  );
 
-    speed=
-        Math.min(
-            700,
-            speed+seconds*4
-        );
+ updatePowerHUD();
 
+ powerTimer-=seconds;
 
-    playerX+=
-        (
-            laneX(lane)-playerX
-        )*
-        Math.min(
-            1,
-            seconds*12
-        );
+ if(powerTimer<=0){
 
+  spawnPower();
 
-    if(magnet>0)
-        magnet-=seconds;
+  powerTimer=
+  10+
+  Math.random()*8;
+
+ }
+
+ for(
+  let i=objects.length-1;
+  i>=0;
+  i--
+ ){
 
-    if(doubleCoins>0)
-        doubleCoins-=seconds;
+  const o=
+  objects[i];
 
+  o.y+=
+  speed*seconds;
 
-    /* POWER TIMER */
+  if(
+   o.y>
+   innerHeight+200
+  ){
 
-    powerTimer-=seconds;
+   objects.splice(i,1);
 
-    if(powerTimer<=0){
+   continue;
 
-        spawnPower();
+  }
 
-        powerTimer=
-            15+
-            Math.random()*15;
-    }
+  /* POWERUP */
 
+  if(
+   (
+    o.type==="magnet"||
+    o.type==="double"
+   )&&
+   Math.abs(
+    o.y-
+    innerHeight*.78
+   )<55&&
+   Math.abs(
+    laneX(o.lane)-
+    playerX
+   )<48
+  ){
 
-    /* MÜNZEN STÄNDIG */
+   if(o.type==="magnet")
+    magnet=30;
 
-    coinTimer-=seconds;
+   if(o.type==="double")
+    doubleCoins=30;
 
-    if(coinTimer<=0){
+   objects.splice(i,1);
 
-        spawnCoins();
+   continue;
 
-        coinTimer=
-            .8+
-            Math.random()*.9;
-    }
+  }
 
+  /* COIN */
 
-    /* AUTOS MIT ABSTAND */
+  if(
+   o.type==="coin"
+  ){
 
-    carTimer-=seconds;
+   if(magnet>0)
+    o.lane=lane;
 
-    if(carTimer<=0){
+   if(
+    Math.abs(
+     o.y-
+     innerHeight*.78
+    )<55&&
+    Math.abs(
+     laneX(o.lane)-
+     playerX
+    )<48
+   ){
 
-        spawnCar();
+    runCoins+=
+    doubleCoins>0
+    ?2
+    :1;
 
-        /*
-           Größerer Abstand bei hoher Geschwindigkeit.
-        */
+    objects.splice(i,1);
 
-        carTimer=
-            Math.max(
-                .75,
-                1.35-
-                speed/1200
-            );
-    }
+    continue;
 
+   }
 
-    /* OBJEKTE */
+  }
 
-    for(
-        let i=objects.length-1;
-        i>=0;
-        i--
-    ){
+  /* CAR */
 
-        const o=
-            objects[i];
+  if(
+   o.type==="car"&&
+   Math.abs(
+    o.y-
+    innerHeight*.78
+   )<70&&
+   Math.abs(
+    laneX(o.lane)-
+    playerX
+   )<48
+  ){
 
-        o.y+=
-            speed*seconds;
+   endGame();
 
+   return;
 
-        if(
-            o.y>
-            innerHeight+180
-        ){
+  }
 
-            objects.splice(i,1);
+ }
 
-            continue;
-        }
+ /*
+  Regelmäßige Autos.
+  Zusätzlich wird verhindert,
+  dass mehrere Autos zu dicht
+  nebeneinander entstehen.
+ */
 
+ if(
+  Math.random()<
+  dt/1000/1.25
+ ){
 
-        /* POWERUP */
+  spawnCar();
 
-        if(
-            (
-                o.type==="magnet"||
-                o.type==="double"
-            )&&
-            Math.abs(
-                o.y-
-                innerHeight*.74
-            )<55&&
-            Math.abs(
-                laneX(o.lane)-
-                playerX
-            )<48
-        ){
+ }
 
-            if(o.type==="magnet")
-                magnet=30;
+ /*
+  Münzen kommen sehr häufig.
+ */
 
-            if(o.type==="double")
-                doubleCoins=30;
+ if(
+  Math.random()<
+  dt/1000/.65
+ ){
 
-            objects.splice(i,1);
+  spawnCoins();
 
-            continue;
-        }
+ }
 
+ document
+ .getElementById("score")
+ .textContent=
+ Math.floor(score)
+ .toLocaleString();
 
-        /* MAGNET */
+ document
+ .getElementById("coins")
+ .textContent=
+ (
+  playerData.coins+
+  runCoins
+ ).toLocaleString();
 
-        if(
-            o.type==="coin"&&
-            magnet>0
-        ){
+ document
+ .getElementById("cityName")
+ .textContent=
+ cityData[
+  playerData.city
+ ].name;
 
-            o.lane=lane;
-        }
-
-
-        /* COIN */
-
-        if(
-            o.type==="coin"&&
-            Math.abs(
-                o.y-
-                innerHeight*.74
-            )<50&&
-            Math.abs(
-                laneX(o.lane)-
-                playerX
-            )<48
-        ){
-
-            runCoins+=
-                doubleCoins>0
-                ?2
-                :1;
-
-            objects.splice(i,1);
-
-            continue;
-        }
-
-
-        /* AUTO */
-
-        if(
-            o.type==="car"&&
-            Math.abs(
-                o.y-
-                innerHeight*.74
-            )<65&&
-            Math.abs(
-                laneX(o.lane)-
-                playerX
-            )<45
-        ){
-
-            endGame();
-
-            return;
-        }
-    }
-
-
-    /* HUD */
-
-    document
-        .getElementById("score")
-        .textContent=
-        Math.floor(score).toLocaleString();
-
-    document
-        .getElementById("coins")
-        .textContent=
-        (
-            playerData.coins+
-            runCoins
-        ).toLocaleString();
-
-    document
-        .getElementById("cityName")
-        .textContent=
-        cityData[playerData.city].name;
-
-
-    let powers=[];
-
-    if(magnet>0)
-        powers.push(
-            "MAGNET "+Math.ceil(magnet)+"s"
-        );
-
-    if(doubleCoins>0)
-        powers.push(
-            "COINS x2 "+Math.ceil(doubleCoins)+"s"
-        );
-
-    document
-        .getElementById("powerHud")
-        .textContent=
-        powers.join(" | ");
 }
 
+function updatePowerHUD(){
 
-/* =====================================================
-   GAME LOOP
-===================================================== */
+ const hud=
+ document.getElementById(
+  "powerHUD"
+ );
+
+ const magnetHUD=
+ document.getElementById(
+  "magnetHUD"
+ );
+
+ const doubleHUD=
+ document.getElementById(
+  "doubleHUD"
+ );
+
+ if(magnet>0){
+
+  hud.style.display="flex";
+
+  magnetHUD.classList.remove(
+   "hidden"
+  );
+
+  document
+  .getElementById("magnetTime")
+  .textContent=
+  Math.ceil(magnet);
+
+ }else{
+
+  magnetHUD.classList.add(
+   "hidden"
+  );
+
+ }
+
+ if(doubleCoins>0){
+
+  hud.style.display="flex";
+
+  doubleHUD.classList.remove(
+   "hidden"
+  );
+
+  document
+  .getElementById("doubleTime")
+  .textContent=
+  Math.ceil(doubleCoins);
+
+ }else{
+
+  doubleHUD.classList.add(
+   "hidden"
+  );
+
+ }
+
+ if(
+  magnet<=0&&
+  doubleCoins<=0
+ ){
+
+  hud.style.display="none";
+
+ }
+
+}
+
+/* =========================================================
+   LOOP
+========================================================= */
 
 function loop(time){
 
-    const dt=
-        Math.min(
-            40,
-            time-last
-        );
+ const dt=
+ Math.min(
+  40,
+  time-last
+ );
 
-    last=time;
+ last=time;
 
-    drawWorld();
+ drawWorld();
 
-    objects.forEach(o=>{
+ objects.forEach(o=>{
 
-        if(o.type==="car")
-            drawCar(o);
+  if(o.type==="car")
+   drawCar(o);
 
-        else if(o.type==="coin")
-            drawCoin(o,time);
+  else if(o.type==="coin")
+   drawCoin(o,time);
 
-        else
-            drawPower(o);
-    });
+  else
+   drawPower(o);
 
-    drawPlayer();
+ });
 
-    update(dt);
+ drawPlayer();
 
-    requestAnimationFrame(loop);
+ update(dt);
+
+ requestAnimationFrame(loop);
+
 }
 
 requestAnimationFrame(loop);
 
-
-/* =====================================================
-   STEUERUNG
-===================================================== */
+/* =========================================================
+   CONTROLS
+========================================================= */
 
 document.addEventListener(
-    "keydown",
-    e=>{
+ "keydown",
+ e=>{
 
-        if(!running||paused)
-            return;
+  if(!running||paused)
+   return;
 
-        if(e.key==="ArrowLeft"){
+  if(e.key==="ArrowLeft"){
 
-            lane=
-                Math.max(
-                    -1,
-                    lane-1
-                );
-        }
+   lane=
+   Math.max(
+    -1,
+    lane-1
+   );
 
-        if(e.key==="ArrowRight"){
+  }
 
-            lane=
-                Math.min(
-                    1,
-                    lane+1
-                );
-        }
-    }
+  if(e.key==="ArrowRight"){
+
+   lane=
+   Math.min(
+    1,
+    lane+1
+   );
+
+  }
+
+ }
 );
 
-
-let touchStart=0;
+let touchStartX=0;
 
 canvas.addEventListener(
-    "touchstart",
-    e=>{
+ "touchstart",
+ e=>{
 
-        if(!running||paused)
-            return;
+  if(!running||paused)
+   return;
 
-        touchStart=
-            e.changedTouches[0].clientX;
-    },
-    {passive:true}
+  touchStartX=
+  e.changedTouches[0]
+  .clientX;
+
+ },
+ {passive:true}
 );
-
 
 canvas.addEventListener(
-    "touchend",
-    e=>{
+ "touchend",
+ e=>{
 
-        if(!running||paused)
-            return;
+  if(!running||paused)
+   return;
 
-        const end=
-            e.changedTouches[0].clientX;
+  const end=
+  e.changedTouches[0]
+  .clientX;
 
-        const difference=
-            end-touchStart;
+  const diff=
+  end-touchStartX;
 
-        if(
-            Math.abs(difference)<30
-        )
-            return;
+  if(
+   Math.abs(diff)<30
+  )
+   return;
 
-        if(difference>0){
+  if(diff>0){
 
-            lane=
-                Math.min(
-                    1,
-                    lane+1
-                );
+   lane=
+   Math.min(
+    1,
+    lane+1
+   );
 
-        }else{
+  }else{
 
-            lane=
-                Math.max(
-                    -1,
-                    lane-1
-                );
-        }
-    },
-    {passive:true}
+   lane=
+   Math.max(
+    -1,
+    lane-1
+   );
+
+  }
+
+ },
+ {passive:true}
 );
 
-
-/* =====================================================
+/* =========================================================
    PAUSE
-===================================================== */
+========================================================= */
 
 document
-    .getElementById("pause")
-    .onclick=()=>{
+.getElementById("pause")
+.onclick=()=>{
 
-        if(!running)
-            return;
+ if(!running)
+  return;
 
-        paused=true;
+ paused=true;
 
-        document
-            .getElementById("pause")
-            .style.display="none";
+ document
+ .getElementById("pause")
+ .style.display="none";
 
-        document
-            .getElementById("pauseScreen")
-            .classList.remove("hidden");
-    };
+ document
+ .getElementById("pauseScreen")
+ .classList.remove(
+  "hidden"
+ );
 
+};
 
 function resumeGame(){
 
-    paused=false;
+ paused=false;
 
-    document
-        .getElementById("pauseScreen")
-        .classList.add("hidden");
+ document
+ .getElementById("pauseScreen")
+ .classList.add(
+  "hidden"
+ );
 
-    document
-        .getElementById("pause")
-        .style.display="block";
+ document
+ .getElementById("pause")
+ .style.display="block";
 
-    last=performance.now();
+ last=
+ performance.now();
+
 }
-
 
 function quitGame(){
 
-    running=false;
+ running=false;
 
-    document
-        .getElementById("pauseScreen")
-        .classList.add("hidden");
+ document
+ .getElementById("pauseScreen")
+ .classList.add(
+  "hidden"
+ );
 
-    document
-        .getElementById("hud")
-        .style.display="none";
+ document
+ .getElementById("hud")
+ .style.display="none";
 
-    document
-        .getElementById("pause")
-        .style.display="none";
+ document
+ .getElementById("powerHUD")
+ .style.display="none";
 
-    showMenu();
+ showMenu();
+
 }
 
-
-/* =====================================================
+/* =========================================================
    GAME OVER
-===================================================== */
+========================================================= */
 
-function endGame(){
+async function endGame(){
 
-    if(!running)
-        return;
+ if(!running)
+  return;
 
-    running=false;
+ running=false;
 
-    playerData.coins+=runCoins;
+ playerData.coins+=
+ runCoins;
 
-    const finalScore=
-        Math.floor(score);
+ const finalScore=
+ Math.floor(score);
 
-    if(
-        finalScore>
-        playerData.highscore
-    ){
+ if(
+  finalScore>
+  playerData.highscore
+ ){
 
-        playerData.highscore=
-            finalScore;
-    }
+  playerData.highscore=
+  finalScore;
 
-    save();
+ }
 
-    document
-        .getElementById("hud")
-        .style.display="none";
+ await saveOnlineScore();
 
-    document
-        .getElementById("pause")
-        .style.display="none";
+ document
+ .getElementById("hud")
+ .style.display="none";
 
-    document
-        .getElementById("gameOverText")
-        .innerHTML=`
+ document
+ .getElementById("pause")
+ .style.display="none";
 
-        <p>
-            SCORE:
-            <b>${finalScore.toLocaleString()}</b>
-        </p>
+ document
+ .getElementById("powerHUD")
+ .style.display="none";
 
-        <p>
-            COINS:
-            <b>${runCoins.toLocaleString()}</b>
-        </p>
+ document
+ .getElementById("gameOverText")
+ .innerHTML=`
 
-        <p>
-            HIGHSCORE:
-            <b>${playerData.highscore.toLocaleString()}</b>
-        </p>
+  <p>
+   SCORE:
+   <b>${finalScore.toLocaleString()}</b>
+  </p>
 
-        `;
+  <p>
+   COINS:
+   <b>${runCoins.toLocaleString()}</b>
+  </p>
 
-    document
-        .getElementById("gameOver")
-        .classList.remove("hidden");
+  <p>
+   HIGHSCORE:
+   <b>${playerData.highscore.toLocaleString()}</b>
+  </p>
+
+ `;
+
+ document
+ .getElementById("gameOver")
+ .classList.remove(
+  "hidden"
+ );
+
 }
-
 
 function restartGame(){
 
-    document
-        .getElementById("gameOver")
-        .classList.add("hidden");
+ document
+ .getElementById("gameOver")
+ .classList.add(
+  "hidden"
+ );
 
-    startGame();
-}
-
-
-/* =====================================================
-   START
-===================================================== */
-
-if(load()){
-
-    showMenu();
+ startGame();
 
 }
+
+/* =========================================================
+   STARTUP
+========================================================= */
+
+async function init(){
+
+ const {
+  data
+ }=
+ await supabaseClient.auth.getSession();
+
+ if(data.session){
+
+  playerData.id=
+  data.session.user.id;
+
+  playerData.email=
+  data.session.user.email||"";
+
+  await loadOnlinePlayer();
+
+  if(!playerData.username){
+
+   playerData.username=
+   data.session.user.user_metadata
+   ?.username||
+   "Spieler";
+
+  }
+
+  showMenu();
+
+ }
+
+}
+
+init();
 
 </script>
 
