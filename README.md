@@ -3,9 +3,11 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0, user-scalable=no">
 
-<title>City Runner 3D</title>
+<title>Runner 3D</title>
 
 <style>
 * {
@@ -18,118 +20,160 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    background: #79c9ff;
     font-family: Arial, sans-serif;
-    background: #87ceeb;
     touch-action: none;
 }
 
 canvas {
     display: block;
+    width: 100%;
+    height: 100%;
 }
 
-#menu,
-#gameover {
+#hud {
+    position: fixed;
+    top: 14px;
+    left: 12px;
+    right: 12px;
+    z-index: 5;
+
+    display: none;
+    justify-content: space-between;
+
+    pointer-events: none;
+}
+
+.hudBox {
+    padding: 9px 13px;
+    border-radius: 12px;
+
+    color: white;
+    background: rgba(0,0,0,.58);
+
+    font-weight: bold;
+    font-size: 15px;
+
+    text-shadow: 0 2px 3px black;
+}
+
+.screen {
     position: fixed;
     inset: 0;
-    z-index: 100;
+    z-index: 10;
+
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+
     color: white;
     text-align: center;
-    background: rgba(0,0,0,0.65);
+
+    background: rgba(0,0,0,.52);
 }
 
-#gameover {
-    display: none;
+.hidden {
+    display: none !important;
 }
 
 h1 {
     font-size: 42px;
     margin-bottom: 15px;
+    text-shadow: 0 4px 10px black;
 }
 
-p {
-    margin: 5px;
+.info {
+    line-height: 1.7;
 }
 
 button {
-    margin-top: 18px;
-    padding: 15px 30px;
+    margin-top: 22px;
+
     border: none;
-    border-radius: 14px;
-    background: #ffd400;
+    border-radius: 15px;
+
+    padding: 15px 30px;
+
+    background: #ffd000;
     color: #111;
+
     font-size: 18px;
     font-weight: bold;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,.35);
 }
 
 button:active {
     transform: scale(.94);
-}
-
-#hud {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    right: 15px;
-    z-index: 50;
-
-    display: none;
-    justify-content: space-between;
-
-    color: white;
-    font-size: 17px;
-    font-weight: bold;
-}
-
-.box {
-    padding: 9px 13px;
-    border-radius: 12px;
-    background: rgba(0,0,0,.55);
-}
-
-#loading {
-    margin-top: 15px;
-    color: #ffd400;
 }
 </style>
 </head>
 
 <body>
 
+<canvas id="game"></canvas>
+
+<!-- HUD -->
+
 <div id="hud">
-    <div class="box">🪙 <span id="coins">0</span></div>
-    <div class="box">🏆 <span id="score">0</span></div>
-    <div class="box">⭐ <span id="highscore">0</span></div>
+
+    <div class="hudBox">
+        🪙 <span id="coins">0</span>
+    </div>
+
+    <div class="hudBox">
+        🏆 <span id="score">0</span>
+    </div>
+
+    <div class="hudBox">
+        ⭐ <span id="highscore">0</span>
+    </div>
+
 </div>
 
-<div id="menu">
 
-    <h1>🏃 CITY RUNNER</h1>
+<!-- START -->
 
-    <p>⬅️ Nach links wischen</p>
-    <p>➡️ Nach rechts wischen</p>
-    <p>⬆️ Nach oben wischen = Springen</p>
+<div id="menu" class="screen">
 
-    <button id="startButton">
+    <h1>🏃 RUNNER 3D</h1>
+
+    <div class="info">
+        ⬅️ Nach links wischen<br>
+        ➡️ Nach rechts wischen<br>
+        ⬆️ Nach oben wischen = Springen
+    </div>
+
+    <button id="start">
         SPIEL STARTEN
     </button>
 
-    <div id="loading"></div>
-
 </div>
 
-<div id="gameover">
+
+<!-- GAME OVER -->
+
+<div id="gameover" class="screen hidden">
 
     <h1>💥 GAME OVER</h1>
 
-    <p>Punkte: <b id="finalScore">0</b></p>
-    <p>Münzen: <b id="finalCoins">0</b></p>
-    <p>Highscore: <b id="finalHighscore">0</b></p>
+    <p>
+        Punkte:
+        <b id="endScore">0</b>
+    </p>
 
-    <button id="restartButton">
+    <p>
+        Münzen:
+        <b id="endCoins">0</b>
+    </p>
+
+    <p>
+        Highscore:
+        <b id="endHighscore">0</b>
+    </p>
+
+    <button id="restart">
         NOCHMAL SPIELEN
     </button>
 
@@ -139,53 +183,94 @@ button:active {
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
 
 <script>
 
-let scene;
-let camera;
-let renderer;
+/* =====================================================
+   GRUNDSETUP
+===================================================== */
 
-let player;
+const canvas =
+    document.getElementById("game");
+
+const ctx =
+    canvas.getContext("2d");
+
+let W;
+let H;
+let DPR;
+
+
+/* =====================================================
+   SPEICHER
+===================================================== */
+
+let highscore =
+    Number(
+        localStorage.getItem("runnerHighscore")
+    ) || 0;
+
+let savedCoins =
+    Number(
+        localStorage.getItem("runnerCoins")
+    ) || 0;
+
+
+/* =====================================================
+   SPIELVARIABLEN
+===================================================== */
 
 let running = false;
 
-let lane = 1;
-
-const lanes = [-3, 0, 3];
-
-let targetX = 0;
-
-let playerY = 0;
-let velocityY = 0;
-
-const gravity = -0.035;
-const jumpPower = 0.7;
-
-let speed = 0.45;
-
 let score = 0;
-let coins = 0;
+let currentCoins = 0;
 
-let highscore =
-    Number(localStorage.getItem("runnerHighscore")) || 0;
 
-let totalCoins =
-    Number(localStorage.getItem("runnerCoins")) || 0;
+/*
+   -1 = links
+    0 = mitte
+    1 = rechts
+*/
+
+let lane = 0;
+
+let playerLane = 0;
+let targetLane = 0;
+
+
+/* Springen */
+
+let playerJump = 0;
+let jumpVelocity = 0;
+
+const JUMP_FORCE = 0.018;
+const GRAVITY = 0.000055;
+
+
+/* Geschwindigkeit */
+
+let speed = 0.00022;
+
+const START_SPEED = 0.00022;
+const MAX_SPEED = 0.00048;
+
+
+/* Objekte */
 
 let obstacles = [];
 let coinObjects = [];
-let roadPieces = [];
 
-let spawnTimer = 0;
+
+/* Zeit */
+
+let lastTime = 0;
+let obstacleTimer = 0;
 let coinTimer = 0;
-let roadDistance = 0;
 
 
-/* =========================
+/* =====================================================
    ELEMENTE
-========================= */
+===================================================== */
 
 const menu =
     document.getElementById("menu");
@@ -196,539 +281,1214 @@ const gameover =
 const hud =
     document.getElementById("hud");
 
-const startButton =
-    document.getElementById("startButton");
 
-const restartButton =
-    document.getElementById("restartButton");
+/* =====================================================
+   CANVAS
+===================================================== */
 
-const menuButton =
-    document.getElementById("menuButton");
+function resize() {
 
-const loading =
-    document.getElementById("loading");
-
-
-/* =========================
-   START BUTTON
-========================= */
-
-startButton.addEventListener("click", function() {
-
-    startGame();
-
-});
-
-
-restartButton.addEventListener("click", function() {
-
-    startGame();
-
-});
-
-
-menuButton.addEventListener("click", function() {
-
-    gameover.style.display = "none";
-    menu.style.display = "flex";
-    hud.style.display = "none";
-
-});
-
-
-/* =========================
-   THREE.JS STARTEN
-========================= */
-
-if (typeof THREE === "undefined") {
-
-    loading.textContent =
-        "3D konnte nicht geladen werden.";
-
-} else {
-
-    createGame();
-
-}
-
-
-/* =========================
-   SPIEL ERSTELLEN
-========================= */
-
-function createGame() {
-
-    scene = new THREE.Scene();
-
-    scene.background =
-        new THREE.Color(0x87ceeb);
-
-    scene.fog =
-        new THREE.Fog(
-            0x87ceeb,
-            30,
-            160
-        );
-
-
-    camera =
-        new THREE.PerspectiveCamera(
-            65,
-            window.innerWidth /
-            window.innerHeight,
-            0.1,
-            500
-        );
-
-    camera.position.set(
-        0,
-        5,
-        11
-    );
-
-
-    renderer =
-        new THREE.WebGLRenderer({
-            antialias: true
-        });
-
-    renderer.setSize(
-        window.innerWidth,
-        window.innerHeight
-    );
-
-    renderer.setPixelRatio(
+    DPR =
         Math.min(
-            window.devicePixelRatio,
-            2
-        )
-    );
-
-    renderer.shadowMap.enabled = true;
-
-    document.body.appendChild(
-        renderer.domElement
-    );
-
-
-    createLights();
-
-    createPlayer();
-
-    createRoad();
-
-    setupControls();
-
-    window.addEventListener(
-        "resize",
-        resize
-    );
-
-    updateHUD();
-
-    animate();
-
-}
-
-
-/* =========================
-   LICHT
-========================= */
-
-function createLights() {
-
-    const ambient =
-        new THREE.HemisphereLight(
-            0xffffff,
-            0x444444,
+            window.devicePixelRatio || 1,
             2
         );
 
-    scene.add(ambient);
+    W =
+        window.innerWidth;
 
+    H =
+        window.innerHeight;
 
-    const sun =
-        new THREE.DirectionalLight(
-            0xffffff,
-            2.5
-        );
+    canvas.width =
+        W * DPR;
 
-    sun.position.set(
-        20,
-        30,
-        20
+    canvas.height =
+        H * DPR;
+
+    canvas.style.width =
+        W + "px";
+
+    canvas.style.height =
+        H + "px";
+
+    ctx.setTransform(
+        DPR,
+        0,
+        0,
+        DPR,
+        0,
+        0
     );
+}
 
-    sun.castShadow = true;
+window.addEventListener(
+    "resize",
+    resize
+);
 
-    scene.add(sun);
+resize();
 
+
+/* =====================================================
+   PERSPEKTIVE
+===================================================== */
+
+/*
+   Der Horizont bleibt immer an derselben Stelle.
+   Die Straße bewegt sich NICHT als Ganzes.
+
+   z = 1  -> weit entfernt
+   z = 0  -> beim Spieler
+*/
+
+const horizon =
+    0.42;
+
+function roadHorizon() {
+    return H * horizon;
 }
 
 
-/* =========================
-   SPIELER
-========================= */
+/*
+   Position eines Objektes
+*/
 
-function createPlayer() {
+function project(z) {
 
-    player =
-        new THREE.Group();
+    /*
+       z wird zwischen 0 und 1 gehalten.
+    */
 
+    const depth =
+        1 - z;
 
-    const bodyMaterial =
-        new THREE.MeshStandardMaterial({
-            color: 0x1769ff
-        });
+    const y =
+        roadHorizon() +
+        depth *
+        (H * 0.50);
 
+    /*
+       Je näher das Objekt kommt,
+       desto größer wird es.
+    */
 
-    const skinMaterial =
-        new THREE.MeshStandardMaterial({
-            color: 0xffc49a
-        });
+    const scale =
+        0.12 +
+        depth * 1.15;
 
-
-    const body =
-        new THREE.Mesh(
-            new THREE.BoxGeometry(
-                1.1,
-                1.6,
-                .7
-            ),
-            bodyMaterial
-        );
-
-    body.position.y = 1.5;
-
-    body.castShadow = true;
-
-    player.add(body);
-
-
-    const head =
-        new THREE.Mesh(
-            new THREE.SphereGeometry(
-                .45,
-                20,
-                20
-            ),
-            skinMaterial
-        );
-
-    head.position.y = 2.6;
-
-    head.castShadow = true;
-
-    player.add(head);
-
-
-    const legGeometry =
-        new THREE.BoxGeometry(
-            .32,
-            1,
-            .4
-        );
-
-
-    const leg1 =
-        new THREE.Mesh(
-            legGeometry,
-            bodyMaterial
-        );
-
-    leg1.position.set(
-        -.3,
-        .5,
-        0
-    );
-
-    player.add(leg1);
-
-
-    const leg2 =
-        new THREE.Mesh(
-            legGeometry,
-            bodyMaterial
-        );
-
-    leg2.position.set(
-        .3,
-        .5,
-        0
-    );
-
-    player.add(leg2);
-
-
-    player.position.set(
-        0,
-        0,
-        5
-    );
-
-    scene.add(player);
-
+    return {
+        y: y,
+        scale: scale
+    };
 }
 
 
-/* =========================
+/* =====================================================
+   HIMMEL
+===================================================== */
+
+function drawSky() {
+
+    const gradient =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            H
+        );
+
+    gradient.addColorStop(
+        0,
+        "#4db8ff"
+    );
+
+    gradient.addColorStop(
+        0.45,
+        "#a9e4ff"
+    );
+
+    gradient.addColorStop(
+        1,
+        "#e9f8ff"
+    );
+
+    ctx.fillStyle =
+        gradient;
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+}
+
+
+/* =====================================================
+   STADT
+===================================================== */
+
+function drawCity() {
+
+    const hy =
+        roadHorizon();
+
+    const buildings = [
+
+        [0.01, 75, 140],
+        [0.10, 100, 180],
+        [0.23, 70, 120],
+
+        [0.73, 80, 140],
+        [0.84, 105, 185],
+        [0.96, 75, 130]
+
+    ];
+
+
+    buildings.forEach(
+        function(building, index) {
+
+            const x =
+                W * building[0];
+
+            const width =
+                building[1];
+
+            const height =
+                building[2];
+
+
+            ctx.fillStyle =
+                index % 2 === 0
+                ? "#69737e"
+                : "#56616c";
+
+
+            ctx.fillRect(
+                x,
+                hy - height,
+                width,
+                height
+            );
+
+
+            /* Fenster */
+
+            ctx.fillStyle =
+                "rgba(255,220,100,.65)";
+
+
+            for (
+                let y =
+                    hy - height + 15;
+                y <
+                    hy - 10;
+                y += 20
+            ) {
+
+                for (
+                    let xx =
+                        x + 10;
+                    xx <
+                        x + width - 8;
+                    xx += 18
+                ) {
+
+                    ctx.fillRect(
+                        xx,
+                        y,
+                        6,
+                        9
+                    );
+                }
+            }
+
+        }
+    );
+}
+
+
+/* =====================================================
    STRASSE
-========================= */
+===================================================== */
 
-function createRoad() {
+function drawRoad() {
 
-    for (
-        let i = 0;
-        i < 40;
-        i++
-    ) {
+    const hy =
+        roadHorizon();
 
-        createRoadPiece(
-            -i * 8
-        );
+    /*
+       Hintergrund / Gras
+    */
 
-    }
+    ctx.fillStyle =
+        "#4d9a48";
 
-}
-
-
-/* =========================
-   STRASSENTEIL
-========================= */
-
-function createRoadPiece(z) {
-
-    const road =
-        new THREE.Mesh(
-            new THREE.BoxGeometry(
-                11,
-                .2,
-                8
-            ),
-            new THREE.MeshStandardMaterial({
-                color: 0x333333
-            })
-        );
-
-    road.position.set(
+    ctx.fillRect(
         0,
-        -.1,
-        z
+        hy,
+        W,
+        H - hy
     );
 
-    road.receiveShadow = true;
 
-    scene.add(road);
+    /*
+       Straße
+    */
 
-    roadPieces.push(road);
+    ctx.fillStyle =
+        "#303238";
 
+    ctx.beginPath();
+
+    ctx.moveTo(
+        W * 0.43,
+        hy
+    );
+
+    ctx.lineTo(
+        W * 0.57,
+        hy
+    );
+
+    ctx.lineTo(
+        W * 0.98,
+        H
+    );
+
+    ctx.lineTo(
+        W * 0.02,
+        H
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /*
+       Straßenränder
+    */
+
+    ctx.strokeStyle =
+        "#eeeeee";
+
+    ctx.lineWidth = 5;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        W * 0.43,
+        hy
+    );
+
+    ctx.lineTo(
+        W * 0.02,
+        H
+    );
+
+    ctx.moveTo(
+        W * 0.57,
+        hy
+    );
+
+    ctx.lineTo(
+        W * 0.98,
+        H
+    );
+
+    ctx.stroke();
+
+
+    /*
+       Spur links
+    */
+
+    drawLaneLine(
+        0.43,
+        0.33
+    );
+
+
+    /*
+       Spur rechts
+    */
+
+    drawLaneLine(
+        0.57,
+        0.67
+    );
 }
 
 
-/* =========================
-   HINDERNIS
-========================= */
+function drawLaneLine(
+    topPercent,
+    bottomPercent
+) {
+
+    const hy =
+        roadHorizon();
+
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,.65)";
+
+    ctx.lineWidth = 3;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        W * topPercent,
+        hy
+    );
+
+    ctx.lineTo(
+        W * bottomPercent,
+        H
+    );
+
+    ctx.stroke();
+}
+
+
+/* =====================================================
+   SPUR X POSITION
+===================================================== */
+
+function laneX(
+    laneValue,
+    z
+) {
+
+    /*
+       Bei z=1:
+       alle Spuren liegen dicht zusammen.
+
+       Bei z=0:
+       Spuren sind weit auseinander.
+    */
+
+    const perspective =
+        1 - z;
+
+    return (
+        W / 2 +
+        laneValue *
+        W *
+        0.22 *
+        perspective
+    );
+}
+
+
+/* =====================================================
+   SPIELER
+===================================================== */
+
+function drawPlayer() {
+
+    /*
+       Spieler bleibt unten.
+    */
+
+    const x =
+        W / 2 +
+        playerLane *
+        W *
+        0.22;
+
+
+    const groundY =
+        H * 0.80;
+
+
+    const y =
+        groundY -
+        playerJump *
+        H *
+        0.30;
+
+
+    /*
+       Schatten
+    */
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.32)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        x,
+        groundY + 30,
+        32,
+        10,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /*
+       Beine
+    */
+
+    ctx.fillStyle =
+        "#123b9b";
+
+    ctx.fillRect(
+        x - 17,
+        y + 10,
+        13,
+        48
+    );
+
+    ctx.fillRect(
+        x + 5,
+        y + 10,
+        13,
+        48
+    );
+
+
+    /*
+       Körper
+    */
+
+    ctx.fillStyle =
+        "#1670ff";
+
+    ctx.fillRect(
+        x - 29,
+        y - 58,
+        58,
+        70
+    );
+
+
+    /*
+       Arme
+    */
+
+    ctx.fillStyle =
+        "#1260e0";
+
+    ctx.fillRect(
+        x - 42,
+        y - 50,
+        12,
+        50
+    );
+
+    ctx.fillRect(
+        x + 30,
+        y - 50,
+        12,
+        50
+    );
+
+
+    /*
+       Kopf
+    */
+
+    ctx.fillStyle =
+        "#ffc49a";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y - 82,
+        23,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /*
+       Haare
+    */
+
+    ctx.fillStyle =
+        "#222";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y - 91,
+        22,
+        Math.PI,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+}
+
+
+/* =====================================================
+   BLOCK
+===================================================== */
+
+function drawObstacle(
+    object
+) {
+
+    const p =
+        project(
+            object.z
+        );
+
+
+    const x =
+        laneX(
+            object.lane,
+            object.z
+        );
+
+
+    /*
+       Block wird mit zunehmender Nähe größer.
+    */
+
+    const size =
+        35 +
+        65 *
+        p.scale;
+
+
+    const bottom =
+        p.y;
+
+
+    const top =
+        bottom -
+        size;
+
+
+    if (
+        object.z < 0 ||
+        object.z > 1
+    )
+        return;
+
+
+    /*
+       Schatten
+    */
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.25)";
+
+    ctx.fillRect(
+        x - size * .55,
+        bottom - size * .10,
+        size * 1.1,
+        size * .12
+    );
+
+
+    /*
+       Hauptseite
+    */
+
+    ctx.fillStyle =
+        "#d52b2b";
+
+    ctx.fillRect(
+        x - size / 2,
+        top,
+        size,
+        size
+    );
+
+
+    /*
+       obere Seite
+    */
+
+    ctx.fillStyle =
+        "#ff5b5b";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x - size / 2,
+        top
+    );
+
+    ctx.lineTo(
+        x - size * .32,
+        top - size * .16
+    );
+
+    ctx.lineTo(
+        x + size * .68,
+        top - size * .16
+    );
+
+    ctx.lineTo(
+        x + size / 2,
+        top
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /*
+       rechte Seite
+    */
+
+    ctx.fillStyle =
+        "#a91f1f";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x + size / 2,
+        top
+    );
+
+    ctx.lineTo(
+        x + size * .68,
+        top - size * .16
+    );
+
+    ctx.lineTo(
+        x + size * .68,
+        bottom - size * .16
+    );
+
+    ctx.lineTo(
+        x + size / 2,
+        bottom
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+}
+
+
+/* =====================================================
+   MÜNZE
+===================================================== */
+
+function drawCoin(
+    object
+) {
+
+    const p =
+        project(
+            object.z
+        );
+
+
+    const x =
+        laneX(
+            object.lane,
+            object.z
+        );
+
+
+    /*
+       Münze schwebt etwas über der Straße.
+    */
+
+    const y =
+        p.y -
+        55 *
+        p.scale;
+
+
+    const radius =
+        Math.max(
+            5,
+            8 *
+            p.scale
+        );
+
+
+    if (
+        object.z < 0 ||
+        object.z > 1
+    )
+        return;
+
+
+    /*
+       Goldener Rand
+    */
+
+    ctx.fillStyle =
+        "#e5a900";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        radius + 2,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /*
+       Münze
+    */
+
+    ctx.fillStyle =
+        "#ffd21a";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        radius,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /*
+       Glanz
+    */
+
+    ctx.fillStyle =
+        "#fff3a0";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x - radius * .3,
+        y - radius * .3,
+        radius * .25,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+}
+
+
+/* =====================================================
+   OBJEKTE ERZEUGEN
+===================================================== */
 
 function createObstacle() {
 
-    const randomLane =
-        Math.floor(
-            Math.random() * 3
-        );
-
-    const height =
-        1 +
-        Math.random() * .7;
-
-
-    const obstacle =
-        new THREE.Mesh(
-            new THREE.BoxGeometry(
-                2.2,
-                height,
-                1.8
-            ),
-            new THREE.MeshStandardMaterial({
-                color: 0xd62828
-            })
-        );
-
-
-    obstacle.position.set(
-        lanes[randomLane],
-        height / 2,
-        -90
-    );
-
-    obstacle.castShadow = true;
-
-    scene.add(obstacle);
-
-    obstacles.push(obstacle);
-
-}
-
-
-/* =========================
-   MÜNZE
-========================= */
-
-function createCoin() {
+    /*
+       Block kommt immer weit vorne.
+    */
 
     const randomLane =
         Math.floor(
             Math.random() * 3
-        );
+        ) - 1;
 
 
-    const coin =
-        new THREE.Mesh(
-            new THREE.TorusGeometry(
-                .5,
-                .14,
-                12,
-                24
-            ),
-            new THREE.MeshStandardMaterial({
-                color: 0xffd700,
-                metalness: .8,
-                roughness: .2
-            })
-        );
-
-
-    coin.position.set(
-        lanes[randomLane],
-        1.5,
-        -90
-    );
-
-    scene.add(coin);
-
-    coinObjects.push(coin);
-
+    obstacles.push({
+        lane: randomLane,
+        z: 1
+    });
 }
 
 
-/* =========================
-   START
-========================= */
+function createCoinLine() {
+
+    const randomLane =
+        Math.floor(
+            Math.random() * 3
+        ) - 1;
+
+
+    /*
+       5 Münzen hintereinander
+    */
+
+    for (
+        let i = 0;
+        i < 5;
+        i++
+    ) {
+
+        coinObjects.push({
+            lane: randomLane,
+            z:
+                1 -
+                i * 0.075
+        });
+    }
+}
+
+
+/* =====================================================
+   STEUERUNG
+===================================================== */
+
+function moveLeft() {
+
+    if (!running)
+        return;
+
+
+    lane--;
+
+    if (
+        lane < -1
+    )
+        lane = -1;
+
+
+    targetLane =
+        lane;
+}
+
+
+function moveRight() {
+
+    if (!running)
+        return;
+
+
+    lane++;
+
+    if (
+        lane > 1
+    )
+        lane = 1;
+
+
+    targetLane =
+        lane;
+}
+
+
+function doJump() {
+
+    if (!running)
+        return;
+
+
+    if (
+        playerJump <= 0.001
+    ) {
+
+        jumpVelocity =
+            JUMP_FORCE;
+    }
+}
+
+
+/* =====================================================
+   TOUCH STEUERUNG
+===================================================== */
+
+let touchX = 0;
+let touchY = 0;
+
+
+canvas.addEventListener(
+    "touchstart",
+    function(event) {
+
+        const touch =
+            event.changedTouches[0];
+
+        touchX =
+            touch.clientX;
+
+        touchY =
+            touch.clientY;
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+canvas.addEventListener(
+    "touchend",
+    function(event) {
+
+        if (!running)
+            return;
+
+
+        const touch =
+            event.changedTouches[0];
+
+
+        const dx =
+            touch.clientX -
+            touchX;
+
+
+        const dy =
+            touch.clientY -
+            touchY;
+
+
+        const distance =
+            Math.max(
+                Math.abs(dx),
+                Math.abs(dy)
+            );
+
+
+        if (
+            distance < 35
+        )
+            return;
+
+
+        if (
+            Math.abs(dx) >
+            Math.abs(dy)
+        ) {
+
+            if (
+                dx > 0
+            ) {
+
+                moveRight();
+
+            } else {
+
+                moveLeft();
+            }
+
+        } else {
+
+            if (
+                dy < 0
+            ) {
+
+                doJump();
+            }
+        }
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+/* =====================================================
+   TASTATUR
+===================================================== */
+
+window.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "ArrowLeft"
+        ) {
+
+            moveLeft();
+        }
+
+
+        if (
+            event.key === "ArrowRight"
+        ) {
+
+            moveRight();
+        }
+
+
+        if (
+            event.key === "ArrowUp" ||
+            event.key === " "
+        ) {
+
+            doJump();
+        }
+    }
+);
+
+
+/* =====================================================
+   SPIEL START
+===================================================== */
 
 function startGame() {
 
-    if (
-        typeof THREE === "undefined"
-    ) {
-
-        loading.textContent =
-            "Die 3D-Bibliothek konnte nicht geladen werden.";
-
-        return;
-    }
-
-
     running = true;
 
+
     score = 0;
-    coins = 0;
-
-    speed = .45;
-
-    lane = 1;
-    targetX = 0;
-
-    playerY = 0;
-    velocityY = 0;
-
-    player.position.set(
-        0,
-        0,
-        5
-    );
+    currentCoins = 0;
 
 
-    /* Alte Hindernisse entfernen */
+    speed =
+        START_SPEED;
 
-    obstacles.forEach(
-        function(object) {
-            scene.remove(object);
-        }
-    );
+
+    lane = 0;
+
+    playerLane = 0;
+    targetLane = 0;
+
+
+    playerJump = 0;
+    jumpVelocity = 0;
+
 
     obstacles = [];
-
-
-    /* Alte Münzen entfernen */
-
-    coinObjects.forEach(
-        function(object) {
-            scene.remove(object);
-        }
-    );
-
     coinObjects = [];
 
 
-    spawnTimer = 0;
+    obstacleTimer = 0;
     coinTimer = 0;
 
 
-    menu.style.display =
-        "none";
+    /*
+       Erste Münzen sichtbar platzieren.
+    */
 
-    gameover.style.display =
-        "none";
+    coinObjects.push({
+        lane: -1,
+        z: 0.82
+    });
+
+    coinObjects.push({
+        lane: -1,
+        z: 0.74
+    });
+
+    coinObjects.push({
+        lane: -1,
+        z: 0.66
+    });
+
+
+    /*
+       Erstes Hindernis befindet sich
+       auf der rechten Spur.
+    */
+
+    obstacles.push({
+        lane: 1,
+        z: 0.88
+    });
+
+
+    menu.classList.add(
+        "hidden"
+    );
+
+    gameover.classList.add(
+        "hidden"
+    );
 
     hud.style.display =
         "flex";
 
 
     updateHUD();
-
 }
 
 
-/* =========================
-   SPIELER
-========================= */
+/* =====================================================
+   UPDATE
+===================================================== */
 
-function updatePlayer() {
+function update(dt) {
 
-    player.position.x +=
-        (
-            targetX -
-            player.position.x
-        ) * .18;
+    if (!running)
+        return;
 
 
-    velocityY += gravity;
+    /*
+       Langsame Beschleunigung
+    */
 
-    playerY += velocityY;
+    speed +=
+        dt *
+        0.000000012;
 
 
-    if (playerY < 0) {
+    if (
+        speed >
+        MAX_SPEED
+    ) {
 
-        playerY = 0;
-        velocityY = 0;
-
+        speed =
+            MAX_SPEED;
     }
 
 
-    player.position.y =
-        playerY;
+    /*
+       Spieler gleitet sauber
+       zur nächsten Spur.
+    */
 
-}
+    playerLane +=
+        (
+            targetLane -
+            playerLane
+        ) *
+        Math.min(
+            1,
+            dt * 0.012
+        );
 
 
-/* =========================
-   OBJEKTE
-========================= */
+    /*
+       SPRUNG
+    */
 
-function updateObjects() {
+    if (
+        playerJump > 0 ||
+        jumpVelocity > 0
+    ) {
+
+        playerJump +=
+            jumpVelocity *
+            dt;
+
+
+        jumpVelocity -=
+            GRAVITY *
+            dt;
+
+
+        if (
+            playerJump <= 0
+        ) {
+
+            playerJump = 0;
+            jumpVelocity = 0;
+        }
+    }
+
+
+    /*
+       HINDERNISSE
+    */
 
     for (
         let i =
-        obstacles.length - 1;
+            obstacles.length - 1;
         i >= 0;
         i--
     ) {
@@ -737,51 +1497,68 @@ function updateObjects() {
             obstacles[i];
 
 
-        object.position.z +=
-            speed;
+        object.z -=
+            speed *
+            dt;
 
+
+        /*
+           Kollisionszone direkt
+           vor dem Spieler.
+        */
 
         if (
-            object.position.z > 15
+            object.z < 0.105 &&
+            object.z > 0.035
         ) {
 
-            scene.remove(object);
+            /*
+               Nur gleiche Spur
+               kann kollidieren.
+            */
 
-            obstacles.splice(i, 1);
+            if (
+                Math.abs(
+                    object.lane -
+                    playerLane
+                ) < 0.35
+            ) {
 
-            continue;
+                /*
+                   Springen verhindert
+                   die Kollision.
+                */
 
+                if (
+                    playerJump < 0.35
+                ) {
+
+                    endGame();
+                    return;
+                }
+            }
         }
 
 
-        const dx =
-            Math.abs(
-                object.position.x -
-                player.position.x
-            );
-
-
-        const dz =
-            Math.abs(
-                object.position.z -
-                player.position.z
-            );
-
+        /*
+           Objekt ist vorbei.
+        */
 
         if (
-            dx < 1.25 &&
-            dz < 1.3 &&
-            playerY < 1.35
+            object.z < 0
         ) {
 
-            endGame();
-
-            return;
-
+            obstacles.splice(
+                i,
+                1
+            );
         }
-
     }
 
+
+    /*
+       MÜNZEN
+    */
 
     for (
         let i =
@@ -790,166 +1567,121 @@ function updateObjects() {
         i--
     ) {
 
-        const coin =
+        const object =
             coinObjects[i];
 
 
-        coin.position.z +=
-            speed;
+        object.z -=
+            speed *
+            dt;
 
-        coin.rotation.y += .1;
 
+        /*
+           Münze wird eingesammelt,
+           wenn sie beim Spieler ist
+           und die Spur stimmt.
+        */
 
         if (
-            coin.position.z > 15
+            object.z < 0.13 &&
+            object.z > 0.025
         ) {
 
-            scene.remove(coin);
+            if (
+                Math.abs(
+                    object.lane -
+                    playerLane
+                ) < 0.38
+            ) {
 
-            coinObjects.splice(i, 1);
+                currentCoins++;
 
-            continue;
+                coinObjects.splice(
+                    i,
+                    1
+                );
 
+                continue;
+            }
         }
 
 
-        const dx =
-            Math.abs(
-                coin.position.x -
-                player.position.x
-            );
-
-
-        const dz =
-            Math.abs(
-                coin.position.z -
-                player.position.z
-            );
-
-
         if (
-            dx < 1.3 &&
-            dz < 1.4
+            object.z < 0
         ) {
 
-            coins++;
-
-            scene.remove(coin);
-
-            coinObjects.splice(i, 1);
-
+            coinObjects.splice(
+                i,
+                1
+            );
         }
-
     }
 
-}
+
+    /*
+       NEUE HINDERNISSE
+    */
+
+    obstacleTimer +=
+        dt;
 
 
-/* =========================
-   ENDLOSE STRASSE
-========================= */
-
-function updateRoad() {
-
-    roadPieces.forEach(
-        function(piece) {
-
-            piece.position.z +=
-                speed;
-
-        }
-    );
-
-
-    for (
-        let i =
-            roadPieces.length - 1;
-        i >= 0;
-        i--
-    ) {
-
-        const piece =
-            roadPieces[i];
-
-
-        if (
-            piece.position.z > 15
-        ) {
-
-            piece.position.z -=
-                40 * 8;
-
-        }
-
-    }
-
-}
-
-
-/* =========================
-   SPIEL
-========================= */
-
-function updateGame() {
-
-    if (!running)
-        return;
-
-
-    updatePlayer();
-
-    updateObjects();
-
-    updateRoad();
-
-
-    spawnTimer++;
-
-    coinTimer++;
-
+    /*
+       Genug Abstand zwischen
+       den Blöcken.
+    */
 
     if (
-        spawnTimer > 65
+        obstacleTimer > 1900
     ) {
 
         createObstacle();
 
-        spawnTimer = 0;
-
+        obstacleTimer = 0;
     }
+
+
+    /*
+       NEUE MÜNZEN
+    */
+
+    coinTimer +=
+        dt;
 
 
     if (
-        coinTimer > 32
+        coinTimer > 1200
     ) {
 
-        createCoin();
+        createCoinLine();
 
         coinTimer = 0;
-
     }
 
 
-    speed += .00008;
+    /*
+       SCORE
+    */
 
-    score += speed;
+    score +=
+        dt * 0.012;
 
 
     updateHUD();
-
 }
 
 
-/* =========================
+/* =====================================================
    HUD
-========================= */
+===================================================== */
 
 function updateHUD() {
 
     document.getElementById(
         "coins"
     ).textContent =
-        totalCoins + coins;
+        savedCoins +
+        currentCoins;
 
 
     document.getElementById(
@@ -962,13 +1694,12 @@ function updateHUD() {
         "highscore"
     ).textContent =
         highscore;
-
 }
 
 
-/* =========================
+/* =====================================================
    GAME OVER
-========================= */
+===================================================== */
 
 function endGame() {
 
@@ -979,11 +1710,17 @@ function endGame() {
         Math.floor(score);
 
 
-    totalCoins += coins;
+    savedCoins +=
+        currentCoins;
 
+
+    /*
+       Highscore speichern
+    */
 
     if (
-        finalScore > highscore
+        finalScore >
+        highscore
     ) {
 
         highscore =
@@ -993,255 +1730,219 @@ function endGame() {
             "runnerHighscore",
             highscore
         );
-
     }
 
 
+    /*
+       Münzen speichern
+    */
+
     localStorage.setItem(
         "runnerCoins",
-        totalCoins
+        savedCoins
     );
 
 
     document.getElementById(
-        "finalScore"
+        "endScore"
     ).textContent =
         finalScore;
 
 
     document.getElementById(
-        "finalCoins"
+        "endCoins"
     ).textContent =
-        coins;
+        currentCoins;
 
 
     document.getElementById(
-        "finalHighscore"
+        "endHighscore"
     ).textContent =
         highscore;
-
-
-    gameover.style.display =
-        "flex";
 
 
     hud.style.display =
         "none";
 
+
+    gameover.classList.remove(
+        "hidden"
+    );
 }
 
 
-/* =========================
-   STEUERUNG
-========================= */
+/* =====================================================
+   ZEICHNEN
+===================================================== */
 
-let startX = 0;
-let startY = 0;
+function draw() {
+
+    drawSky();
+
+    drawCity();
+
+    drawRoad();
 
 
-function setupControls() {
+    /*
+       Weit entfernte Objekte zuerst.
+       Nahe Objekte zuletzt.
+    */
 
-    window.addEventListener(
-        "touchstart",
-        function(event) {
+    const objects = [];
 
-            const touch =
-                event.changedTouches[0];
 
-            startX =
-                touch.clientX;
+    obstacles.forEach(
+        function(object) {
 
-            startY =
-                touch.clientY;
-
-        },
-        {
-            passive: true
+            objects.push({
+                type: "obstacle",
+                object: object
+            });
         }
     );
 
 
-    window.addEventListener(
-        "touchend",
-        function(event) {
+    coinObjects.forEach(
+        function(object) {
 
-            if (!running)
-                return;
-
-
-            const touch =
-                event.changedTouches[0];
-
-
-            const dx =
-                touch.clientX -
-                startX;
+            objects.push({
+                type: "coin",
+                object: object
+            });
+        }
+    );
 
 
-            const dy =
-                touch.clientY -
-                startY;
+    objects.sort(
+        function(a, b) {
+
+            return (
+                b.object.z -
+                a.object.z
+            );
+        }
+    );
 
 
-            if (
-                Math.max(
-                    Math.abs(dx),
-                    Math.abs(dy)
-                ) < 40
-            )
-                return;
-
+    objects.forEach(
+        function(item) {
 
             if (
-                Math.abs(dx) >
-                Math.abs(dy)
+                item.type ===
+                "obstacle"
             ) {
 
-                if (dx > 0)
-                    moveRight();
-                else
-                    moveLeft();
+                drawObstacle(
+                    item.object
+                );
 
             } else {
 
-                if (dy < 0)
-                    jump();
-
+                drawCoin(
+                    item.object
+                );
             }
-
-        },
-        {
-            passive: true
         }
     );
 
 
-    window.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key === "ArrowLeft"
-            )
-                moveLeft();
-
-
-            if (
-                event.key === "ArrowRight"
-            )
-                moveRight();
-
-
-            if (
-                event.key === "ArrowUp" ||
-                event.key === " "
-            )
-                jump();
-
-        }
-    );
-
+    drawPlayer();
 }
 
 
-function moveLeft() {
+/* =====================================================
+   GAME LOOP
+===================================================== */
 
-    if (!running)
-        return;
+function loop(time) {
 
+    if (
+        lastTime === 0
+    ) {
 
-    lane--;
-
-    if (lane < 0)
-        lane = 0;
-
-
-    targetX =
-        lanes[lane];
-
-}
-
-
-function moveRight() {
-
-    if (!running)
-        return;
-
-
-    lane++;
-
-    if (lane > 2)
-        lane = 2;
-
-
-    targetX =
-        lanes[lane];
-
-}
-
-
-function jump() {
-
-    if (!running)
-        return;
-
-
-    if (playerY <= 0.01) {
-
-        velocityY =
-            jumpPower;
-
+        lastTime =
+            time;
     }
 
-}
+
+    let dt =
+        time -
+        lastTime;
 
 
-/* =========================
-   RESIZE
-========================= */
+    /*
+       Falls das Handy kurz
+       hängen bleibt, verhindert
+       das einen riesigen Sprung.
+    */
 
-function resize() {
+    if (
+        dt > 40
+    ) {
 
-    if (!camera || !renderer)
-        return;
-
-
-    camera.aspect =
-        window.innerWidth /
-        window.innerHeight;
-
-
-    camera.updateProjectionMatrix();
+        dt = 40;
+    }
 
 
-    renderer.setSize(
-        window.innerWidth,
-        window.innerHeight
-    );
-
-}
+    lastTime =
+        time;
 
 
-/* =========================
-   LOOP
-========================= */
+    update(dt);
 
-function animate() {
+    draw();
+
 
     requestAnimationFrame(
-        animate
+        loop
     );
-
-
-    updateGame();
-
-
-    renderer.render(
-        scene,
-        camera
-    );
-
 }
+
+
+requestAnimationFrame(
+    loop
+);
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+document
+    .getElementById("start")
+    .addEventListener(
+        "click",
+        startGame
+    );
+
+
+document
+    .getElementById("restart")
+    .addEventListener(
+        "click",
+        startGame
+    );
+
+
+document
+    .getElementById("menuButton")
+    .addEventListener(
+        "click",
+        function() {
+
+            gameover.classList.add(
+                "hidden"
+            );
+
+            menu.classList.remove(
+                "hidden"
+            );
+
+            hud.style.display =
+                "none";
+        }
+    );
 
 </script>
 
