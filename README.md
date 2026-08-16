@@ -2,261 +2,366 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport"
-content="width=device-width,
-initial-scale=1.0,
-maximum-scale=1.0,
-user-scalable=no,
-viewport-fit=cover">
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>Runner 3D</title>
+<title>Cube Rush Neon</title>
 
 <style>
-
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
 }
 
-html,
-body {
+html, body {
     width: 100%;
     height: 100%;
-
-    margin: 0;
-    padding: 0;
-
     overflow: hidden;
-
-    background: #000;
-
-    touch-action: none;
-
+    background: #02040a;
     font-family: Arial, sans-serif;
-}
-
-body {
-    position: fixed;
-    inset: 0;
+    touch-action: none;
 }
 
 canvas {
     position: fixed;
-
-    left: 0;
-    top: 0;
-
-    width: 100vw;
-    height: 100vh;
-
-    display: block;
+    inset: 0;
+    width: 100%;
+    height: 100%;
 }
 
-
-/* =========================
-   HUD
-========================= */
-
 #hud {
+    display: none;
     position: fixed;
-
     top: 12px;
     left: 12px;
     right: 12px;
-
-    display: none;
+    z-index: 10;
 
     justify-content: space-between;
-
-    z-index: 20;
+    gap: 8px;
 
     pointer-events: none;
 }
 
-.hudBox {
+.box {
+    padding: 9px 12px;
+    border-radius: 13px;
+
     color: white;
-
-    background:
-        rgba(0,0,0,.58);
-
-    padding: 9px 13px;
-
-    border-radius: 12px;
-
-    font-size: 15px;
+    font-size: 13px;
     font-weight: bold;
+
+    background: rgba(0, 8, 18, .75);
+    border: 1px solid rgba(0, 220, 255, .35);
+
+    box-shadow: 0 0 18px rgba(0, 210, 255, .15);
 }
-
-
-/* =========================
-   MENÜ
-========================= */
 
 .screen {
     position: fixed;
-
     inset: 0;
-
-    width: 100vw;
-    height: 100vh;
+    z-index: 30;
 
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
 
     text-align: center;
-
     color: white;
 
     background:
-        rgba(0,0,0,.52);
-
-    z-index: 50;
+        radial-gradient(
+            circle at 50% 25%,
+            rgba(0, 180, 255, .20),
+            transparent 40%
+        ),
+        #02040a;
 }
 
 .hidden {
     display: none !important;
 }
 
-h1 {
-    font-size: 42px;
-
-    margin-bottom: 18px;
+.logo {
+    font-size: 43px;
+    font-weight: 1000;
+    letter-spacing: 4px;
 
     text-shadow:
-        0 4px 12px #000;
+        0 0 10px #00eaff,
+        0 0 30px #008cff,
+        0 0 60px #005eff;
 }
 
-.instructions {
-    font-size: 16px;
-
-    line-height: 1.8;
+.subtitle {
+    margin-top: 8px;
+    color: #65ddff;
+    font-size: 11px;
+    letter-spacing: 4px;
 }
 
 button {
     border: none;
-
     border-radius: 14px;
 
-    padding: 15px 30px;
+    margin-top: 18px;
+    padding: 14px 25px;
 
-    margin-top: 22px;
+    background: #00d9ff;
+    color: #001018;
 
-    background: #ffd000;
-
-    color: #111;
-
-    font-size: 18px;
-
-    font-weight: bold;
+    font-size: 14px;
+    font-weight: 1000;
 
     box-shadow:
-        0 5px 15px
-        rgba(0,0,0,.35);
+        0 0 20px rgba(0, 220, 255, .45);
 }
 
 button:active {
     transform: scale(.94);
 }
 
+#shopButton {
+    display: none;
+
+    position: fixed;
+    bottom: 13px;
+    right: 13px;
+
+    z-index: 20;
+
+    margin: 0;
+    padding: 10px 13px;
+
+    font-size: 11px;
+}
+
+#shop {
+    position: fixed;
+    inset: 0;
+
+    display: none;
+
+    z-index: 50;
+
+    overflow-y: auto;
+
+    padding: 22px 14px;
+
+    color: white;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #063b5d,
+            #02040a 70%
+        );
+}
+
+#shop.active {
+    display: block;
+}
+
+.shopTitle {
+    text-align: center;
+
+    font-size: 34px;
+    font-weight: 1000;
+
+    text-shadow:
+        0 0 20px #00eaff;
+}
+
+.shopCoins {
+    text-align: center;
+    margin-top: 8px;
+    color: #ffe52e;
+}
+
+.grid {
+    max-width: 900px;
+    margin: 22px auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(145px, 1fr)
+        );
+
+    gap: 14px;
+}
+
+.card {
+    min-height: 205px;
+
+    padding: 12px;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    background: rgba(255,255,255,.055);
+
+    border:
+        1px solid
+        rgba(0,220,255,.25);
+}
+
+.card.locked {
+    opacity: .6;
+}
+
+.preview {
+    width: 105px;
+    height: 105px;
+}
+
+.name {
+    font-weight: 1000;
+}
+
+.price {
+    margin-top: 6px;
+    color: #ffe52e;
+    font-weight: bold;
+}
+
+.card button {
+    padding: 8px 12px;
+    margin-top: 8px;
+    font-size: 10px;
+}
+
+.close {
+    display: block;
+    margin: 20px auto;
+}
 </style>
 </head>
 
 <body>
 
-
-<!-- =========================
-     SPIEL
-========================= -->
-
 <canvas id="game"></canvas>
 
 
-<!-- =========================
-     HUD
-========================= -->
+<!-- HUD -->
 
 <div id="hud">
 
-    <div class="hudBox">
+    <div class="box">
         🪙 <span id="coins">0</span>
     </div>
 
-    <div class="hudBox">
+    <div class="box">
         🏆 <span id="score">0</span>
     </div>
 
-    <div class="hudBox">
-        ⭐ <span id="best">0</span>
+    <div class="box">
+        ◆ <span id="characterName">
+            BLUE CORE
+        </span>
     </div>
 
 </div>
 
 
-<!-- =========================
-     START
-========================= -->
+<button id="shopButton">
+    ◆ WÜRFEL
+</button>
 
-<div id="startScreen"
-     class="screen">
 
-    <h1>
-        🏃 RUNNER
-    </h1>
+<!-- STARTMENÜ -->
 
-    <div class="instructions">
+<div id="menu" class="screen">
 
-        ⬅️ Nach links wischen<br>
-        ➡️ Nach rechts wischen<br>
-        ⬆️ Nach oben wischen = Springen
-
+    <div class="logo">
+        CUBE RUSH
     </div>
 
-    <button id="startButton">
+    <div class="subtitle">
+        NEON CITY RUN
+    </div>
+
+    <div style="
+        margin-top:22px;
+        color:#ffe52e;
+    ">
+        🪙 <span id="menuCoins">0</span>
+    </div>
+
+    <button id="start">
         SPIEL STARTEN
+    </button>
+
+    <button id="openMenuShop">
+        ◆ WÜRFEL
     </button>
 
 </div>
 
 
-<!-- =========================
-     GAME OVER
-========================= -->
+<!-- GAME OVER -->
 
 <div id="gameOver"
-     class="screen hidden">
+class="screen hidden">
 
-    <h1>
-        💥 GAME OVER
-    </h1>
+    <div class="logo"
+    style="font-size:36px">
+        CRASH
+    </div>
 
-    <p>
+    <p style="margin-top:20px">
         Punkte:
         <b id="finalScore">0</b>
     </p>
 
-    <p>
+    <p style="margin-top:8px">
         Münzen:
         <b id="finalCoins">0</b>
     </p>
 
-    <p>
+    <p style="margin-top:8px">
         Highscore:
         <b id="finalBest">0</b>
     </p>
 
-    <button id="restartButton">
-        NOCHMAL SPIELEN
+    <button id="again">
+        NOCHMAL
     </button>
 
-    <button id="menuButton">
+    <button id="backMenu">
         MENÜ
+    </button>
+
+</div>
+
+
+<!-- SHOP -->
+
+<div id="shop">
+
+    <div class="shopTitle">
+        WÜRFEL
+    </div>
+
+    <div class="shopCoins">
+        🪙 <span id="shopCoins">0</span>
+    </div>
+
+    <div
+        id="characterGrid"
+        class="grid">
+    </div>
+
+    <button
+        id="closeShop"
+        class="close">
+        ZURÜCK
     </button>
 
 </div>
@@ -264,51 +369,42 @@ button:active {
 
 <script>
 
-/* ==================================================
+/* =====================================================
    CANVAS
-================================================== */
+===================================================== */
 
 const canvas =
-document.getElementById("game");
+    document.getElementById("game");
 
 const ctx =
-canvas.getContext("2d");
+    canvas.getContext("2d");
 
-
-let W = 0;
-let H = 0;
+let W = innerWidth;
+let H = innerHeight;
 let DPR = 1;
-
 
 function resize() {
 
-    W =
-    window.innerWidth;
-
-    H =
-    window.innerHeight;
-
+    W = innerWidth;
+    H = innerHeight;
 
     DPR =
-    Math.min(
-        window.devicePixelRatio || 1,
-        2
-    );
-
+        Math.min(
+            devicePixelRatio || 1,
+            2
+        );
 
     canvas.width =
-    W * DPR;
+        W * DPR;
 
     canvas.height =
-    H * DPR;
-
+        H * DPR;
 
     canvas.style.width =
-    W + "px";
+        W + "px";
 
     canvas.style.height =
-    H + "px";
-
+        H + "px";
 
     ctx.setTransform(
         DPR,
@@ -320,8 +416,7 @@ function resize() {
     );
 }
 
-
-window.addEventListener(
+addEventListener(
     "resize",
     resize
 );
@@ -329,198 +424,290 @@ window.addEventListener(
 resize();
 
 
-/* ==================================================
+/* =====================================================
+   CHARAKTERE
+===================================================== */
+
+const characters = [
+
+{
+    name:"BLUE CORE",
+    price:0,
+    main:"#008cff",
+    light:"#00f0ff",
+    dark:"#004a9e",
+    aura:"#00dfff"
+},
+
+{
+    name:"VOLT",
+    price:300,
+    main:"#ffe000",
+    light:"#ffffaa",
+    dark:"#9b7400",
+    aura:"#ffe000"
+},
+
+{
+    name:"FIRE",
+    price:700,
+    main:"#ff3200",
+    light:"#ffb000",
+    dark:"#8d1000",
+    aura:"#ff2500"
+},
+
+{
+    name:"POISON",
+    price:1200,
+    main:"#55ff00",
+    light:"#d7ff9c",
+    dark:"#287500",
+    aura:"#55ff00"
+},
+
+{
+    name:"ICE",
+    price:2000,
+    main:"#00d8ff",
+    light:"#e8ffff",
+    dark:"#00749c",
+    aura:"#00eaff"
+},
+
+{
+    name:"PURPLE",
+    price:3000,
+    main:"#9b35ff",
+    light:"#e6baff",
+    dark:"#481080",
+    aura:"#a83aff"
+},
+
+{
+    name:"MAGMA",
+    price:4500,
+    main:"#ff4b00",
+    light:"#fff000",
+    dark:"#861800",
+    aura:"#ff4b00"
+},
+
+{
+    name:"THUNDER",
+    price:6500,
+    main:"#f1e900",
+    light:"#ffffff",
+    dark:"#706900",
+    aura:"#ffff00"
+},
+
+{
+    name:"VOID",
+    price:9000,
+    main:"#171727",
+    light:"#9d8aff",
+    dark:"#050509",
+    aura:"#744dff"
+},
+
+{
+    name:"OMEGA",
+    price:15000,
+    main:"#ffffff",
+    light:"#00ffff",
+    dark:"#5050ff",
+    aura:"#00ffff"
+}
+
+];
+
+
+/* =====================================================
    SPEICHER
-================================================== */
-
-let highScore =
-Number(
-    localStorage.getItem(
-        "runnerHighScore"
-    )
-) || 0;
-
+===================================================== */
 
 let totalCoins =
-Number(
-    localStorage.getItem(
-        "runnerCoins"
-    )
-) || 0;
+    Number(
+        localStorage.getItem(
+            "cubeCoins"
+        )
+    ) || 0;
+
+let highscore =
+    Number(
+        localStorage.getItem(
+            "cubeHighscore"
+        )
+    ) || 0;
+
+let unlocked =
+    JSON.parse(
+        localStorage.getItem(
+            "cubeUnlocked"
+        ) || "[0]"
+    );
+
+let selected =
+    Number(
+        localStorage.getItem(
+            "cubeSelected"
+        )
+    ) || 0;
+
+function save() {
+
+    localStorage.setItem(
+        "cubeCoins",
+        totalCoins
+    );
+
+    localStorage.setItem(
+        "cubeHighscore",
+        highscore
+    );
+
+    localStorage.setItem(
+        "cubeUnlocked",
+        JSON.stringify(
+            unlocked
+        )
+    );
+
+    localStorage.setItem(
+        "cubeSelected",
+        selected
+    );
+}
 
 
-/* ==================================================
+/* =====================================================
    SPIEL
-================================================== */
+===================================================== */
 
 let running = false;
 
 let score = 0;
 
-let gameCoins = 0;
+let runCoins = 0;
 
 
 /*
-   -1 = links
-    0 = mitte
-    1 = rechts
+    -1 = links
+     0 = mitte
+     1 = rechts
+
+    Es existieren NUR diese 3 Spuren.
 */
 
 let lane = 0;
 
 let targetLane = 0;
 
-let playerLane = 0;
+let playerX = 0;
 
+let objects = [];
 
-/* ==================================================
-   SPRUNG
-================================================== */
+let speed = 230;
 
-let jump = 0;
-
-let jumpVelocity = 0;
-
-const JUMP_POWER =
-0.020;
-
-const GRAVITY =
-0.000060;
-
-
-/* ==================================================
-   GESCHWINDIGKEIT
-================================================== */
-
-let speed =
-0.00018;
-
-const START_SPEED =
-0.00018;
-
-const MAX_SPEED =
-0.00036;
-
-
-/* ==================================================
-   OBJEKTE
-================================================== */
-
-let obstacles = [];
-
-let coins = [];
-
-
-/* ==================================================
-   TIMER
-================================================== */
-
-let obstacleTimer = 0;
+let carTimer = 0;
 
 let coinTimer = 0;
 
 
-/* ==================================================
-   PERSPEKTIVE
-================================================== */
+/* =====================================================
+   NEUE STRECKE
+===================================================== */
 
-function horizon() {
+function road() {
 
     /*
-       Etwas höherer Horizont,
-       damit man weiter sehen kann.
+       Die Strecke ist zentral
+       und hat exakt 3 Spuren.
     */
 
-    return H * 0.36;
-}
+    const width =
+        Math.min(
+            W * .82,
+            600
+        );
 
-
-function roadWidth(z) {
-
-    const far =
-    W * 0.25;
-
-    const near =
-    W * 1.40;
-
-
-    return (
-        far +
-        (near - far)
-        *
-        (1 - z)
-    );
-}
-
-
-function project(z) {
-
-    const depth =
-    1 - z;
-
+    const left =
+        (W - width) / 2;
 
     return {
-
-        y:
-        horizon() +
-        depth *
-        H *
-        0.64,
-
-        width:
-        roadWidth(z)
+        left:left,
+        width:width,
+        right:left + width
     };
 }
 
 
-function laneX(
-    lane,
-    z
-) {
+function laneX(number) {
 
-    const width =
-    roadWidth(z);
+    /*
+       NIEMALS außerhalb
+       von -1 / 0 / 1.
+    */
 
+    number =
+        Math.max(
+            -1,
+            Math.min(
+                1,
+                number
+            )
+        );
+
+    const r =
+        road();
+
+    const laneWidth =
+        r.width / 3;
 
     return (
-        W / 2 +
-        lane *
-        width *
-        0.27
+        r.left +
+        laneWidth *
+        (number + 1.5)
     );
 }
 
 
-/* ==================================================
-   HIMMEL
-================================================== */
+/* =====================================================
+   HINTERGRUND
+===================================================== */
 
-function drawSky() {
+function drawWorld(time) {
 
-    const gradient =
-    ctx.createLinearGradient(
+    /*
+       Himmel
+    */
+
+    const sky =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            H
+        );
+
+    sky.addColorStop(
         0,
-        0,
-        0,
-        H
+        "#01030a"
     );
 
-
-    gradient.addColorStop(
-        0,
-        "#42baff"
+    sky.addColorStop(
+        .45,
+        "#071b2d"
     );
 
-
-    gradient.addColorStop(
+    sky.addColorStop(
         1,
-        "#d9f5ff"
+        "#02050a"
     );
 
-
     ctx.fillStyle =
-    gradient;
-
+        sky;
 
     ctx.fillRect(
         0,
@@ -528,84 +715,399 @@ function drawSky() {
         W,
         H
     );
-}
-
-
-/* ==================================================
-   BODEN
-================================================== */
-
-function drawGround() {
-
-    ctx.fillStyle =
-    "#56a24c";
-
-
-    ctx.fillRect(
-        0,
-        horizon(),
-        W,
-        H
-    );
-}
-
-
-/* ==================================================
-   STRASSE
-================================================== */
-
-function drawRoad() {
-
-    const top =
-    horizon();
-
-
-    const topWidth =
-    W * 0.25;
-
-    const bottomWidth =
-    W * 1.40;
 
 
     /*
-       Die Straße ist exakt
-       symmetrisch zur Mitte.
+       futuristische Gebäude
+    */
+
+    for(
+        let i=0;
+        i<20;
+        i++
+    ) {
+
+        const buildingWidth =
+            30 +
+            (i * 17) % 45;
+
+        const buildingHeight =
+            100 +
+            (i * 63) % 220;
+
+        const x =
+            i * 70 -
+            20;
+
+        const y =
+            H * .38 -
+            buildingHeight;
+
+        ctx.fillStyle =
+            "rgba(5,15,28,.95)";
+
+        ctx.fillRect(
+            x,
+            y,
+            buildingWidth,
+            buildingHeight
+        );
+
+
+        /*
+           Fenster
+        */
+
+        for(
+            let wy=y+15;
+            wy<y+buildingHeight-10;
+            wy+=25
+        ) {
+
+            ctx.fillStyle =
+                "rgba(0,210,255,.30)";
+
+            ctx.fillRect(
+                x+7,
+                wy,
+                4,
+                9
+            );
+
+            if(
+                buildingWidth > 50
+            ) {
+
+                ctx.fillRect(
+                    x+buildingWidth-12,
+                    wy,
+                    4,
+                    9
+                );
+            }
+        }
+    }
+
+
+    /*
+       Boden
     */
 
     ctx.fillStyle =
-    "#37393d";
+        "#02070c";
 
+    ctx.fillRect(
+        0,
+        H*.38,
+        W,
+        H*.62
+    );
+
+
+    const r =
+        road();
+
+
+    /*
+       Straße
+    */
+
+    ctx.fillStyle =
+        "#101820";
+
+    ctx.fillRect(
+        r.left,
+        0,
+        r.width,
+        H
+    );
+
+
+    /*
+       Neon-Außenränder
+    */
+
+    ctx.fillStyle =
+        "#00dfff";
+
+    ctx.shadowColor =
+        "#00dfff";
+
+    ctx.shadowBlur =
+        20;
+
+    ctx.fillRect(
+        r.left,
+        0,
+        3,
+        H
+    );
+
+    ctx.fillRect(
+        r.right-3,
+        0,
+        3,
+        H
+    );
+
+    ctx.shadowBlur = 0;
+
+
+    /*
+       EXAKT 3 SPUREN
+
+       2 Linien erzeugen 3 Spuren.
+    */
+
+    const laneWidth =
+        r.width / 3;
+
+
+    const dash =
+        48;
+
+    const gap =
+        32;
+
+
+    const offset =
+        (
+            score * 3
+        ) %
+        (
+            dash + gap
+        );
+
+
+    for(
+        let y =
+            -dash + offset;
+
+        y<H;
+
+        y+=dash+gap
+    ) {
+
+        for(
+            let line=1;
+            line<=2;
+            line++
+        ) {
+
+            ctx.fillStyle =
+                "rgba(0,210,255,.5)";
+
+            ctx.shadowColor =
+                "#00dfff";
+
+            ctx.shadowBlur =
+                8;
+
+            ctx.fillRect(
+                r.left +
+                laneWidth*line -
+                2,
+                y,
+                4,
+                dash
+            );
+
+            ctx.shadowBlur=0;
+        }
+    }
+
+
+    /*
+       Seitenlichter
+    */
+
+    const lightOffset =
+        (
+            score * 2
+        ) %
+        80;
+
+
+    for(
+        let y=-80+lightOffset;
+        y<H;
+        y+=80
+    ) {
+
+        ctx.fillStyle =
+            "rgba(0,220,255,.7)";
+
+        ctx.shadowColor =
+            "#00dfff";
+
+        ctx.shadowBlur =
+            12;
+
+        ctx.fillRect(
+            r.left-18,
+            y,
+            5,
+            28
+        );
+
+        ctx.fillRect(
+            r.right+13,
+            y,
+            5,
+            28
+        );
+
+        ctx.shadowBlur=0;
+    }
+}
+
+
+/* =====================================================
+   WÜRFEL
+===================================================== */
+
+function drawCube(
+    x,
+    y,
+    size,
+    c,
+    rotation=0
+) {
+
+    ctx.save();
+
+    ctx.translate(
+        x,
+        y
+    );
+
+    ctx.rotate(
+        rotation
+    );
+
+
+    /*
+       Aura
+    */
+
+    const aura =
+        ctx.createRadialGradient(
+            0,
+            0,
+            3,
+            0,
+            0,
+            size*1.8
+        );
+
+    aura.addColorStop(
+        0,
+        c.aura
+    );
+
+    aura.addColorStop(
+        1,
+        "transparent"
+    );
+
+    ctx.globalAlpha=.25;
+
+    ctx.fillStyle =
+        aura;
 
     ctx.beginPath();
 
+    ctx.arc(
+        0,
+        0,
+        size*1.8,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    ctx.globalAlpha=1;
+
+
+    /*
+       Schatten
+    */
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.5)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        0,
+        size*.7,
+        size*.7,
+        size*.15,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /*
+       Hauptwürfel
+    */
+
+    ctx.shadowColor =
+        c.aura;
+
+    ctx.shadowBlur =
+        25;
+
+    ctx.fillStyle =
+        c.main;
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        -size/2,
+        -size/2,
+        size,
+        size,
+        size*.12
+    );
+
+    ctx.fill();
+
+    ctx.shadowBlur=0;
+
+
+    /*
+       Rechte Seite
+    */
+
+    ctx.fillStyle =
+        c.dark;
+
+    ctx.beginPath();
 
     ctx.moveTo(
-        W / 2 -
-        topWidth / 2,
-        top
+        size/2,
+        -size/2
     );
-
 
     ctx.lineTo(
-        W / 2 +
-        topWidth / 2,
-        top
+        size*.68,
+        -size*.28
     );
-
 
     ctx.lineTo(
-        W / 2 +
-        bottomWidth / 2,
-        H
+        size*.68,
+        size*.45
     );
-
 
     ctx.lineTo(
-        W / 2 -
-        bottomWidth / 2,
-        H
+        size/2,
+        size/2
     );
-
 
     ctx.closePath();
 
@@ -613,1159 +1115,822 @@ function drawRoad() {
 
 
     /*
-       Spurmarkierungen.
-    */
-
-    drawLaneLine(-1);
-
-    drawLaneLine(1);
-}
-
-
-function drawLaneLine(side) {
-
-    const top =
-    horizon();
-
-
-    const topWidth =
-    W * 0.25;
-
-    const bottomWidth =
-    W * 1.40;
-
-
-    const topX =
-    W / 2 +
-    side *
-    topWidth *
-    0.27;
-
-
-    const bottomX =
-    W / 2 +
-    side *
-    bottomWidth *
-    0.27;
-
-
-    ctx.strokeStyle =
-    "rgba(255,255,255,.45)";
-
-
-    ctx.lineWidth = 3;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        topX,
-        top
-    );
-
-
-    ctx.lineTo(
-        bottomX,
-        H
-    );
-
-
-    ctx.stroke();
-}
-
-
-/* ==================================================
-   STADT
-================================================== */
-
-function drawCity() {
-
-    const y =
-    horizon();
-
-
-    const buildings = [
-
-        [0.01, 90, 150],
-        [0.13, 110, 190],
-        [0.27, 70, 130],
-
-        [0.73, 70, 130],
-        [0.85, 110, 190],
-        [0.98, 85, 150]
-
-    ];
-
-
-    buildings.forEach(
-    function(b, i) {
-
-        const x =
-        W * b[0];
-
-
-        const bw =
-        b[1];
-
-
-        const bh =
-        b[2];
-
-
-        ctx.fillStyle =
-        i % 2 === 0
-        ? "#66717c"
-        : "#555f69";
-
-
-        ctx.fillRect(
-            x,
-            y - bh,
-            bw,
-            bh
-        );
-
-
-        ctx.fillStyle =
-        "rgba(255,220,100,.6)";
-
-
-        for (
-            let yy =
-            y - bh + 15;
-
-            yy <
-            y - 10;
-
-            yy += 23
-        ) {
-
-            for (
-                let xx =
-                x + 10;
-
-                xx <
-                x + bw - 8;
-
-                xx += 20
-            ) {
-
-                ctx.fillRect(
-                    xx,
-                    yy,
-                    7,
-                    10
-                );
-            }
-        }
-    });
-}
-
-
-/* ==================================================
-   SPIELER
-================================================== */
-
-function drawPlayer() {
-
-    const x =
-    W / 2 +
-    playerLane *
-    W *
-    0.27;
-
-
-    const ground =
-    H * 0.82;
-
-
-    const y =
-    ground -
-    jump *
-    H *
-    0.30;
-
-
-    /*
-       Schatten
-    */
-
-    ctx.fillStyle =
-    "rgba(0,0,0,.3)";
-
-
-    ctx.beginPath();
-
-
-    ctx.ellipse(
-        x,
-        ground + 25,
-        32,
-        9,
-        0,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fill();
-
-
-    /*
-       Beine
-    */
-
-    ctx.fillStyle =
-    "#153d99";
-
-
-    ctx.fillRect(
-        x - 17,
-        y + 10,
-        13,
-        48
-    );
-
-
-    ctx.fillRect(
-        x + 5,
-        y + 10,
-        13,
-        48
-    );
-
-
-    /*
-       Körper
-    */
-
-    ctx.fillStyle =
-    "#176cff";
-
-
-    ctx.fillRect(
-        x - 29,
-        y - 58,
-        58,
-        70
-    );
-
-
-    /*
-       Arme
-    */
-
-    ctx.fillRect(
-        x - 42,
-        y - 50,
-        12,
-        50
-    );
-
-
-    ctx.fillRect(
-        x + 30,
-        y - 50,
-        12,
-        50
-    );
-
-
-    /*
-       Kopf
-    */
-
-    ctx.fillStyle =
-    "#ffc49a";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        x,
-        y - 82,
-        23,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fill();
-
-
-    /*
-       Haare
-    */
-
-    ctx.fillStyle =
-    "#222";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        x,
-        y - 91,
-        22,
-        Math.PI,
-        Math.PI * 2
-    );
-
-
-    ctx.fill();
-}
-
-
-/* ==================================================
-   ROTE HINDERNISSE
-================================================== */
-
-function drawObstacle(
-    obstacle
-) {
-
-    const p =
-    project(
-        obstacle.z
-    );
-
-
-    const x =
-    laneX(
-        obstacle.lane,
-        obstacle.z
-    );
-
-
-    const size =
-    30 +
-    p.width *
-    0.055;
-
-
-    const bottom =
-    p.y;
-
-
-    const top =
-    bottom -
-    size;
-
-
-    /*
-       Schatten
-    */
-
-    ctx.fillStyle =
-    "rgba(0,0,0,.25)";
-
-
-    ctx.fillRect(
-        x - size / 2,
-        bottom - 5,
-        size,
-        8
-    );
-
-
-    /*
-       Roter Block.
-    */
-
-    ctx.fillStyle =
-    "#d92828";
-
-
-    ctx.fillRect(
-        x - size / 2,
-        top,
-        size,
-        size
-    );
-
-
-    /*
        Oberseite
     */
 
     ctx.fillStyle =
-    "#ff5555";
+        c.light;
 
+    ctx.globalAlpha=.8;
 
-    ctx.fillRect(
-        x - size / 2,
-        top,
-        size,
-        size * .12
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -size/2,
+        -size/2
     );
+
+    ctx.lineTo(
+        -size*.28,
+        -size*.68
+    );
+
+    ctx.lineTo(
+        size*.68,
+        -size*.28
+    );
+
+    ctx.lineTo(
+        size/2,
+        -size/2
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.globalAlpha=1;
 
 
     /*
-       Seite
+       Lichtpunkt
     */
 
     ctx.fillStyle =
-    "#a51d1d";
+        "#ffffff";
 
+    ctx.shadowColor =
+        "#ffffff";
 
-    ctx.fillRect(
-        x + size * .34,
-        top,
-        size * .16,
-        size
+    ctx.shadowBlur=12;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        -size*.13,
+        -size*.13,
+        size*.08,
+        0,
+        Math.PI*2
     );
+
+    ctx.fill();
+
+    ctx.shadowBlur=0;
+
+
+    /*
+       Blitz
+    */
+
+    if(
+        c.name==="THUNDER" ||
+        c.name==="OMEGA"
+    ) {
+
+        ctx.strokeStyle =
+            c.light;
+
+        ctx.lineWidth=2;
+
+        ctx.shadowColor =
+            c.light;
+
+        ctx.shadowBlur=15;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            -size*.25,
+            size*.28
+        );
+
+        ctx.lineTo(
+            -size*.04,
+            size*.02
+        );
+
+        ctx.lineTo(
+            size*.07,
+            size*.23
+        );
+
+        ctx.lineTo(
+            size*.28,
+            -size*.25
+        );
+
+        ctx.stroke();
+
+        ctx.shadowBlur=0;
+    }
+
+
+    ctx.restore();
 }
 
 
-/* ==================================================
-   MÜNZE
-================================================== */
+/* =====================================================
+   SPIELER
+===================================================== */
 
-function drawCoin(
-    coin
-) {
+function drawPlayer() {
 
-    const p =
-    project(
-        coin.z
-    );
+    const c =
+        characters[selected];
 
 
-    const x =
-    laneX(
-        coin.lane,
-        coin.z
-    );
+    playerX +=
+        (
+            laneX(targetLane) -
+            playerX
+        ) * .22;
 
 
     const y =
-    p.y -
-    p.width * .045;
+        H - 115;
 
 
-    const radius =
-    Math.max(
-        5,
-        p.width * .018
-    );
+    const rotation =
+        (
+            targetLane -
+            lane
+        ) * .15;
 
 
-    ctx.fillStyle =
-    "#d99f00";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        x,
+    drawCube(
+        playerX,
         y,
-        radius + 2,
-        0,
-        Math.PI * 2
+        58,
+        c,
+        rotation
     );
-
-
-    ctx.fill();
-
-
-    ctx.fillStyle =
-    "#ffd21a";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        x,
-        y,
-        radius,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fill();
-
-
-    ctx.fillStyle =
-    "#fff4a0";
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        x - radius * .3,
-        y - radius * .3,
-        radius * .25,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fill();
 }
 
 
-/* ==================================================
-   OBJEKTE ERSTELLEN
-================================================== */
+/* =====================================================
+   AUTOS
+===================================================== */
 
-function createObstacle() {
+function spawnCar() {
 
-    const randomLane =
-    Math.floor(
-        Math.random() * 3
-    ) - 1;
+    /*
+       NUR diese drei Werte
+       sind erlaubt.
+    */
+
+    const lanes =
+        [-1,0,1];
 
 
-    obstacles.push({
+    /*
+       Zufällige der drei Spuren.
+    */
 
-        lane:
-        randomLane,
+    let possible =
+        lanes.filter(
+            l => {
 
-        z:
-        1
+                return !objects.some(
+                    o =>
+                        o.type==="car" &&
+                        o.lane===l &&
+                        o.y<160
+                );
+            }
+        );
 
+
+    if(
+        possible.length===0
+    )
+        return;
+
+
+    const selectedLane =
+        possible[
+            Math.floor(
+                Math.random() *
+                possible.length
+            )
+        ];
+
+
+    objects.push({
+
+        type:"car",
+
+        lane:selectedLane,
+
+        y:-150,
+
+        size:
+            58 +
+            Math.random()*10,
+
+        color:
+            [
+                "#ff2148",
+                "#009fff",
+                "#ffffff",
+                "#ffb000",
+                "#9b3cff"
+            ][
+                Math.floor(
+                    Math.random()*5
+                )
+            ]
     });
 }
 
 
-function createCoins() {
+function drawCar(o) {
 
-    const randomLane =
-    Math.floor(
-        Math.random() * 3
-    ) - 1;
+    const x =
+        laneX(o.lane);
+
+    const y =
+        o.y;
+
+    const w =
+        o.size;
+
+    const h =
+        w*1.45;
 
 
-    for (
-        let i = 0;
-        i < 5;
+    ctx.save();
+
+    ctx.translate(
+        x,
+        y
+    );
+
+
+    /*
+       Schatten
+    */
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.5)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        0,
+        h*.48,
+        w*.7,
+        9,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /*
+       Reifen
+    */
+
+    ctx.fillStyle =
+        "#030506";
+
+    ctx.fillRect(
+        -w*.62,
+        -h*.30,
+        w*.20,
+        h*.28
+    );
+
+    ctx.fillRect(
+        w*.42,
+        -h*.30,
+        w*.20,
+        h*.28
+    );
+
+    ctx.fillRect(
+        -w*.62,
+        h*.10,
+        w*.20,
+        h*.28
+    );
+
+    ctx.fillRect(
+        w*.42,
+        h*.10,
+        w*.20,
+        h*.28
+    );
+
+
+    /*
+       Karosserie
+    */
+
+    ctx.fillStyle =
+        o.color;
+
+    ctx.shadowColor =
+        o.color;
+
+    ctx.shadowBlur=16;
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        -w/2,
+        -h/2,
+        w,
+        h,
+        10
+    );
+
+    ctx.fill();
+
+    ctx.shadowBlur=0;
+
+
+    /*
+       Fenster
+    */
+
+    ctx.fillStyle =
+        "#102936";
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        -w*.30,
+        -h*.36,
+        w*.60,
+        h*.30,
+        7
+    );
+
+    ctx.fill();
+
+
+    /*
+       Licht
+    */
+
+    ctx.fillStyle =
+        "#ffffff";
+
+    ctx.shadowColor =
+        "#ffffff";
+
+    ctx.shadowBlur=18;
+
+    ctx.fillRect(
+        -w*.35,
+        h*.20,
+        w*.18,
+        h*.09
+    );
+
+    ctx.fillRect(
+        w*.17,
+        h*.20,
+        w*.18,
+        h*.09
+    );
+
+    ctx.shadowBlur=0;
+
+
+    ctx.restore();
+}
+
+
+/* =====================================================
+   COINS
+===================================================== */
+
+function spawnCoins() {
+
+    /*
+       Auch hier:
+       NUR -1, 0, 1.
+    */
+
+    const lanes =
+        [-1,0,1];
+
+
+    const selectedLane =
+        lanes[
+            Math.floor(
+                Math.random()*3
+            )
+        ];
+
+
+    /*
+       Eine saubere Münzlinie.
+    */
+
+    for(
+        let i=0;
+        i<4;
         i++
     ) {
 
-        coins.push({
+        objects.push({
 
-            lane:
-            randomLane,
+            type:"coin",
 
-            z:
-            1 -
-            i * .08
+            lane:selectedLane,
 
+            y:
+                -40 -
+                i*70
         });
     }
 }
 
 
-/* ==================================================
-   STEUERUNG
-================================================== */
+function drawCoin(o,time) {
 
-function left() {
+    const x =
+        laneX(o.lane);
 
-    if (!running)
-        return;
+    const y =
+        o.y;
 
 
-    lane--;
+    const spin =
+        Math.abs(
+            Math.cos(
+                time*.007
+            )
+        );
 
 
-    if (lane < -1)
-        lane = -1;
+    ctx.save();
 
+    ctx.translate(
+        x,
+        y
+    );
 
-    targetLane =
-    lane;
-}
-
-
-function right() {
-
-    if (!running)
-        return;
-
-
-    lane++;
-
-
-    if (lane > 1)
-        lane = 1;
-
-
-    targetLane =
-    lane;
-}
-
-
-function jumpPlayer() {
-
-    if (!running)
-        return;
-
-
-    if (
-        jump <= .001
-    ) {
-
-        jumpVelocity =
-        JUMP_POWER;
-    }
-}
-
-
-/* ==================================================
-   TOUCH
-================================================== */
-
-let touchX = 0;
-let touchY = 0;
-
-
-canvas.addEventListener(
-"touchstart",
-function(e) {
-
-    const t =
-    e.changedTouches[0];
-
-
-    touchX =
-    t.clientX;
-
-
-    touchY =
-    t.clientY;
-
-},
-{
-    passive: true
-});
-
-
-canvas.addEventListener(
-"touchend",
-function(e) {
-
-    if (!running)
-        return;
-
-
-    const t =
-    e.changedTouches[0];
-
-
-    const dx =
-    t.clientX -
-    touchX;
-
-
-    const dy =
-    t.clientY -
-    touchY;
-
-
-    if (
-        Math.max(
-            Math.abs(dx),
-            Math.abs(dy)
-        ) < 35
-    )
-        return;
-
-
-    if (
-        Math.abs(dx) >
-        Math.abs(dy)
-    ) {
-
-        if (dx > 0)
-            right();
-        else
-            left();
-
-    } else {
-
-        if (dy < 0)
-            jumpPlayer();
-    }
-
-},
-{
-    passive: true
-});
-
-
-/* ==================================================
-   TASTATUR
-================================================== */
-
-window.addEventListener(
-"keydown",
-function(e) {
-
-    if (
-        e.key === "ArrowLeft"
-    )
-        left();
-
-
-    if (
-        e.key === "ArrowRight"
-    )
-        right();
-
-
-    if (
-        e.key === "ArrowUp" ||
-        e.key === " "
-    )
-        jumpPlayer();
-
-});
-
-
-/* ==================================================
-   HUD
-================================================== */
-
-function updateHUD() {
-
-    document.getElementById(
-        "coins"
-    ).textContent =
-    totalCoins +
-    gameCoins;
-
-
-    document.getElementById(
-        "score"
-    ).textContent =
-    Math.floor(score);
-
-
-    document.getElementById(
-        "best"
-    ).textContent =
-    highScore;
-}
-
-
-/* ==================================================
-   SPIEL STARTEN
-================================================== */
-
-function startGame() {
-
-    /*
-       STARTMENÜ KOMPLETT WEG
-    */
-
-    document.getElementById(
-        "startScreen"
-    ).classList.add(
-        "hidden"
+    ctx.scale(
+        .4+spin*.6,
+        1
     );
 
 
-    document.getElementById(
-        "gameOver"
-    ).classList.add(
-        "hidden"
+    ctx.shadowColor =
+        "#ffe000";
+
+    ctx.shadowBlur=22;
+
+
+    ctx.fillStyle =
+        "#b77900";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        18,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.fillStyle =
+        "#ffdf1b";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        14,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.shadowBlur=0;
+
+
+    ctx.fillStyle =
+        "#a06d00";
+
+    ctx.font =
+        "bold 15px Arial";
+
+    ctx.textAlign =
+        "center";
+
+    ctx.textBaseline =
+        "middle";
+
+    ctx.fillText(
+        "C",
+        0,
+        1
     );
 
 
-    document.getElementById(
-        "hud"
-    ).style.display =
-    "flex";
-
-
-    running = true;
-
-
-    score = 0;
-
-    gameCoins = 0;
-
-
-    lane = 0;
-
-    targetLane = 0;
-
-    playerLane = 0;
-
-
-    jump = 0;
-
-    jumpVelocity = 0;
-
-
-    speed =
-    START_SPEED;
-
-
-    obstacles = [];
-
-    coins = [];
-
-
-    obstacleTimer = 0;
-
-    coinTimer = 0;
-
-
-    /*
-       Erste Münzen.
-    */
-
-    coins.push({
-        lane: 0,
-        z: .84
-    });
-
-
-    coins.push({
-        lane: 0,
-        z: .76
-    });
-
-
-    coins.push({
-        lane: 0,
-        z: .68
-    });
-
-
-    /*
-       Erstes Hindernis
-       rechts.
-    */
-
-    obstacles.push({
-        lane: 1,
-        z: .92
-    });
-
-
-    updateHUD();
+    ctx.restore();
 }
 
 
-/* ==================================================
+/* =====================================================
    UPDATE
-================================================== */
+===================================================== */
 
 function update(dt) {
 
-    if (!running)
+    if(!running)
         return;
 
 
+    const seconds =
+        dt/1000;
+
+
     /*
-       Langsame Beschleunigung.
+       Sanfte Bewegung.
+    */
+
+    lane +=
+        (
+            targetLane -
+            lane
+        ) *
+        Math.min(
+            1,
+            seconds*14
+        );
+
+
+    playerX +=
+        (
+            laneX(targetLane) -
+            playerX
+        ) *
+        Math.min(
+            1,
+            seconds*14
+        );
+
+
+    /*
+       Geschwindigkeit langsam erhöhen.
     */
 
     speed +=
-    dt *
-    .000000008;
+        seconds*4;
 
-
-    if (
-        speed > MAX_SPEED
-    ) {
-
-        speed =
-        MAX_SPEED;
-    }
+    speed =
+        Math.min(
+            speed,
+            650
+        );
 
 
     /*
-       Flüssiger Spurwechsel.
+       Objekte bewegen.
     */
 
-    playerLane +=
-    (
-        targetLane -
-        playerLane
-    )
-    *
-    Math.min(
-        1,
-        dt * .012
-    );
+    for(
+        let i=
+            objects.length-1;
 
-
-    /*
-       SPRUNG
-    */
-
-    if (
-        jump > 0 ||
-        jumpVelocity > 0
-    ) {
-
-        jump +=
-        jumpVelocity *
-        dt;
-
-
-        jumpVelocity -=
-        GRAVITY *
-        dt;
-
-
-        if (
-            jump <= 0
-        ) {
-
-            jump = 0;
-
-            jumpVelocity = 0;
-        }
-    }
-
-
-    /* =========================
-       HINDERNISSE
-    ========================= */
-
-    for (
-        let i =
-        obstacles.length - 1;
-
-        i >= 0;
+        i>=0;
 
         i--
     ) {
 
-        const obstacle =
-        obstacles[i];
+        const o =
+            objects[i];
 
 
-        obstacle.z -=
-        speed *
-        dt;
+        o.y +=
+            speed*seconds;
 
 
         /*
-           Kollision.
+           Hinter dem Spieler:
+           sofort löschen.
         */
 
-        if (
-            obstacle.z < .12 &&
-            obstacle.z > .03
+        if(
+            o.y >
+            H+130
         ) {
 
-            if (
+            objects.splice(
+                i,
+                1
+            );
+
+            continue;
+        }
+
+
+        /*
+           AUTO-KOLLISION
+        */
+
+        if(
+            o.type==="car"
+        ) {
+
+            const playerY =
+                H-115;
+
+
+            const sameLane =
                 Math.abs(
-                    obstacle.lane -
-                    playerLane
-                ) < .35
+                    playerX -
+                    laneX(o.lane)
+                ) < 30;
+
+
+            const near =
+                Math.abs(
+                    o.y -
+                    playerY
+                ) < 57;
+
+
+            if(
+                sameLane &&
+                near
             ) {
 
-                /*
-                   Wenn nicht hoch
-                   genug gesprungen:
-                   Game Over.
-                */
+                gameOver();
 
-                if (
-                    jump < .35
-                ) {
-
-                    gameOver();
-
-                    return;
-                }
+                return;
             }
         }
 
 
-        if (
-            obstacle.z < 0
+        /*
+           COIN
+        */
+
+        if(
+            o.type==="coin"
         ) {
 
-            obstacles.splice(
-                i,
-                1
-            );
-        }
-    }
+            const playerY =
+                H-115;
 
 
-    /* =========================
-       MÜNZEN
-    ========================= */
-
-    for (
-        let i =
-        coins.length - 1;
-
-        i >= 0;
-
-        i--
-    ) {
-
-        const coin =
-        coins[i];
-
-
-        coin.z -=
-        speed *
-        dt;
-
-
-        if (
-            coin.z < .14 &&
-            coin.z > .02
-        ) {
-
-            if (
+            const sameLane =
                 Math.abs(
-                    coin.lane -
-                    playerLane
-                ) < .38
+                    playerX -
+                    laneX(o.lane)
+                ) < 31;
+
+
+            const near =
+                Math.abs(
+                    o.y -
+                    playerY
+                ) < 45;
+
+
+            if(
+                sameLane &&
+                near
             ) {
 
-                gameCoins++;
+                runCoins++;
 
-
-                coins.splice(
+                objects.splice(
                     i,
                     1
                 );
-
-
-                continue;
             }
         }
-
-
-        if (
-            coin.z < 0
-        ) {
-
-            coins.splice(
-                i,
-                1
-            );
-        }
     }
 
 
-    /* =========================
-       NEUE HINDERNISSE
-    ========================= */
+    /*
+       Auto-Spawning.
+    */
 
-    obstacleTimer += dt;
+    carTimer += dt;
 
 
-    if (
-        obstacleTimer > 2300
+    const carDelay =
+        Math.max(
+            600,
+            1450 -
+            score*1.5
+        );
+
+
+    if(
+        carTimer >
+        carDelay
     ) {
 
-        createObstacle();
+        spawnCar();
 
-        obstacleTimer = 0;
+        carTimer=0;
     }
 
 
-    /* =========================
-       NEUE MÜNZEN
-    ========================= */
+    /*
+       Münzen.
+    */
 
     coinTimer += dt;
 
 
-    if (
-        coinTimer > 1500
+    if(
+        coinTimer >
+        1250
     ) {
 
-        createCoins();
+        spawnCoins();
 
-        coinTimer = 0;
+        coinTimer=0;
     }
 
 
     /*
-       Punkte.
+       Score.
     */
 
     score +=
-    dt * .01;
+        seconds*10;
 
 
     updateHUD();
 }
 
 
-/* ==================================================
+/* =====================================================
    GAME OVER
-================================================== */
+===================================================== */
 
 function gameOver() {
 
-    running = false;
+    running=false;
 
 
     const finalScore =
-    Math.floor(score);
+        Math.floor(score);
 
 
     totalCoins +=
-    gameCoins;
+        runCoins;
 
 
-    if (
+    if(
         finalScore >
-        highScore
+        highscore
     ) {
 
-        highScore =
-        finalScore;
-
-
-        localStorage.setItem(
-            "runnerHighScore",
-            String(highScore)
-        );
+        highscore =
+            finalScore;
     }
 
 
-    localStorage.setItem(
-        "runnerCoins",
-        String(totalCoins)
-    );
+    save();
 
 
     document.getElementById(
         "finalScore"
     ).textContent =
-    finalScore;
-
+        finalScore;
 
     document.getElementById(
         "finalCoins"
     ).textContent =
-    gameCoins;
-
+        runCoins;
 
     document.getElementById(
         "finalBest"
     ).textContent =
-    highScore;
+        highscore;
 
 
     document.getElementById(
         "hud"
     ).style.display =
-    "none";
+        "none";
+
+    document.getElementById(
+        "shopButton"
+    ).style.display =
+        "none";
 
 
     document.getElementById(
@@ -1776,15 +1941,47 @@ function gameOver() {
 }
 
 
-/* ==================================================
-   ZEICHNEN
-================================================== */
+/* =====================================================
+   HUD
+===================================================== */
 
-function draw() {
+function updateHUD() {
 
-    /*
-       GANZER BILDSCHIRM
-    */
+    document.getElementById(
+        "coins"
+    ).textContent =
+        totalCoins+
+        runCoins;
+
+    document.getElementById(
+        "score"
+    ).textContent =
+        Math.floor(score);
+
+    document.getElementById(
+        "characterName"
+    ).textContent =
+        characters[
+            selected
+        ].name;
+
+    document.getElementById(
+        "menuCoins"
+    ).textContent =
+        totalCoins;
+
+    document.getElementById(
+        "shopCoins"
+    ).textContent =
+        totalCoins;
+}
+
+
+/* =====================================================
+   DRAW
+===================================================== */
+
+function draw(time) {
 
     ctx.clearRect(
         0,
@@ -1794,204 +1991,635 @@ function draw() {
     );
 
 
-    drawSky();
-
-    drawGround();
-
-    drawCity();
-
-    drawRoad();
+    drawWorld(time);
 
 
     /*
-       Objekte nach Entfernung sortieren.
+       Hintere Objekte zuerst.
     */
 
-    const objects = [];
-
-
-    obstacles.forEach(
-    function(o) {
-
-        objects.push({
-
-            type:
-            "obstacle",
-
-            object:
-            o
-
-        });
-    });
-
-
-    coins.forEach(
-    function(c) {
-
-        objects.push({
-
-            type:
-            "coin",
-
-            object:
-            c
-
-        });
-    });
-
-
-    objects.sort(
-    function(a,b) {
-
-        return (
-            b.object.z -
-            a.object.z
+    const sorted =
+        [...objects].sort(
+            (a,b)=>
+                a.y-b.y
         );
-    });
 
 
-    objects.forEach(
-    function(item) {
+    for(
+        const o of sorted
+    ) {
 
-        if (
-            item.type ===
-            "obstacle"
+        if(
+            o.type==="car"
         ) {
 
-            drawObstacle(
-                item.object
-            );
+            drawCar(o);
 
         } else {
 
             drawCoin(
-                item.object
+                o,
+                time
             );
         }
-
-    });
+    }
 
 
     drawPlayer();
 }
 
 
-/* ==================================================
+/* =====================================================
    GAME LOOP
-================================================== */
+===================================================== */
 
-let lastTime = 0;
-
+let last =
+    performance.now();
 
 function loop(time) {
 
-    if (
-        lastTime === 0
-    ) {
+    const dt =
+        Math.min(
+            time-last,
+            40
+        );
 
-        lastTime =
-        time;
-    }
-
-
-    let dt =
-    time -
-    lastTime;
-
-
-    /*
-       Verhindert Ruckler,
-       wenn die App kurz pausiert.
-    */
-
-    dt =
-    Math.min(
-        dt,
-        40
-    );
-
-
-    lastTime =
-    time;
-
+    last=time;
 
     update(dt);
 
-    draw();
-
+    draw(time);
 
     requestAnimationFrame(
         loop
     );
 }
 
-
 requestAnimationFrame(
     loop
 );
 
 
-/* ==================================================
-   BUTTONS
-================================================== */
+/* =====================================================
+   TOUCH / SWIPE
+===================================================== */
 
-document
-.getElementById(
-    "startButton"
-)
-.addEventListener(
-    "click",
-    startGame
+let startX=0;
+let startY=0;
+
+
+canvas.addEventListener(
+    "touchstart",
+    e=>{
+
+        const t =
+            e.changedTouches[0];
+
+        startX =
+            t.clientX;
+
+        startY =
+            t.clientY;
+
+    },
+    {passive:true}
 );
 
 
-document
-.getElementById(
-    "restartButton"
-)
-.addEventListener(
-    "click",
-    startGame
+canvas.addEventListener(
+    "touchend",
+    e=>{
+
+        if(!running)
+            return;
+
+
+        const t =
+            e.changedTouches[0];
+
+
+        const dx =
+            t.clientX-startX;
+
+        const dy =
+            t.clientY-startY;
+
+
+        if(
+            Math.abs(dx)<45
+        )
+            return;
+
+
+        if(
+            Math.abs(dx)<
+            Math.abs(dy)
+        )
+            return;
+
+
+        if(dx>0) {
+
+            targetLane++;
+
+        } else {
+
+            targetLane--;
+        }
+
+
+        /*
+           HARTE BEGRENZUNG:
+
+           -1 links
+            0 mitte
+            1 rechts
+        */
+
+        targetLane =
+            Math.max(
+                -1,
+                Math.min(
+                    1,
+                    targetLane
+                )
+            );
+    },
+    {passive:true}
 );
 
 
-document
-.getElementById(
-    "menuButton"
-)
-.addEventListener(
-    "click",
-    function() {
+/* =====================================================
+   TASTATUR
+===================================================== */
 
-        running = false;
+addEventListener(
+    "keydown",
+    e=>{
 
-
-        document
-        .getElementById(
-            "gameOver"
-        )
-        .classList.add(
-            "hidden"
-        );
+        if(!running)
+            return;
 
 
-        document
-        .getElementById(
-            "startScreen"
-        )
-        .classList.remove(
-            "hidden"
-        );
+        if(
+            e.key==="ArrowLeft" ||
+            e.key.toLowerCase()==="a"
+        ) {
+
+            targetLane--;
+        }
 
 
-        document
-        .getElementById(
-            "hud"
-        )
-        .style.display =
-        "none";
+        if(
+            e.key==="ArrowRight" ||
+            e.key.toLowerCase()==="d"
+        ) {
+
+            targetLane++;
+        }
+
+
+        targetLane =
+            Math.max(
+                -1,
+                Math.min(
+                    1,
+                    targetLane
+                )
+            );
     }
 );
+
+
+/* =====================================================
+   SHOP
+===================================================== */
+
+function drawPreview(
+    p,
+    c
+) {
+
+    p.clearRect(
+        0,
+        0,
+        210,
+        210
+    );
+
+
+    p.save();
+
+    p.translate(
+        105,
+        110
+    );
+
+
+    p.shadowColor =
+        c.aura;
+
+    p.shadowBlur=25;
+
+
+    p.fillStyle =
+        c.main;
+
+    p.fillRect(
+        -42,
+        -42,
+        84,
+        84
+    );
+
+
+    p.shadowBlur=0;
+
+
+    p.fillStyle =
+        c.dark;
+
+    p.beginPath();
+
+    p.moveTo(
+        42,
+        -42
+    );
+
+    p.lineTo(
+        59,
+        -23
+    );
+
+    p.lineTo(
+        59,
+        40
+    );
+
+    p.lineTo(
+        42,
+        42
+    );
+
+    p.closePath();
+
+    p.fill();
+
+
+    p.fillStyle =
+        c.light;
+
+    p.globalAlpha=.8;
+
+    p.beginPath();
+
+    p.moveTo(
+        -42,
+        -42
+    );
+
+    p.lineTo(
+        -23,
+        -59
+    );
+
+    p.lineTo(
+        59,
+        -23
+    );
+
+    p.lineTo(
+        42,
+        -42
+    );
+
+    p.closePath();
+
+    p.fill();
+
+    p.globalAlpha=1;
+
+
+    p.fillStyle =
+        "#fff";
+
+    p.beginPath();
+
+    p.arc(
+        -11,
+        -11,
+        7,
+        0,
+        Math.PI*2
+    );
+
+    p.fill();
+
+
+    p.restore();
+}
+
+
+function renderShop() {
+
+    const grid =
+        document.getElementById(
+            "characterGrid"
+        );
+
+
+    grid.innerHTML="";
+
+
+    characters.forEach(
+        (c,i)=>{
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "card";
+
+
+            if(
+                !unlocked.includes(i)
+            ) {
+
+                card.classList.add(
+                    "locked"
+                );
+            }
+
+
+            const preview =
+                document.createElement(
+                    "canvas"
+                );
+
+            preview.className =
+                "preview";
+
+            preview.width=210;
+            preview.height=210;
+
+
+            drawPreview(
+                preview.getContext("2d"),
+                c
+            );
+
+
+            card.appendChild(
+                preview
+            );
+
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+            name.className="name";
+
+            name.textContent =
+                c.name;
+
+            card.appendChild(
+                name
+            );
+
+
+            const price =
+                document.createElement(
+                    "div"
+                );
+
+            price.className="price";
+
+            price.textContent =
+                c.price===0
+                ? "STARTER"
+                : "🪙 "+c.price;
+
+            card.appendChild(
+                price
+            );
+
+
+            const btn =
+                document.createElement(
+                    "button"
+                );
+
+
+            if(
+                unlocked.includes(i)
+            ) {
+
+                btn.textContent =
+                    selected===i
+                    ? "✓ AUSGEWÄHLT"
+                    : "AUSWÄHLEN";
+
+
+                btn.onclick=()=>{
+
+                    selected=i;
+
+                    save();
+
+                    renderShop();
+
+                    updateHUD();
+                };
+
+            } else {
+
+                btn.textContent="KAUFEN";
+
+
+                btn.onclick=()=>{
+
+                    if(
+                        totalCoins<c.price
+                    ) {
+
+                        alert(
+                            "Du brauchst noch "+
+                            (
+                                c.price-
+                                totalCoins
+                            )+
+                            " Münzen."
+                        );
+
+                        return;
+                    }
+
+
+                    totalCoins -=
+                        c.price;
+
+                    unlocked.push(i);
+
+                    selected=i;
+
+                    save();
+
+                    renderShop();
+
+                    updateHUD();
+                };
+            }
+
+
+            card.appendChild(btn);
+
+            grid.appendChild(card);
+        }
+    );
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function startGame() {
+
+    document.getElementById(
+        "menu"
+    ).classList.add(
+        "hidden"
+    );
+
+    document.getElementById(
+        "gameOver"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "hud"
+    ).style.display=
+        "flex";
+
+
+    document.getElementById(
+        "shopButton"
+    ).style.display=
+        "block";
+
+
+    running=true;
+
+    score=0;
+
+    runCoins=0;
+
+    lane=0;
+
+    targetLane=0;
+
+    playerX=
+        laneX(0);
+
+    objects=[];
+
+    speed=230;
+
+    carTimer=0;
+
+    coinTimer=500;
+
+
+    updateHUD();
+}
+
+
+document.getElementById(
+    "start"
+).onclick =
+    startGame;
+
+
+document.getElementById(
+    "again"
+).onclick =
+    startGame;
+
+
+document.getElementById(
+    "backMenu"
+).onclick =
+    ()=>{
+
+        document.getElementById(
+            "gameOver"
+        ).classList.add(
+            "hidden"
+        );
+
+        document.getElementById(
+            "menu"
+        ).classList.remove(
+            "hidden"
+        );
+    };
+
+
+/* =====================================================
+   SHOP BUTTONS
+===================================================== */
+
+function openShop() {
+
+    renderShop();
+
+    document.getElementById(
+        "shop"
+    ).classList.add(
+        "active"
+    );
+}
+
+
+document.getElementById(
+    "openMenuShop"
+).onclick =
+    openShop;
+
+
+document.getElementById(
+    "shopButton"
+).onclick =
+    openShop;
+
+
+document.getElementById(
+    "closeShop"
+).onclick =
+    ()=>{
+
+        document.getElementById(
+            "shop"
+        ).classList.remove(
+            "active"
+        );
+    };
+
+
+/* =====================================================
+   INIT
+===================================================== */
+
+renderShop();
+
+updateHUD();
 
 </script>
 
