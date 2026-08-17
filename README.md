@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>CUBE RUSH</title>
 
 <style>
@@ -16,9 +16,9 @@ html,body{
   width:100%;
   height:100%;
   overflow:hidden;
-  font-family:Arial,sans-serif;
   background:#02070d;
   color:white;
+  font-family:Arial,sans-serif;
 }
 
 button,input{
@@ -34,20 +34,19 @@ button{
   inset:0;
   z-index:100;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   padding:20px;
   background:
     radial-gradient(circle at 50% 10%,#07556b,#03151f 45%,#010408);
 }
 
 .hidden{
-  display:none !important;
+  display:none!important;
 }
 
 .card{
-  width:100%;
-  max-width:440px;
+  width:min(440px,100%);
   padding:28px 22px;
   border-radius:28px;
   background:rgba(3,12,20,.98);
@@ -70,32 +69,24 @@ button{
   margin-bottom:18px;
 }
 
-/* EINGABEFELDER */
-
-.input{
+input{
   display:block;
   width:100%;
   height:58px;
   margin:10px 0;
   padding:0 17px;
-
   border:2px solid #00eaff55;
   border-radius:16px;
-
   background:#f5ffb9;
   color:#000;
-
   font-size:17px;
   outline:none;
-
   pointer-events:auto;
   user-select:text;
   -webkit-user-select:text;
-  -webkit-appearance:none;
-  appearance:none;
 }
 
-.input:focus{
+input:focus{
   border-color:#00eaff;
   box-shadow:0 0 18px #00eaff55;
 }
@@ -106,7 +97,6 @@ button{
   height:58px;
   margin:10px 0;
   border-radius:16px;
-  border:0;
   font-size:17px;
   font-weight:900;
   cursor:pointer;
@@ -115,6 +105,7 @@ button{
 .primary{
   background:linear-gradient(135deg,#05eaff,#078eff);
   color:#001018;
+  border:0;
 }
 
 .secondary{
@@ -161,8 +152,6 @@ button{
   overflow:auto;
   line-height:2;
 }
-
-/* SPIEL */
 
 #game{
   position:fixed;
@@ -220,7 +209,7 @@ button{
   align-items:center;
 }
 
-.controlRow{
+.control-row{
   display:flex;
   gap:8px;
 }
@@ -247,25 +236,18 @@ button{
 
 <body>
 
-<!-- ==================================================
+<!-- =================================================
      SUPABASE
-================================================== -->
+     ================================================= -->
 
 <script>
+
 const SUPABASE_URL =
 "https://lfsifdmaftztykpckdsh.supabase.co";
 
-/*
-   HIER deinen bereits vorhandenen ANON/PUBLIC KEY einsetzen.
-
-   Beispiel:
-
-   const SUPABASE_KEY =
-   "eyJ....";
-*/
-
 const SUPABASE_KEY =
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxmc2lmZG1hZnR6dHlrcGNrZHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDczMTksImV4cCI6MjEwMjQ4MzMxOX0.dfMS0zgHO_IYU7_YmR2Si6DVkD8MWiJJUt6iSJXZfio";
+
 </script>
 
 
@@ -275,34 +257,37 @@ const SUPABASE_KEY =
 
 <div class="card">
 
-<div class="logo">CUBE RUSH</div>
+<div class="logo">
+CUBE RUSH
+</div>
 
 <div class="subtitle">
 Melde dich an und speichere deinen Highscore.
 </div>
 
 <input
-  id="email"
-  class="input"
-  type="text"
-  inputmode="email"
-  autocomplete="email"
-  placeholder="E-Mail"
->
+id="loginEmail"
+type="email"
+autocomplete="email"
+placeholder="E-Mail">
 
 <input
-  id="password"
-  class="input"
-  type="password"
-  autocomplete="current-password"
-  placeholder="Passwort"
->
+id="loginPassword"
+type="password"
+autocomplete="current-password"
+placeholder="Passwort">
 
-<button id="loginBtn" class="btn primary">
+<button
+id="loginBtn"
+class="btn primary"
+type="button">
 ANMELDEN
 </button>
 
-<button id="openRegister" class="btn secondary">
+<button
+id="openRegister"
+class="btn secondary"
+type="button">
 ACCOUNT ERSTELLEN
 </button>
 
@@ -318,43 +303,43 @@ ACCOUNT ERSTELLEN
 
 <div class="card">
 
-<div class="logo">ACCOUNT</div>
+<div class="logo">
+ACCOUNT
+</div>
 
 <div class="subtitle">
-Erstelle deinen Account.
+Erstelle deinen Cube-Rush-Account.
 </div>
 
 <input
-  id="username"
-  class="input"
-  type="text"
-  maxlength="20"
-  autocomplete="username"
-  placeholder="Benutzername"
->
+id="registerUsername"
+type="text"
+maxlength="20"
+placeholder="Benutzername">
 
 <input
-  id="regEmail"
-  class="input"
-  type="text"
-  inputmode="email"
-  autocomplete="email"
-  placeholder="E-Mail"
->
+id="registerEmail"
+type="email"
+autocomplete="email"
+placeholder="E-Mail">
 
 <input
-  id="regPassword"
-  class="input"
-  type="password"
-  autocomplete="new-password"
-  placeholder="Passwort"
->
+id="registerPassword"
+type="password"
+autocomplete="new-password"
+placeholder="Passwort">
 
-<button id="registerBtn" class="btn primary">
+<button
+id="registerBtn"
+class="btn primary"
+type="button">
 ACCOUNT ERSTELLEN
 </button>
 
-<button id="backLogin" class="btn secondary">
+<button
+id="backLogin"
+class="btn secondary"
+type="button">
 ZURÜCK
 </button>
 
@@ -370,35 +355,47 @@ ZURÜCK
 
 <div class="card">
 
-<div class="logo">CUBE RUSH</div>
+<div class="logo">
+CUBE RUSH
+</div>
 
 <div class="subtitle">
-Willkommen, <b id="playerName">Spieler</b>!
+Willkommen,
+<b id="menuUsername">Spieler</b>!
 </div>
 
 <div class="stats">
 
 <div class="stat">
 <small>🪙 MÜNZEN</small>
-<strong id="coins">0</strong>
+<strong id="menuCoins">0</strong>
 </div>
 
 <div class="stat">
 <small>🏆 HIGHSCORE</small>
-<strong id="highscore">0</strong>
+<strong id="menuHighscore">0</strong>
 </div>
 
 </div>
 
-<button id="start" class="btn primary">
+<button
+id="startBtn"
+class="btn primary"
+type="button">
 ▶ SPIEL STARTEN
 </button>
 
-<button id="ranking" class="btn secondary">
+<button
+id="rankingBtn"
+class="btn secondary"
+type="button">
 🏆 RANGLISTE
 </button>
 
-<button id="logout" class="btn secondary">
+<button
+id="logoutBtn"
+class="btn secondary"
+type="button">
 ABMELDEN
 </button>
 
@@ -412,13 +409,18 @@ ABMELDEN
 
 <div class="card">
 
-<div class="logo">🏆 RANGLISTE</div>
+<div class="logo">
+🏆 RANGLISTE
+</div>
 
 <div id="rankingList" class="ranking">
 Lade Rangliste...
 </div>
 
-<button id="backMenu" class="btn secondary">
+<button
+id="rankingBack"
+class="btn secondary"
+type="button">
 ZURÜCK
 </button>
 
@@ -428,11 +430,13 @@ ZURÜCK
 
 <!-- ================= GAME OVER ================= -->
 
-<section id="gameOver" class="screen hidden">
+<section id="gameOverScreen" class="screen hidden">
 
 <div class="card">
 
-<div class="logo">CRASH!</div>
+<div class="logo">
+CRASH!
+</div>
 
 <div class="subtitle">
 Deine Runde ist vorbei.
@@ -452,11 +456,17 @@ Deine Runde ist vorbei.
 
 </div>
 
-<button id="again" class="btn primary">
+<button
+id="againBtn"
+class="btn primary"
+type="button">
 🔄 NOCHMAL
 </button>
 
-<button id="gameMenu" class="btn secondary">
+<button
+id="gameMenuBtn"
+class="btn secondary"
+type="button">
 MENÜ
 </button>
 
@@ -484,25 +494,25 @@ MENÜ
 
 </div>
 
-<button id="pause">
+<button id="pause" type="button">
 ⏸
 </button>
 
 <div id="controls">
 
-<div class="controlRow">
+<div class="control-row">
 
-<button id="left" class="control">
+<button id="leftBtn" class="control" type="button">
 ←
 </button>
 
-<button id="right" class="control">
+<button id="rightBtn" class="control" type="button">
 →
 </button>
 
 </div>
 
-<button id="jump" class="control jump">
+<button id="jumpBtn" class="control jump" type="button">
 SPRINGEN
 </button>
 
@@ -511,1320 +521,1577 @@ SPRINGEN
 
 <script>
 
-/* ==================================================
-   AUTH
-================================================== */
+/* =================================================
+   APP
+   ================================================= */
 
-let token = "";
-let player = null;
+const $ = id =>
+document.getElementById(id);
 
-
-/* ==================================================
-   SUPABASE REQUEST
-================================================== */
-
-async function api(path,options={}){
-
-  const headers = {
-    "apikey":SUPABASE_KEY,
-    "Content-Type":"application/json"
-  };
-
-  if(token){
-    headers["Authorization"] =
-      "Bearer " + token;
-  }
-
-  const response =
-    await fetch(
-      SUPABASE_URL + path,
-      {
-        ...options,
-        headers:{
-          ...headers,
-          ...(options.headers || {})
-        }
-      }
-    );
-
-  const text =
-    await response.text();
-
-  let data = null;
-
-  try{
-    data =
-      text ? JSON.parse(text) : null;
-  }catch{
-    data = null;
-  }
-
-  if(!response.ok){
-
-    throw new Error(
-      data?.msg ||
-      data?.message ||
-      data?.error_description ||
-      data?.error ||
-      "Fehler"
-    );
-  }
-
-  return data;
-}
+let accessToken = "";
+let currentPlayer = null;
 
 
-/* ==================================================
+/* =================================================
    SCREENS
-================================================== */
+   ================================================= */
 
-function screen(id){
+function showScreen(id){
 
-  document
-    .querySelectorAll(".screen")
-    .forEach(x =>
-      x.classList.add("hidden")
-    );
+document
+.querySelectorAll(".screen")
+.forEach(screen =>
+screen.classList.add("hidden")
+);
 
-  document
-    .getElementById(id)
-    .classList.remove("hidden");
+$(id).classList.remove("hidden");
+
 }
 
+
+/* =================================================
+   MESSAGE
+   ================================================= */
 
 function message(id,text){
 
-  document
-    .getElementById(id)
-    .textContent = text;
+$(id).textContent = text;
+
 }
 
 
-/* ==================================================
+/* =================================================
+   SUPABASE
+   ================================================= */
+
+async function supabaseRequest(
+path,
+options={}
+){
+
+if(
+SUPABASE_KEY ===
+"DEIN_ANON_PUBLIC_KEY_HIER"
+){
+
+throw new Error(
+"Supabase-Key fehlt."
+);
+
+}
+
+const headers = {
+
+"apikey":
+SUPABASE_KEY,
+
+"Content-Type":
+"application/json",
+
+...(accessToken
+?
+{
+"Authorization":
+"Bearer " + accessToken
+}
+:
+{}),
+
+...(options.headers || {})
+
+};
+
+const response =
+await fetch(
+SUPABASE_URL + path,
+{
+...options,
+headers:headers
+}
+);
+
+const text =
+await response.text();
+
+let data = null;
+
+try{
+
+data =
+text
+?
+JSON.parse(text)
+:
+null;
+
+}catch{
+
+data = null;
+
+}
+
+if(!response.ok){
+
+throw new Error(
+
+data?.msg ||
+data?.message ||
+data?.error_description ||
+data?.hint ||
+data?.error ||
+"Supabase-Fehler"
+
+);
+
+}
+
+return data;
+
+}
+
+
+/* =================================================
    LOGIN
-================================================== */
+   ================================================= */
 
-document
-.getElementById("loginBtn")
-.addEventListener("click",login);
+$("loginBtn").onclick =
+async function(){
 
+const email =
+$("loginEmail")
+.value
+.trim();
 
-async function login(){
+const password =
+$("loginPassword")
+.value;
 
-  const email =
-    document
-    .getElementById("email")
-    .value
-    .trim();
+if(!email || !password){
 
-  const password =
-    document
-    .getElementById("password")
-    .value;
+message(
+"loginMessage",
+"Bitte E-Mail und Passwort eingeben."
+);
 
-  if(!email || !password){
+return;
 
-    message(
-      "loginMessage",
-      "Bitte E-Mail und Passwort eingeben."
-    );
-
-    return;
-  }
-
-  try{
-
-    const data =
-      await api(
-        "/auth/v1/token?grant_type=password",
-        {
-          method:"POST",
-          body:JSON.stringify({
-            email:email,
-            password:password
-          })
-        }
-      );
-
-    token =
-      data.access_token;
-
-    player = {
-      id:data.user.id,
-      username:
-        data.user.user_metadata?.username ||
-        email.split("@")[0],
-      coins:0,
-      highscore:0
-    };
-
-    await loadPlayer();
-
-    openMenu();
-
-  }catch(error){
-
-    message(
-      "loginMessage",
-      "❌ " + error.message
-    );
-  }
 }
 
+message(
+"loginMessage",
+"Anmeldung..."
+);
 
-/* ==================================================
+try{
+
+const data =
+await supabaseRequest(
+"/auth/v1/token?grant_type=password",
+{
+method:"POST",
+
+body:JSON.stringify({
+
+email:email,
+
+password:password
+
+})
+
+}
+);
+
+accessToken =
+data.access_token;
+
+currentPlayer = {
+
+id:data.user.id,
+
+username:
+data.user.user_metadata?.username ||
+email.split("@")[0],
+
+coins:0,
+
+highscore:0
+
+};
+
+await loadPlayer();
+
+openMenu();
+
+}
+catch(error){
+
+message(
+"loginMessage",
+"❌ " + error.message
+);
+
+}
+
+};
+
+
+/* =================================================
+   ACCOUNT ÖFFNEN
+   ================================================= */
+
+$("openRegister").onclick =
+function(){
+
+message(
+"loginMessage",
+""
+);
+
+showScreen(
+"registerScreen"
+);
+
+};
+
+
+/* =================================================
+   ZURÜCK
+   ================================================= */
+
+$("backLogin").onclick =
+function(){
+
+message(
+"registerMessage",
+""
+);
+
+showScreen(
+"loginScreen"
+);
+
+};
+
+
+/* =================================================
    REGISTRIERUNG
-================================================== */
+   ================================================= */
 
-document
-.getElementById("openRegister")
-.addEventListener(
-  "click",
-  () => {
-    message("loginMessage","");
-    screen("registerScreen");
-  }
+$("registerBtn").onclick =
+async function(){
+
+const username =
+$("registerUsername")
+.value
+.trim();
+
+const email =
+$("registerEmail")
+.value
+.trim();
+
+const password =
+$("registerPassword")
+.value;
+
+if(username.length < 3){
+
+message(
+"registerMessage",
+"Benutzername: mindestens 3 Zeichen."
 );
 
+return;
 
-document
-.getElementById("backLogin")
-.addEventListener(
-  "click",
-  () => {
-    message("registerMessage","");
-    screen("loginScreen");
-  }
-);
-
-
-document
-.getElementById("registerBtn")
-.addEventListener(
-  "click",
-  register
-);
-
-
-async function register(){
-
-  const username =
-    document
-    .getElementById("username")
-    .value
-    .trim();
-
-  const email =
-    document
-    .getElementById("regEmail")
-    .value
-    .trim();
-
-  const password =
-    document
-    .getElementById("regPassword")
-    .value;
-
-  if(username.length < 3){
-
-    message(
-      "registerMessage",
-      "Benutzername: mindestens 3 Zeichen."
-    );
-
-    return;
-  }
-
-  if(!email.includes("@")){
-
-    message(
-      "registerMessage",
-      "Bitte eine gültige E-Mail eingeben."
-    );
-
-    return;
-  }
-
-  if(password.length < 6){
-
-    message(
-      "registerMessage",
-      "Passwort: mindestens 6 Zeichen."
-    );
-
-    return;
-  }
-
-  try{
-
-    const data =
-      await api(
-        "/auth/v1/signup",
-        {
-          method:"POST",
-
-          body:JSON.stringify({
-            email:email,
-            password:password,
-
-            data:{
-              username:username
-            }
-          })
-        }
-      );
-
-    /*
-      Wenn Confirm Email AUS ist,
-      gibt Supabase direkt eine Session zurück.
-    */
-
-    if(data.access_token){
-
-      token =
-        data.access_token;
-
-      player = {
-        id:data.user.id,
-        username:username,
-        coins:0,
-        highscore:0
-      };
-
-      await createPlayer();
-
-      openMenu();
-
-    }else{
-
-      message(
-        "registerMessage",
-        "Der Account wurde erstellt. Wenn Supabase trotzdem eine E-Mail verlangt, ist 'Confirm email' in Supabase noch aktiviert."
-      );
-    }
-
-  }catch(error){
-
-    message(
-      "registerMessage",
-      "❌ " + error.message
-    );
-  }
 }
 
+if(!email.includes("@")){
 
-/* ==================================================
-   PLAYER
-================================================== */
+message(
+"registerMessage",
+"Bitte eine gültige E-Mail eingeben."
+);
+
+return;
+
+}
+
+if(password.length < 6){
+
+message(
+"registerMessage",
+"Passwort: mindestens 6 Zeichen."
+);
+
+return;
+
+}
+
+message(
+"registerMessage",
+"Account wird erstellt..."
+);
+
+try{
+
+const data =
+await supabaseRequest(
+"/auth/v1/signup",
+{
+method:"POST",
+
+body:JSON.stringify({
+
+email:email,
+
+password:password,
+
+data:{
+username:username
+}
+
+})
+
+}
+);
+
+/*
+Wenn access_token vorhanden ist,
+ist der Account sofort angemeldet.
+*/
+
+if(!data.access_token){
+
+throw new Error(
+"Supabase verlangt eine E-Mail-Bestätigung. Deaktiviere in Supabase bei Authentication → Settings die Option 'Confirm email'."
+);
+
+}
+
+accessToken =
+data.access_token;
+
+currentPlayer = {
+
+id:data.user.id,
+
+username:username,
+
+coins:0,
+
+highscore:0
+
+};
+
+await createPlayer();
+
+openMenu();
+
+}
+catch(error){
+
+message(
+"registerMessage",
+"❌ " + error.message
+);
+
+}
+
+};
+
+
+/* =================================================
+   PLAYER ERSTELLEN
+   ================================================= */
 
 async function createPlayer(){
 
-  try{
+await supabaseRequest(
+"/rest/v1/Players",
+{
+method:"POST",
 
-    await api(
-      "/rest/v1/Players",
-      {
-        method:"POST",
+headers:{
+"Prefer":
+"resolution=ignore-duplicates"
+},
 
-        headers:{
-          "Prefer":
-          "resolution=ignore-duplicates"
-        },
+body:JSON.stringify({
 
-        body:JSON.stringify({
-          id:player.id,
-          username:player.username,
-          coins:0,
-          highscore:0
-        })
-      }
-    );
+id:currentPlayer.id,
 
-  }catch(error){
+username:
+currentPlayer.username,
 
-    console.log(
-      "Player konnte nicht erstellt werden:",
-      error.message
-    );
-  }
+coins:0,
+
+highscore:0
+
+})
+
+}
+);
+
 }
 
+
+/* =================================================
+   PLAYER LADEN
+   ================================================= */
 
 async function loadPlayer(){
 
-  try{
+const rows =
+await supabaseRequest(
 
-    const rows =
-      await api(
-        "/rest/v1/Players" +
-        "?id=eq." +
-        encodeURIComponent(player.id) +
-        "&select=*"
-      );
+"/rest/v1/Players" +
+"?id=eq." +
+encodeURIComponent(
+currentPlayer.id
+) +
+"&select=*"
 
-    if(rows.length){
+);
 
-      player.username =
-        rows[0].username ||
-        player.username;
+if(rows.length > 0){
 
-      player.coins =
-        Number(rows[0].coins || 0);
+currentPlayer.username =
+rows[0].username ||
+currentPlayer.username;
 
-      player.highscore =
-        Number(rows[0].highscore || 0);
+currentPlayer.coins =
+Number(
+rows[0].coins || 0
+);
 
-    }else{
+currentPlayer.highscore =
+Number(
+rows[0].highscore || 0
+);
 
-      await createPlayer();
-    }
+}
+else{
 
-  }catch(error){
+await createPlayer();
 
-    console.log(
-      "Spielerdaten:",
-      error.message
-    );
-  }
 }
 
+}
+
+
+/* =================================================
+   PLAYER SPEICHERN
+   ================================================= */
 
 async function savePlayer(){
 
-  try{
+await supabaseRequest(
 
-    await api(
-      "/rest/v1/Players?id=eq." +
-      encodeURIComponent(player.id),
-      {
-        method:"PATCH",
+"/rest/v1/Players?id=eq." +
+encodeURIComponent(
+currentPlayer.id
+),
 
-        headers:{
-          "Prefer":"return=minimal"
-        },
+{
+method:"PATCH",
 
-        body:JSON.stringify({
-          username:player.username,
-          coins:player.coins,
-          highscore:player.highscore
-        })
-      }
-    );
+headers:{
+"Prefer":
+"return=minimal"
+},
 
-  }catch(error){
+body:JSON.stringify({
 
-    console.log(
-      "Speichern:",
-      error.message
-    );
-  }
+username:
+currentPlayer.username,
+
+coins:
+currentPlayer.coins,
+
+highscore:
+currentPlayer.highscore
+
+})
+
+}
+
+);
+
 }
 
 
-/* ==================================================
+/* =================================================
    MENÜ
-================================================== */
+   ================================================= */
 
 function openMenu(){
 
-  document
-    .getElementById("playerName")
-    .textContent =
-      player.username;
+$("menuUsername")
+.textContent =
+currentPlayer.username;
 
-  document
-    .getElementById("coins")
-    .textContent =
-      player.coins.toLocaleString();
+$("menuCoins")
+.textContent =
+currentPlayer.coins
+.toLocaleString();
 
-  document
-    .getElementById("highscore")
-    .textContent =
-      player.highscore.toLocaleString();
+$("menuHighscore")
+.textContent =
+currentPlayer.highscore
+.toLocaleString();
 
-  screen("menuScreen");
+showScreen(
+"menuScreen"
+);
+
 }
 
 
-/* ==================================================
+/* =================================================
    LOGOUT
-================================================== */
+   ================================================= */
 
-document
-.getElementById("logout")
-.addEventListener(
-  "click",
-  () => {
+$("logoutBtn").onclick =
+function(){
 
-    token="";
-    player=null;
+accessToken = "";
 
-    document.getElementById("email").value="";
-    document.getElementById("password").value="";
+currentPlayer = null;
 
-    screen("loginScreen");
-  }
+$("loginEmail").value = "";
+
+$("loginPassword").value = "";
+
+showScreen(
+"loginScreen"
 );
 
+};
 
-/* ==================================================
+
+/* =================================================
    RANGLISTE
-================================================== */
+   ================================================= */
 
-document
-.getElementById("ranking")
-.addEventListener(
-  "click",
-  loadRanking
+$("rankingBtn").onclick =
+async function(){
+
+showScreen(
+"rankingScreen"
 );
 
+$("rankingList")
+.textContent =
+"Lade Rangliste...";
 
-document
-.getElementById("backMenu")
-.addEventListener(
-  "click",
-  openMenu
+try{
+
+const rows =
+await supabaseRequest(
+
+"/rest/v1/Players" +
+"?select=username,highscore" +
+"&order=highscore.desc" +
+"&limit=50"
+
 );
 
+if(!rows.length){
 
-async function loadRanking(){
+$("rankingList")
+.textContent =
+"Noch keine Spieler.";
 
-  screen("rankingScreen");
+return;
 
-  const list =
-    document.getElementById(
-      "rankingList"
-    );
-
-  list.textContent =
-    "Lade Rangliste...";
-
-  try{
-
-    const rows =
-      await api(
-        "/rest/v1/Players" +
-        "?select=username,highscore" +
-        "&order=highscore.desc" +
-        "&limit=50"
-      );
-
-    if(!rows.length){
-
-      list.textContent =
-        "Noch keine Spieler.";
-
-      return;
-    }
-
-    list.innerHTML =
-      rows.map(
-        (r,i) => {
-
-          const name =
-            String(
-              r.username || "Spieler"
-            )
-            .replaceAll("<","&lt;")
-            .replaceAll(">","&gt;");
-
-          return `
-            <div>
-              <b>${i+1}.</b>
-              ${name}
-              — ${Number(
-                r.highscore || 0
-              ).toLocaleString()}
-            </div>
-          `;
-        }
-      ).join("");
-
-  }catch(error){
-
-    list.textContent =
-      "❌ " + error.message;
-  }
 }
 
+$("rankingList")
+.innerHTML =
+rows
+.map(
+(row,index)=>{
 
-/* ==================================================
+const username =
+String(
+row.username || "Spieler"
+)
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;");
+
+return `
+<div>
+<b>${index+1}.</b>
+${username}
+—
+${Number(
+row.highscore || 0
+).toLocaleString()}
+</div>
+`;
+
+}
+)
+.join("");
+
+}
+catch(error){
+
+$("rankingList")
+.textContent =
+"❌ " + error.message;
+
+}
+
+};
+
+
+$("rankingBack").onclick =
+openMenu;
+
+
+/* =================================================
    SPIEL
-================================================== */
+   ================================================= */
 
 const canvas =
-  document.getElementById("game");
+$("game");
 
 const ctx =
-  canvas.getContext("2d");
+canvas.getContext("2d");
 
-let W=innerWidth;
-let H=innerHeight;
+let W =
+window.innerWidth;
 
-canvas.width=W;
-canvas.height=H;
+let H =
+window.innerHeight;
+
+function resize(){
+
+W =
+window.innerWidth;
+
+H =
+window.innerHeight;
+
+canvas.width =
+W;
+
+canvas.height =
+H;
+
+}
+
+resize();
 
 window.addEventListener(
-  "resize",
-  () => {
-
-    W=innerWidth;
-    H=innerHeight;
-
-    canvas.width=W;
-    canvas.height=H;
-  }
+"resize",
+resize
 );
 
 
-let running=false;
-let paused=false;
+let running = false;
 
-let lane=0;
+let paused = false;
 
-let score=0;
-let roundCoins=0;
+let lane = 0;
 
-let speed=330;
+let score = 0;
 
-let objects=[];
+let roundCoins = 0;
 
-let carTimer=1;
-let coinTimer=2;
+let speed = 330;
 
-let jumpY=0;
-let jumpVelocity=0;
+let objects = [];
 
-let lastTime=
-  performance.now();
+let carTimer = 1;
 
+let coinTimer = 2;
+
+let jumpY = 0;
+
+let jumpVelocity = 0;
+
+let lastTime =
+performance.now();
+
+
+/* =================================================
+   STRASSE
+   ================================================= */
 
 function roadWidth(){
-  return Math.min(W*.86,650);
-}
 
+return Math.min(
+W * .86,
+650
+);
+
+}
 
 function roadLeft(){
-  return (W-roadWidth())/2;
-}
 
+return (
+W - roadWidth()
+) / 2;
+
+}
 
 function laneWidth(){
-  return roadWidth()/3;
-}
 
+return roadWidth() / 3;
+
+}
 
 function laneX(n){
 
-  return (
-    roadLeft()+
-    laneWidth()*(n+1)+
-    laneWidth()/2
-  );
+return (
+roadLeft() +
+laneWidth() * (n+1) +
+laneWidth()/2
+);
+
 }
 
 
-/* ==================================================
-   START GAME
-================================================== */
+/* =================================================
+   START
+   ================================================= */
 
-document
-.getElementById("start")
-.addEventListener(
-  "click",
-  startGame
-);
+$("startBtn").onclick =
+startGame;
+
+$("againBtn").onclick =
+startGame;
 
 
 function startGame(){
 
-  document
-    .querySelectorAll(".screen")
-    .forEach(x =>
-      x.classList.add("hidden")
-    );
+document
+.querySelectorAll(".screen")
+.forEach(x =>
+x.classList.add("hidden")
+);
 
-  canvas.style.display="block";
+canvas.style.display =
+"block";
 
-  document
-    .getElementById("hud")
-    .style.display="flex";
+$("hud").style.display =
+"flex";
 
-  document
-    .getElementById("controls")
-    .style.display="flex";
+$("controls").style.display =
+"flex";
 
-  document
-    .getElementById("pause")
-    .style.display="block";
+$("pause").style.display =
+"block";
 
-  running=true;
-  paused=false;
+running = true;
 
-  lane=0;
-  score=0;
-  roundCoins=0;
+paused = false;
 
-  speed=330;
+lane = 0;
 
-  objects=[];
+score = 0;
 
-  carTimer=1;
-  coinTimer=2;
+roundCoins = 0;
 
-  jumpY=0;
-  jumpVelocity=0;
+speed = 330;
 
-  lastTime=
-    performance.now();
+objects = [];
+
+carTimer = 1;
+
+coinTimer = 2;
+
+jumpY = 0;
+
+jumpVelocity = 0;
+
+lastTime =
+performance.now();
+
 }
 
 
-/* ==================================================
+/* =================================================
    BACKGROUND
-================================================== */
+   ================================================= */
 
 function drawBackground(){
 
-  const gradient =
-    ctx.createLinearGradient(
-      0,0,0,H
-    );
+const gradient =
+ctx.createLinearGradient(
+0,0,0,H
+);
 
-  gradient.addColorStop(
-    0,
-    "#063d50"
-  );
+gradient.addColorStop(
+0,
+"#063d50"
+);
 
-  gradient.addColorStop(
-    1,
-    "#02050a"
-  );
+gradient.addColorStop(
+1,
+"#02050a"
+);
 
-  ctx.fillStyle=gradient;
+ctx.fillStyle =
+gradient;
 
-  ctx.fillRect(
-    0,0,W,H
-  );
-
-
-  for(
-    let i=0;
-    i<24;
-    i++
-  ){
-
-    const width=
-      25+(i%5)*12;
-
-    const height=
-      100+((i*53)%240);
-
-    const x=
-      i*(W/23);
-
-    ctx.fillStyle=
-      "#071820";
-
-    ctx.fillRect(
-      x,
-      H-height-120,
-      width,
-      height
-    );
-  }
+ctx.fillRect(
+0,
+0,
+W,
+H
+);
 
 
-  const rw=roadWidth();
-  const rl=roadLeft();
+/* CITY */
 
-  ctx.fillStyle="#111820";
+for(
+let i=0;
+i<24;
+i++
+){
 
-  ctx.fillRect(
-    rl,0,rw,H
-  );
+const width =
+25 + (i%5)*12;
 
-  ctx.fillStyle="#00eaff";
+const height =
+100 + ((i*53)%240);
 
-  ctx.fillRect(
-    rl,0,3,H
-  );
+const x =
+i*(W/23);
 
-  ctx.fillRect(
-    rl+rw-3,0,3,H
-  );
+ctx.fillStyle =
+"#071820";
 
+ctx.fillRect(
+x,
+H-height-120,
+width,
+height
+);
 
-  const lw=laneWidth();
-
-  const offset=
-    (score*9)%90;
-
-  ctx.fillStyle="#ffffff88";
-
-  for(
-    let y=-90+offset;
-    y<H;
-    y+=90
-  ){
-
-    ctx.fillRect(
-      rl+lw-2,
-      y,
-      4,
-      45
-    );
-
-    ctx.fillRect(
-      rl+lw*2-2,
-      y,
-      4,
-      45
-    );
-  }
 }
 
 
-/* ==================================================
-   OBSTACLES
-================================================== */
+/* ROAD */
+
+const rw =
+roadWidth();
+
+const rl =
+roadLeft();
+
+ctx.fillStyle =
+"#111820";
+
+ctx.fillRect(
+rl,
+0,
+rw,
+H
+);
+
+
+/* EDGES */
+
+ctx.fillStyle =
+"#00eaff";
+
+ctx.fillRect(
+rl,
+0,
+3,
+H
+);
+
+ctx.fillRect(
+rl+rw-3,
+0,
+3,
+H
+);
+
+
+/* LANES */
+
+const lw =
+laneWidth();
+
+const offset =
+(score*9)%90;
+
+ctx.fillStyle =
+"#ffffff88";
+
+for(
+let y=-90+offset;
+y<H;
+y+=90
+){
+
+ctx.fillRect(
+rl+lw-2,
+y,
+4,
+45
+);
+
+ctx.fillRect(
+rl+lw*2-2,
+y,
+4,
+45
+);
+
+}
+
+}
+
+
+/* =================================================
+   CARS
+   ================================================= */
 
 function spawnCar(){
 
-  const possible =
-    [-1,0,1].filter(
-      n =>
-        !objects.some(
-          o =>
-            o.type==="car" &&
-            o.lane===n &&
-            o.y<250
-        )
-    );
+const possible =
+[-1,0,1]
+.filter(
+n =>
+!objects.some(
+o =>
+o.type==="car" &&
+o.lane===n &&
+o.y<250
+)
+);
 
-  if(!possible.length)
-    return;
+if(!possible.length)
+return;
 
-  const selected =
-    possible[
-      Math.floor(
-        Math.random()*possible.length
-      )
-    ];
+const selected =
+possible[
+Math.floor(
+Math.random()*
+possible.length
+)
+];
 
-  objects.push({
+objects.push({
 
-    type:"car",
-    lane:selected,
-    y:-110,
+type:"car",
 
-    color:[
-      "#ff1744",
-      "#008cff",
-      "#ff9800",
-      "#ffffff"
-    ][
-      Math.floor(
-        Math.random()*4
-      )
-    ]
-  });
+lane:selected,
+
+y:-110,
+
+color:[
+"#ff1744",
+"#008cff",
+"#ff9800",
+"#ffffff"
+][
+Math.floor(
+Math.random()*4
+)
+]
+
+});
+
 }
 
+
+/* =================================================
+   MÜNZEN
+   ================================================= */
 
 function spawnCoins(){
 
-  const amount=
-    3+Math.floor(
-      Math.random()*4
-    );
+const amount =
+3 +
+Math.floor(
+Math.random()*4
+);
 
-  const selectedLane=
-    [-1,0,1][
-      Math.floor(
-        Math.random()*3
-      )
-    ];
+const selectedLane =
+[-1,0,1][
+Math.floor(
+Math.random()*3
+)
+];
 
-  for(
-    let i=0;
-    i<amount;
-    i++
-  ){
+for(
+let i=0;
+i<amount;
+i++
+){
 
-    objects.push({
-      type:"coin",
-      lane:selectedLane,
-      y:-40-i*65
-    });
-  }
+objects.push({
+
+type:"coin",
+
+lane:selectedLane,
+
+y:-40-i*65
+
+});
+
+}
+
 }
 
 
-/* ==================================================
-   DRAW OBJECTS
-================================================== */
+/* =================================================
+   OBJEKTE ZEICHNEN
+   ================================================= */
 
 function drawObjects(){
 
-  for(
-    const object of objects
-  ){
+for(
+const object of objects
+){
 
-    const x=
-      laneX(object.lane);
+const x =
+laneX(object.lane);
 
-    if(object.type==="coin"){
+if(
+object.type === "coin"
+){
 
-      ctx.save();
+ctx.save();
 
-      ctx.shadowColor="#ffd600";
-      ctx.shadowBlur=20;
-      ctx.fillStyle="#ffd600";
+ctx.shadowColor =
+"#ffd600";
 
-      ctx.beginPath();
+ctx.shadowBlur =
+20;
 
-      ctx.arc(
-        x,
-        object.y,
-        14,
-        0,
-        Math.PI*2
-      );
+ctx.fillStyle =
+"#ffd600";
 
-      ctx.fill();
+ctx.beginPath();
 
-      ctx.restore();
+ctx.arc(
+x,
+object.y,
+14,
+0,
+Math.PI*2
+);
 
-    }else{
+ctx.fill();
 
-      ctx.save();
+ctx.restore();
 
-      ctx.translate(
-        x,
-        object.y
-      );
+}
+else{
 
-      ctx.shadowColor=
-        object.color;
+ctx.save();
 
-      ctx.shadowBlur=18;
+ctx.translate(
+x,
+object.y
+);
 
-      ctx.fillStyle=
-        object.color;
+ctx.shadowColor =
+object.color;
 
-      ctx.beginPath();
+ctx.shadowBlur =
+18;
 
-      ctx.roundRect(
-        -30,
-        -50,
-        60,
-        100,
-        12
-      );
+ctx.fillStyle =
+object.color;
 
-      ctx.fill();
+ctx.beginPath();
 
-      ctx.shadowBlur=0;
+ctx.roundRect(
+-30,
+-50,
+60,
+100,
+12
+);
 
-      ctx.fillStyle="#17303b";
+ctx.fill();
 
-      ctx.fillRect(
-        -19,
-        -29,
-        38,
-        24
-      );
+ctx.shadowBlur = 0;
 
-      ctx.restore();
-    }
-  }
+ctx.fillStyle =
+"#17303b";
+
+ctx.fillRect(
+-19,
+-29,
+38,
+24
+);
+
+ctx.restore();
+
+}
+
+}
+
 }
 
 
-/* ==================================================
-   PLAYER
-================================================== */
+/* =================================================
+   SPIELER
+   ================================================= */
 
 function drawPlayer(){
 
-  const x=laneX(lane);
-  const y=H*.76-jumpY;
+const x =
+laneX(lane);
 
-  ctx.save();
+const y =
+H*.76-jumpY;
 
-  ctx.translate(x,y);
+ctx.save();
 
-  ctx.shadowColor="#00eaff";
-  ctx.shadowBlur=25;
+ctx.translate(
+x,
+y
+);
 
-  ctx.fillStyle="#00eaff";
+ctx.shadowColor =
+"#00eaff";
 
-  ctx.beginPath();
+ctx.shadowBlur =
+25;
 
-  ctx.roundRect(
-    -26,
-    -26,
-    52,
-    52,
-    10
-  );
+ctx.fillStyle =
+"#00eaff";
 
-  ctx.fill();
+ctx.beginPath();
 
-  ctx.shadowBlur=0;
+ctx.roundRect(
+-26,
+-26,
+52,
+52,
+10
+);
 
-  ctx.fillStyle="#021017";
+ctx.fill();
 
-  ctx.fillRect(
-    -13,
-    -9,
-    26,
-    9
-  );
+ctx.shadowBlur=0;
 
-  ctx.restore();
+ctx.fillStyle =
+"#021017";
+
+ctx.fillRect(
+-13,
+-9,
+26,
+9
+);
+
+ctx.restore();
+
 }
 
 
-/* ==================================================
-   STEUERUNG
-================================================== */
+/* =================================================
+   BEWEGUNG
+   ================================================= */
 
 function moveLeft(){
 
-  if(!running || paused)
-    return;
+if(!running || paused)
+return;
 
-  lane=
-    Math.max(
-      -1,
-      lane-1
-    );
+lane =
+Math.max(
+-1,
+lane-1
+);
+
 }
-
 
 function moveRight(){
 
-  if(!running || paused)
-    return;
+if(!running || paused)
+return;
 
-  lane=
-    Math.min(
-      1,
-      lane+1
-    );
+lane =
+Math.min(
+1,
+lane+1
+);
+
 }
-
 
 function jump(){
 
-  if(!running || paused)
-    return;
+if(
+!running ||
+paused
+)
+return;
 
-  if(jumpY<=0)
-    jumpVelocity=850;
+if(
+jumpY <= 0
+){
+
+jumpVelocity =
+850;
+
+}
+
 }
 
 
-document
-.getElementById("left")
-.addEventListener(
-  "click",
-  moveLeft
-);
+$("leftBtn").onclick =
+moveLeft;
+
+$("rightBtn").onclick =
+moveRight;
+
+$("jumpBtn").onclick =
+jump;
 
 
-document
-.getElementById("right")
-.addEventListener(
-  "click",
-  moveRight
-);
-
-
-document
-.getElementById("jump")
-.addEventListener(
-  "click",
-  jump
-);
-
+/* =================================================
+   TASTATUR
+   ================================================= */
 
 document.addEventListener(
-  "keydown",
-  e => {
+"keydown",
+function(event){
 
-    if(e.key==="ArrowLeft")
-      moveLeft();
+if(
+event.key === "ArrowLeft"
+)
+moveLeft();
 
-    if(e.key==="ArrowRight")
-      moveRight();
+if(
+event.key === "ArrowRight"
+)
+moveRight();
 
-    if(
-      e.key==="ArrowUp" ||
-      e.key===" "
-    )
-      jump();
-  }
+if(
+event.key === "ArrowUp" ||
+event.key === " "
+)
+jump();
+
+}
 );
 
 
-/* ==================================================
+/* =================================================
    UPDATE
-================================================== */
+   ================================================= */
 
 function update(dt){
 
-  if(!running || paused)
-    return;
+if(!running || paused)
+return;
 
-  const seconds=dt/1000;
+const seconds =
+dt/1000;
 
-  score+=seconds*10;
+score +=
+seconds*10;
 
-  speed=
-    Math.min(
-      700,
-      speed+seconds*3
-    );
-
-
-  jumpVelocity-=
-    1900*seconds;
-
-  jumpY+=
-    jumpVelocity*seconds;
-
-  if(jumpY<0){
-
-    jumpY=0;
-    jumpVelocity=0;
-  }
+speed =
+Math.min(
+700,
+speed+seconds*3
+);
 
 
-  coinTimer-=seconds;
+/* JUMP */
 
-  if(coinTimer<=0){
+jumpVelocity -=
+1900*seconds;
 
-    spawnCoins();
+jumpY +=
+jumpVelocity*seconds;
 
-    coinTimer=
-      4+Math.random()*1.5;
-  }
+if(jumpY<0){
 
+jumpY=0;
 
-  carTimer-=seconds;
+jumpVelocity=0;
 
-  if(carTimer<=0){
-
-    spawnCar();
-
-    carTimer=
-      1.25+Math.random()*.75;
-  }
-
-
-  for(
-    let i=objects.length-1;
-    i>=0;
-    i--
-  ){
-
-    const object=
-      objects[i];
-
-    object.y+=
-      speed*seconds;
-
-    if(object.y>H+120){
-
-      objects.splice(i,1);
-      continue;
-    }
-
-
-    const playerY=
-      H*.76-jumpY;
-
-
-    if(
-      object.type==="coin" &&
-      object.lane===lane &&
-      Math.abs(
-        object.y-playerY
-      )<55
-    ){
-
-      roundCoins++;
-
-      objects.splice(i,1);
-
-      continue;
-    }
-
-
-    if(
-      object.type==="car" &&
-      object.lane===lane &&
-      Math.abs(
-        object.y-playerY
-      )<65
-    ){
-
-      if(jumpY<90){
-
-        endGame();
-        return;
-      }
-    }
-  }
-
-
-  document
-    .getElementById("hudCoins")
-    .textContent=
-      (
-        player.coins+
-        roundCoins
-      ).toLocaleString();
-
-  document
-    .getElementById("hudScore")
-    .textContent=
-      Math.floor(score)
-      .toLocaleString();
 }
 
 
-/* ==================================================
-   LOOP
-================================================== */
+/* COINS */
+
+coinTimer -=
+seconds;
+
+if(
+coinTimer<=0
+){
+
+spawnCoins();
+
+coinTimer =
+4+
+Math.random()*1.5;
+
+}
+
+
+/* CARS */
+
+carTimer -=
+seconds;
+
+if(
+carTimer<=0
+){
+
+spawnCar();
+
+carTimer =
+1.25+
+Math.random()*.75;
+
+}
+
+
+/* OBJEKTE */
+
+for(
+let i=objects.length-1;
+i>=0;
+i--
+){
+
+const object =
+objects[i];
+
+object.y +=
+speed*seconds;
+
+if(
+object.y >
+H+120
+){
+
+objects.splice(
+i,
+1
+);
+
+continue;
+
+}
+
+const playerY =
+H*.76-jumpY;
+
+
+/* MÜNZE */
+
+if(
+object.type==="coin" &&
+object.lane===lane &&
+Math.abs(
+object.y-playerY
+)<55
+){
+
+roundCoins++;
+
+objects.splice(
+i,
+1
+);
+
+continue;
+
+}
+
+
+/* AUTO */
+
+if(
+object.type==="car" &&
+object.lane===lane &&
+Math.abs(
+object.y-playerY
+)<65
+){
+
+if(
+jumpY<90
+){
+
+endGame();
+
+return;
+
+}
+
+}
+
+}
+
+
+$("hudCoins")
+.textContent =
+(
+currentPlayer.coins+
+roundCoins
+)
+.toLocaleString();
+
+$("hudScore")
+.textContent =
+Math.floor(score)
+.toLocaleString();
+
+}
+
+
+/* =================================================
+   GAME LOOP
+   ================================================= */
 
 function gameLoop(time){
 
-  const dt=
-    Math.min(
-      40,
-      time-lastTime
-    );
+const dt =
+Math.min(
+40,
+time-lastTime
+);
 
-  lastTime=time;
+lastTime=time;
 
-  if(
-    canvas.style.display!=="none"
-  ){
+if(
+canvas.style.display !==
+"none"
+){
 
-    drawBackground();
-    drawObjects();
-    drawPlayer();
+drawBackground();
 
-    update(dt);
-  }
+drawObjects();
 
-  requestAnimationFrame(
-    gameLoop
-  );
+drawPlayer();
+
+update(dt);
+
 }
 
 requestAnimationFrame(
-  gameLoop
+gameLoop
+);
+
+}
+
+requestAnimationFrame(
+gameLoop
 );
 
 
-/* ==================================================
+/* =================================================
    PAUSE
-================================================== */
+   ================================================= */
 
-document
-.getElementById("pause")
-.addEventListener(
-  "click",
-  () => {
+$("pause").onclick =
+function(){
 
-    paused=!paused;
+paused =
+!paused;
 
-    document
-      .getElementById("pause")
-      .textContent=
-        paused ? "▶" : "⏸";
-  }
-);
+$("pause").textContent =
+paused
+?
+"▶"
+:
+"⏸";
+
+};
 
 
-/* ==================================================
+/* =================================================
    GAME OVER
-================================================== */
+   ================================================= */
 
 async function endGame(){
 
-  running=false;
+running=false;
 
-  const final=
-    Math.floor(score);
+const final =
+Math.floor(score);
 
-  player.coins+=
-    roundCoins;
+currentPlayer.coins +=
+roundCoins;
 
-  if(
-    final>player.highscore
-  ){
+if(
+final >
+currentPlayer.highscore
+){
 
-    player.highscore=
-      final;
-  }
+currentPlayer.highscore =
+final;
 
-  await savePlayer();
+}
 
-  document
-    .getElementById("finalScore")
-    .textContent=
-      final.toLocaleString();
+try{
 
-  document
-    .getElementById("finalCoins")
-    .textContent=
-      roundCoins.toLocaleString();
+await savePlayer();
 
-  canvas.style.display="none";
+}
+catch(error){
 
-  document
-    .getElementById("hud")
-    .style.display="none";
+console.log(
+"Speichern fehlgeschlagen:",
+error
+);
 
-  document
-    .getElementById("controls")
-    .style.display="none";
+}
 
-  document
-    .getElementById("pause")
-    .style.display="none";
+$("finalScore")
+.textContent =
+final.toLocaleString();
 
-  screen("gameOver");
+$("finalCoins")
+.textContent =
+roundCoins.toLocaleString();
+
+canvas.style.display =
+"none";
+
+$("hud").style.display =
+"none";
+
+$("controls").style.display =
+"none";
+
+$("pause").style.display =
+"none";
+
+showScreen(
+"gameOverScreen"
+);
+
 }
 
 
-document
-.getElementById("again")
-.addEventListener(
-  "click",
-  startGame
-);
+/* =================================================
+   MENÜ
+   ================================================= */
+
+$("gameMenuBtn").onclick =
+openMenu;
 
 
-document
-.getElementById("gameMenu")
-.addEventListener(
-  "click",
-  openMenu
-);
-
-
-/* ==================================================
+/* =================================================
    START
-================================================== */
+   ================================================= */
 
-screen("loginScreen");
+showScreen(
+"loginScreen"
+);
 
 </script>
 
