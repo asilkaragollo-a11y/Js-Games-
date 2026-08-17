@@ -348,7 +348,7 @@ const SUPABASE_URL =
    NICHT den service_role Key benutzen!
 */
 const SUPABASE_ANON_KEY =
-"DEIN_ANON_PUBLIC_KEY_HIER";
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxmc2lmZG1hZnR6dHlrcGNrZHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDczMTksImV4cCI6MjEwMjQ4MzMxOX0.dfMS0zgHO_IYU7_YmR2Si6DVkD8MWiJJUt6iSJXZfio
 
 
 /* =====================================================
