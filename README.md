@@ -16,19 +16,18 @@ html,body{
   width:100%;
   height:100%;
   overflow:hidden;
-  background:#02060b;
+  background:#02050a;
   color:white;
   font-family:Arial,sans-serif;
 }
 
 button,input{
-  font-family:Arial,sans-serif;
+  font-family:inherit;
 }
 
 button{
   border:0;
   cursor:pointer;
-  -webkit-appearance:none;
 }
 
 .screen{
@@ -39,9 +38,8 @@ button{
   align-items:center;
   justify-content:center;
   padding:16px;
-  overflow:auto;
   background:
-    radial-gradient(circle at 50% 0%,#07566b,#03151e 45%,#010306);
+    radial-gradient(circle at 50% 0%,#073f52,#03131c 48%,#010307);
 }
 
 .card{
@@ -50,42 +48,45 @@ button{
   overflow:auto;
   padding:24px 18px;
   border-radius:28px;
-  background:rgba(3,11,18,.97);
-  border:1px solid #00eaff66;
-  box-shadow:0 0 40px #00eaff18;
+  background:rgba(3,10,17,.97);
+  border:1px solid #00eaff55;
+  box-shadow:0 0 45px #00eaff18;
   text-align:center;
 }
 
+.hidden{
+  display:none!important;
+}
+
 .logo{
-  font-size:39px;
+  font-size:38px;
   font-weight:1000;
   letter-spacing:-2px;
-  color:#08e9ff;
-  text-shadow:0 0 12px #08e9ff,0 0 30px #08e9ff;
+  color:#00eaff;
+  text-shadow:0 0 12px #00eaff,0 0 30px #00eaff;
 }
 
 .subtitle{
-  color:#a7c4ce;
+  color:#a6c1ca;
   margin:8px 0 18px;
-  line-height:1.4;
 }
 
 input{
   width:100%;
-  height:55px;
-  margin:7px 0;
+  height:54px;
+  margin:6px 0;
   padding:0 15px;
   border-radius:14px;
   border:1px solid #00eaff55;
   outline:none;
-  background:#f4ffbd;
+  background:#f2ffbd;
   color:#111;
   font-size:16px;
 }
 
 .btn{
   width:100%;
-  min-height:54px;
+  min-height:53px;
   margin:6px 0;
   border-radius:15px;
   font-weight:900;
@@ -93,180 +94,46 @@ input{
 }
 
 .primary{
+  background:linear-gradient(135deg,#00eaff,#168dff);
   color:#001018;
-  background:linear-gradient(135deg,#00edff,#078eff);
 }
 
 .secondary{
-  color:white;
   background:#071b25;
+  color:white;
   border:1px solid #00eaff44;
 }
 
 .message{
   min-height:22px;
   margin-top:8px;
-  color:#8df5ff;
+  color:#8df6ff;
   font-size:13px;
-}
-
-.hidden{
-  display:none!important;
 }
 
 .stats{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
-  margin:14px 0;
+  margin:15px 0;
 }
 
 .stat{
-  padding:12px;
-  border-radius:14px;
   background:#071b25;
   border:1px solid #00eaff22;
+  border-radius:14px;
+  padding:12px;
 }
 
 .stat small{
   display:block;
-  color:#75939d;
+  color:#76939d;
 }
 
 .stat strong{
   display:block;
-  margin-top:5px;
-  font-size:21px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:9px;
-}
-
-.item{
-  padding:10px;
-  border-radius:17px;
-  background:#071820;
-  border:1px solid #00eaff22;
-}
-
-.item.selected{
-  border-color:#00eaff;
-  box-shadow:0 0 20px #00eaff22;
-}
-
-.preview{
-  height:85px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  position:relative;
-}
-
-.cube{
-  width:46px;
-  height:46px;
-  border-radius:12px;
-  box-shadow:0 0 20px currentColor;
-}
-
-.name{
-  font-weight:900;
-  margin:4px;
-}
-
-.price{
-  color:#ffd600;
-  font-size:12px;
-}
-
-.mult{
-  color:#8ba8b2;
-  font-size:11px;
-  margin:4px;
-}
-
-.city{
-  height:85px;
-  border-radius:12px;
-  position:relative;
-  overflow:hidden;
-  margin-bottom:7px;
-}
-
-.building{
-  position:absolute;
-  bottom:0;
-  background:#06141c;
-  border-top:1px solid #00eaff77;
-}
-
-#game{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  display:none;
-  z-index:1;
-  touch-action:none;
-}
-
-#hud{
-  position:fixed;
-  top:10px;
-  left:8px;
-  right:8px;
-  z-index:5;
-  display:none;
-  justify-content:space-between;
-  gap:5px;
-  pointer-events:none;
-}
-
-.hud{
-  padding:7px 9px;
-  border-radius:11px;
-  background:#031119dd;
-  border:1px solid #00eaff55;
-  font-size:11px;
-  font-weight:900;
-}
-
-#pause{
-  position:fixed;
-  top:53px;
-  right:9px;
-  z-index:6;
-  width:58px;
-  height:38px;
-  border-radius:11px;
-  background:#071b25dd;
-  border:1px solid #00eaff55;
-  color:white;
-  display:none;
-}
-
-.power{
-  position:fixed;
-  top:95px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:6;
-  padding:7px 12px;
-  border-radius:14px;
-  background:#031119dd;
-  border:1px solid #00eaff66;
-  font-weight:900;
-  font-size:13px;
-  display:none;
-}
-
-.rank{
-  text-align:left;
-  padding:7px;
-  border-bottom:1px solid #ffffff12;
+  margin-top:4px;
+  font-size:20px;
 }
 
 .tabs{
@@ -289,186 +156,472 @@ input{
   background:#00eaff;
   color:#001018;
 }
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px;
+}
+
+.item{
+  padding:9px;
+  border-radius:17px;
+  background:#071820;
+  border:1px solid #00eaff22;
+}
+
+.item.selected{
+  border-color:#00eaff;
+  box-shadow:0 0 22px #00eaff22;
+}
+
+.preview{
+  height:100px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.character{
+  width:55px;
+  height:55px;
+  border-radius:16px;
+  position:relative;
+  box-shadow:0 0 25px currentColor;
+}
+
+.character:before,
+.character:after{
+  content:"";
+  position:absolute;
+  background:#061018;
+}
+
+.character:before{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  left:13px;
+  top:17px;
+  box-shadow:20px 0 #061018;
+}
+
+.character:after{
+  width:24px;
+  height:5px;
+  border-radius:10px;
+  left:15px;
+  bottom:12px;
+}
+
+.name{
+  font-weight:900;
+}
+
+.price{
+  color:#ffd600;
+  font-size:12px;
+  margin:3px;
+}
+
+.mult{
+  color:#91aab3;
+  font-size:11px;
+}
+
+.city{
+  height:90px;
+  border-radius:12px;
+  overflow:hidden;
+  position:relative;
+  margin-bottom:7px;
+}
+
+.building{
+  position:absolute;
+  bottom:0;
+  background:#06131b;
+  border-top:1px solid #00eaff77;
+}
+
+#game{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:none;
+  z-index:1;
+  touch-action:none;
+}
+
+#hud{
+  position:fixed;
+  top:9px;
+  left:8px;
+  right:8px;
+  z-index:5;
+  display:none;
+  justify-content:space-between;
+  gap:5px;
+  pointer-events:none;
+}
+
+.hud{
+  padding:7px 9px;
+  border-radius:11px;
+  background:#031119dd;
+  border:1px solid #00eaff55;
+  font-size:11px;
+  font-weight:900;
+}
+
+#pause{
+  position:fixed;
+  top:54px;
+  right:9px;
+  z-index:7;
+  width:58px;
+  height:38px;
+  border-radius:11px;
+  background:#071b25dd;
+  color:white;
+  border:1px solid #00eaff55;
+  display:none;
+}
+
+#power{
+  position:fixed;
+  top:98px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:6;
+  padding:7px 13px;
+  border-radius:14px;
+  background:#031119dd;
+  border:1px solid #00eaff66;
+  font-size:13px;
+  font-weight:900;
+  display:none;
+}
+
+/* PAUSE */
+
+#pauseMenu{
+  position:fixed;
+  inset:0;
+  z-index:30;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(7px);
+}
+
+.pauseCard{
+  width:min(350px,90%);
+  padding:28px 20px;
+  border-radius:26px;
+  background:#041019f5;
+  border:1px solid #00eaff66;
+  box-shadow:0 0 45px #00eaff22;
+  text-align:center;
+}
+
+.pauseTitle{
+  font-size:32px;
+  font-weight:1000;
+  color:#00eaff;
+  margin-bottom:18px;
+}
+
+.pauseBtn{
+  width:100%;
+  min-height:55px;
+  margin:6px 0;
+  border-radius:15px;
+  font-weight:900;
+  font-size:16px;
+}
+
+.resume{
+  background:#00eaff;
+  color:#001018;
+}
+
+.giveup{
+  background:#271018;
+  color:#ff6175;
+  border:1px solid #ff174455;
+}
+
+.rank{
+  text-align:left;
+  padding:8px;
+  border-bottom:1px solid #ffffff12;
+}
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN -->
+
 <section id="login" class="screen">
-  <div class="card">
-    <div class="logo">CUBE RUSH</div>
-    <div class="subtitle">Melde dich bei CUBE RUSH an.</div>
+<div class="card">
 
-    <input id="email" type="email" placeholder="E-Mail">
-    <input id="password" type="password" placeholder="Passwort">
+<div class="logo">CUBE RUSH</div>
 
-    <button id="loginBtn" class="btn primary">
-      ANMELDEN
-    </button>
+<div class="subtitle">
+Dein Endless Runner
+</div>
 
-    <button id="registerOpen" class="btn secondary">
-      ACCOUNT ERSTELLEN
-    </button>
+<input id="email" type="email" placeholder="E-Mail">
+<input id="password" type="password" placeholder="Passwort">
 
-    <div id="loginMsg" class="message"></div>
-  </div>
+<button id="loginBtn" class="btn primary">
+ANMELDEN
+</button>
+
+<button id="registerOpen" class="btn secondary">
+ACCOUNT ERSTELLEN
+</button>
+
+<div id="loginMsg" class="message"></div>
+
+</div>
 </section>
+
+
+<!-- REGISTRIERUNG -->
 
 <section id="register" class="screen hidden">
-  <div class="card">
-    <div class="logo">ACCOUNT</div>
+<div class="card">
 
-    <input id="username" maxlength="20" placeholder="Benutzername">
-    <input id="regEmail" type="email" placeholder="E-Mail">
-    <input id="regPassword" type="password" placeholder="Passwort">
+<div class="logo">ACCOUNT</div>
 
-    <button id="registerBtn" class="btn primary">
-      ACCOUNT ERSTELLEN
-    </button>
+<input id="username" maxlength="20" placeholder="Benutzername">
+<input id="regEmail" type="email" placeholder="E-Mail">
+<input id="regPassword" type="password" placeholder="Passwort">
 
-    <button id="backLogin" class="btn secondary">
-      ZURÜCK
-    </button>
+<button id="registerBtn" class="btn primary">
+ACCOUNT ERSTELLEN
+</button>
 
-    <div id="regMsg" class="message"></div>
-  </div>
+<button id="backLogin" class="btn secondary">
+ZURÜCK
+</button>
+
+<div id="regMsg" class="message"></div>
+
+</div>
 </section>
+
+
+<!-- HAUPTMENÜ -->
 
 <section id="menu" class="screen hidden">
-  <div class="card">
-    <div class="logo">CUBE RUSH</div>
+<div class="card">
 
-    <div class="subtitle">
-      Willkommen, <b id="playerName"></b>
-    </div>
+<div class="logo">CUBE RUSH</div>
 
-    <div class="stats">
-      <div class="stat">
-        <small>🪙 MÜNZEN</small>
-        <strong id="coins">0</strong>
-      </div>
+<div class="subtitle">
+Willkommen, <b id="playerName"></b>
+</div>
 
-      <div class="stat">
-        <small>🏆 HIGHSCORE</small>
-        <strong id="highscore">0</strong>
-      </div>
-    </div>
+<div class="stats">
 
-    <button id="start" class="btn primary">
-      ▶ SPIEL STARTEN
-    </button>
+<div class="stat">
+<small>MÜNZEN</small>
+<strong id="coins">0</strong>
+</div>
 
-    <button id="shop" class="btn secondary">
-      🛍️ SHOP
-    </button>
+<div class="stat">
+<small>HIGHSCORE</small>
+<strong id="highscore">0</strong>
+</div>
 
-    <button id="rankBtn" class="btn secondary">
-      🏆 RANGLISTE
-    </button>
+</div>
 
-    <button id="codeBtn" class="btn secondary">
-      🔐 CODE EINGEBEN
-    </button>
+<button id="start" class="btn primary">
+SPIEL STARTEN
+</button>
 
-    <button id="logout" class="btn secondary">
-      ABMELDEN
-    </button>
-  </div>
+<button id="shop" class="btn secondary">
+SHOP
+</button>
+
+<button id="rankBtn" class="btn secondary">
+RANGLISTE
+</button>
+
+<button id="codeBtn" class="btn secondary">
+CODE
+</button>
+
+<button id="logout" class="btn secondary">
+ABMELDEN
+</button>
+
+</div>
 </section>
+
+
+<!-- SHOP -->
 
 <section id="shopScreen" class="screen hidden">
-  <div class="card">
+<div class="card">
 
-    <div class="logo">SHOP</div>
+<div class="logo">SHOP</div>
 
-    <div class="tabs">
-      <button id="charTab" class="active">CHARAKTERE</button>
-      <button id="cityTab">STÄDTE</button>
-    </div>
+<div class="tabs">
+<button id="charTab" class="active">CHARAKTERE</button>
+<button id="cityTab">STÄDTE</button>
+</div>
 
-    <div id="shopGrid" class="grid"></div>
+<div id="shopGrid" class="grid"></div>
 
-    <button id="shopBack" class="btn secondary">
-      ZURÜCK
-    </button>
-  </div>
+<button id="shopBack" class="btn secondary">
+ZURÜCK
+</button>
+
+</div>
 </section>
+
+
+<!-- RANGLISTE -->
 
 <section id="rankScreen" class="screen hidden">
-  <div class="card">
-    <div class="logo">🏆</div>
-    <div id="rankList">Lade...</div>
+<div class="card">
 
-    <button id="rankBack" class="btn secondary">
-      ZURÜCK
-    </button>
-  </div>
+<div class="logo">RANGLISTE</div>
+
+<div id="rankList">
+Lade...
+</div>
+
+<button id="rankBack" class="btn secondary">
+ZURÜCK
+</button>
+
+</div>
 </section>
+
+
+<!-- CODES -->
 
 <section id="codeScreen" class="screen hidden">
-  <div class="card">
-    <div class="logo">🔐 CODE</div>
+<div class="card">
 
-    <input id="codeInput"
-           inputmode="numeric"
-           maxlength="3"
-           placeholder="Code">
+<div class="logo">ADMIN CODE</div>
 
-    <button id="useCode" class="btn primary">
-      EINLÖSEN
-    </button>
+<input
+ id="codeInput"
+ inputmode="numeric"
+ maxlength="3"
+ placeholder="Code">
 
-    <div id="codeMsg" class="message"></div>
+<button id="useCode" class="btn primary">
+EINLÖSEN
+</button>
 
-    <button id="codeBack" class="btn secondary">
-      ZURÜCK
-    </button>
-  </div>
+<div id="codeMsg" class="message"></div>
+
+<button id="codeBack" class="btn secondary">
+ZURÜCK
+</button>
+
+</div>
 </section>
+
+
+<!-- GAME OVER -->
 
 <section id="gameOver" class="screen hidden">
-  <div class="card">
-    <div class="logo">GAME OVER</div>
+<div class="card">
 
-    <div class="stats">
-      <div class="stat">
-        <small>SCORE</small>
-        <strong id="finalScore">0</strong>
-      </div>
+<div class="logo">GAME OVER</div>
 
-      <div class="stat">
-        <small>MÜNZEN</small>
-        <strong id="finalCoins">0</strong>
-      </div>
-    </div>
+<div class="stats">
 
-    <button id="again" class="btn primary">
-      🔄 NOCHMAL
-    </button>
+<div class="stat">
+<small>SCORE</small>
+<strong id="finalScore">0</strong>
+</div>
 
-    <button id="gameMenu" class="btn secondary">
-      MENÜ
-    </button>
-  </div>
+<div class="stat">
+<small>MÜNZEN</small>
+<strong id="finalCoins">0</strong>
+</div>
+
+</div>
+
+<button id="again" class="btn primary">
+NOCHMAL
+</button>
+
+<button id="gameMenu" class="btn secondary">
+MENÜ
+</button>
+
+</div>
 </section>
+
+
+<!-- SPIEL -->
 
 <canvas id="game"></canvas>
 
 <div id="hud">
-  <div class="hud">🪙 <span id="hudCoins">0</span></div>
-  <div class="hud">🏆 <span id="hudScore">0</span></div>
-  <div class="hud" id="hudWorld">NEON CITY</div>
+
+<div class="hud">
+MÜNZEN <span id="hudCoins">0</span>
 </div>
 
-<div id="power" class="power"></div>
+<div class="hud">
+SCORE <span id="hudScore">0</span>
+</div>
 
-<button id="pause">⏸</button>
+<div class="hud" id="hudWorld">
+NEON CITY
+</div>
+
+</div>
+
+<div id="power"></div>
+
+<button id="pause">
+PAUSE
+</button>
+
+
+<!-- PAUSE-MENÜ -->
+
+<div id="pauseMenu">
+
+<div class="pauseCard">
+
+<div class="pauseTitle">
+PAUSE
+</div>
+
+<button id="resumeBtn" class="pauseBtn resume">
+WEITERSPIELEN
+</button>
+
+<button id="giveUpBtn" class="pauseBtn giveup">
+AUFGEBEN
+</button>
+
+</div>
+
+</div>
 
 
 <script>
-/* =========================
-   SUPABASE
-========================= */
+
+/* =========================================
+SUPABASE
+========================================= */
 
 const SUPABASE_URL =
 "https://lfsifdmaftztykpckdsh.supabase.co";
@@ -476,733 +629,968 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxmc2lmZG1hZnR6dHlrcGNrZHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDczMTksImV4cCI6MjEwMjQ4MzMxOX0.dfMS0zgHO_IYU7_YmR2Si6DVkD8MWiJJUt6iSJXZfio";
 
-let token="";
+let accessToken="";
+let refreshToken="";
 let player=null;
 
 
-/* =========================
-   CHARAKTERE
-========================= */
+/* =========================================
+CHARAKTERE
+========================================= */
 
 const characters=[
- {name:"Cube",price:0,mult:1,color:"#00eaff"},
- {name:"Neon",price:500,mult:1.1,color:"#00ff66"},
- {name:"Fire",price:1000,mult:1.2,color:"#ff1744"},
- {name:"Ocean",price:2000,mult:1.3,color:"#008cff"},
- {name:"Purple",price:3500,mult:1.4,color:"#b000ff"},
- {name:"Gold",price:5000,mult:1.5,color:"#ffd600"},
- {name:"Lava",price:7500,mult:1.7,color:"#ff5a00"},
- {name:"Ice",price:10000,mult:1.9,color:"#8df6ff"},
- {name:"Rainbow",price:15000,mult:2,color:"#ff4dff"},
- {name:"Toxic",price:20000,mult:2.2,color:"#aaff00"},
- {name:"Diamond",price:30000,mult:2.5,color:"#b9f2ff"},
- {name:"Galaxy",price:45000,mult:2.8,color:"#7c4dff"},
- {name:"Plasma",price:60000,mult:3,color:"#ff00aa"},
- {name:"Cyber",price:80000,mult:3.3,color:"#00ffcc"},
- {name:"Royal",price:100000,mult:3.6,color:"#ffcc00"},
- {name:"Shadow",price:125000,mult:4,color:"#777777"},
- {name:"Cosmic",price:160000,mult:4.5,color:"#8b5cff"},
- {name:"Legend",price:220000,mult:5,color:"#ff9100"},
- {name:"Infinity",price:350000,mult:6,color:"#ffffff"},
- {name:"CUBE GOD",price:500000,mult:7,color:"#00ffff"}
+
+{name:"Pulse",price:0,mult:1,color:"#00eaff"},
+{name:"Volt",price:500,mult:1.1,color:"#00ff88"},
+{name:"Flame",price:1000,mult:1.2,color:"#ff304f"},
+{name:"Aqua",price:2000,mult:1.3,color:"#008cff"},
+{name:"Violet",price:3500,mult:1.4,color:"#b000ff"},
+{name:"Gold",price:5000,mult:1.5,color:"#ffd000"},
+{name:"Inferno",price:7500,mult:1.7,color:"#ff6500"},
+{name:"Frost",price:10000,mult:1.9,color:"#9df7ff"},
+{name:"Prism",price:15000,mult:2,color:"#ff4dff"},
+{name:"Toxic",price:20000,mult:2.2,color:"#aaff00"},
+{name:"Diamond",price:30000,mult:2.5,color:"#c8f5ff"},
+{name:"Galaxy",price:45000,mult:2.8,color:"#765cff"},
+{name:"Plasma",price:60000,mult:3,color:"#ff00a8"},
+{name:"Cyber",price:80000,mult:3.3,color:"#00ffd0"},
+{name:"Royal",price:100000,mult:3.6,color:"#ffcc00"},
+{name:"Shadow",price:125000,mult:4,color:"#777b8a"},
+{name:"Cosmic",price:160000,mult:4.5,color:"#915cff"},
+{name:"Legend",price:220000,mult:5,color:"#ff8c00"},
+{name:"Infinity",price:350000,mult:6,color:"#ffffff"},
+{name:"Cube God",price:500000,mult:7,color:"#00ffff"}
+
 ];
 
 
-/* =========================
-   10 WELTEN
-========================= */
+/* =========================================
+10 STÄDTE
+========================================= */
 
 const worlds=[
- {
-  name:"Neon City",
-  price:0,
-  mult:1,
-  min:3,
-  max:6,
-  sky:"#063d50",
-  ground:"#101820"
- },
- {
-  name:"Tokyo",
-  price:2500,
-  mult:1.5,
-  min:6,
-  max:10,
-  sky:"#39105b",
-  ground:"#160b1d"
- },
- {
-  name:"New York",
-  price:7500,
-  mult:2,
-  min:10,
-  max:14,
-  sky:"#10294f",
-  ground:"#111820"
- },
- {
-  name:"Miami",
-  price:15000,
-  mult:2.5,
-  min:14,
-  max:18,
-  sky:"#17606b",
-  ground:"#101d20"
- },
- {
-  name:"Dubai",
-  price:30000,
-  mult:3,
-  min:18,
-  max:23,
-  sky:"#633b19",
-  ground:"#20140a"
- },
- {
-  name:"Cyber City",
-  price:60000,
-  mult:4,
-  min:23,
-  max:28,
-  sky:"#25004f",
-  ground:"#0c0715"
- },
- {
-  name:"Galaxy City",
-  price:120000,
-  mult:5,
-  min:28,
-  max:34,
-  sky:"#05002d",
-  ground:"#05030f"
- },
- {
-  name:"Mars City",
-  price:250000,
-  mult:6,
-  min:34,
-  max:40,
-  sky:"#6b160e",
-  ground:"#28100d"
- },
- {
-  name:"Crystal City",
-  price:500000,
-  mult:8,
-  min:40,
-  max:48,
-  sky:"#103e55",
-  ground:"#07151e"
- },
- {
-  name:"Infinity City",
-  price:1000000,
-  mult:10,
-  min:48,
-  max:60,
-  sky:"#00001d",
-  ground:"#03030c"
- }
+
+{
+name:"Neon City",
+price:0,
+mult:1,
+min:3,
+max:6,
+sky:"#06485a",
+ground:"#0c1720"
+},
+
+{
+name:"Tokyo",
+price:2500,
+mult:1.5,
+min:6,
+max:10,
+sky:"#481060",
+ground:"#17091c"
+},
+
+{
+name:"New York",
+price:7500,
+mult:2,
+min:10,
+max:14,
+sky:"#15365e",
+ground:"#101820"
+},
+
+{
+name:"Miami",
+price:15000,
+mult:2.5,
+min:14,
+max:18,
+sky:"#167081",
+ground:"#101d20"
+},
+
+{
+name:"Dubai",
+price:30000,
+mult:3,
+min:18,
+max:23,
+sky:"#70451d",
+ground:"#20130a"
+},
+
+{
+name:"Cyber City",
+price:60000,
+mult:4,
+min:23,
+max:28,
+sky:"#31005d",
+ground:"#0b0614"
+},
+
+{
+name:"Galaxy City",
+price:120000,
+mult:5,
+min:28,
+max:34,
+sky:"#05002f",
+ground:"#05030e"
+},
+
+{
+name:"Mars City",
+price:250000,
+mult:6,
+min:34,
+max:40,
+sky:"#74170e",
+ground:"#28100d"
+},
+
+{
+name:"Crystal City",
+price:500000,
+mult:8,
+min:40,
+max:48,
+sky:"#104b65",
+ground:"#06151e"
+},
+
+{
+name:"Infinity City",
+price:1000000,
+mult:10,
+min:48,
+max:60,
+sky:"#000022",
+ground:"#02020b"
+}
+
 ];
 
 
-/* =========================
-   DATEN
-========================= */
+/* =========================================
+HELPER
+========================================= */
 
-function localKey(){
- return "cubeRush_"+player.id;
+const $=id=>document.getElementById(id);
+
+function show(id){
+
+document.querySelectorAll(".screen")
+.forEach(s=>s.classList.add("hidden"));
+
+$(id).classList.remove("hidden");
 }
 
-function data(){
- try{
-  return JSON.parse(localStorage.getItem(localKey())||"{}");
- }catch{
-  return {};
- }
+function localKey(){
+
+return "cubeRush_"+player.id;
+}
+
+function getData(){
+
+try{
+return JSON.parse(
+localStorage.getItem(localKey())||"{}"
+);
+}catch{
+return {};
+}
 }
 
 function saveData(d){
- localStorage.setItem(localKey(),JSON.stringify(d));
-}
 
-function unlockedChars(){
- return data().chars||[0];
-}
-
-function unlockedWorlds(){
- return data().worlds||[0];
-}
-
-function selectedChar(){
- return Number(data().char||0);
-}
-
-function selectedWorld(){
- return Number(data().world||0);
-}
-
-function $(id){
- return document.getElementById(id);
-}
-
-function screen(id){
- document.querySelectorAll(".screen").forEach(x=>{
-  x.classList.add("hidden");
- });
- $(id).classList.remove("hidden");
+localStorage.setItem(
+localKey(),
+JSON.stringify(d)
+);
 }
 
 
-/* =========================
-   SUPABASE
-========================= */
+/* =========================================
+SUPABASE REQUEST
+========================================= */
 
-async function request(path,opt={}){
- const headers={
-  apikey:SUPABASE_KEY,
-  "Content-Type":"application/json",
-  ...(token?{Authorization:"Bearer "+token}:{}),
-  ...(opt.headers||{})
- };
+async function api(path,options={}){
 
- const r=await fetch(
-  SUPABASE_URL+path,
-  {...opt,headers}
- );
+const headers={
+apikey:SUPABASE_KEY,
+"Content-Type":"application/json",
+...(accessToken?
+{Authorization:"Bearer "+accessToken}:{}),
+...(options.headers||{})
+};
 
- const text=await r.text();
+const response=await fetch(
+SUPABASE_URL+path,
+{
+...options,
+headers
+}
+);
 
- let json=null;
+const text=await response.text();
 
- try{
-  json=text?JSON.parse(text):null;
- }catch{}
+let data=null;
 
- if(!r.ok){
-  throw new Error(
-   json?.msg||
-   json?.message||
-   json?.error_description||
-   text||
-   "Supabase Fehler"
-  );
- }
+try{
+data=text?JSON.parse(text):null;
+}catch{}
 
- return json;
+if(!response.ok){
+
+throw new Error(
+data?.msg||
+data?.message||
+data?.error_description||
+text||
+"Fehler"
+);
+}
+
+return data;
 }
 
 
-/* =========================
-   LOGIN
-========================= */
+/* =========================================
+SESSION SPEICHERN
+========================================= */
+
+function saveSession(session){
+
+if(!session)return;
+
+accessToken=session.access_token||"";
+refreshToken=session.refresh_token||"";
+
+localStorage.setItem(
+"cubeRush_session",
+JSON.stringify({
+access_token:accessToken,
+refresh_token:refreshToken
+})
+);
+}
+
+
+function loadSavedSession(){
+
+try{
+
+const s=JSON.parse(
+localStorage.getItem("cubeRush_session")
+);
+
+if(!s)return null;
+
+return s;
+
+}catch{
+
+return null;
+
+}
+}
+
+
+/* =========================================
+ACCOUNT
+========================================= */
 
 $("registerOpen").onclick=()=>{
- screen("register");
+show("register");
 };
 
 $("backLogin").onclick=()=>{
- screen("login");
+show("login");
 };
 
-$("loginBtn").onclick=async()=>{
-
- const email=$("email").value.trim();
- const password=$("password").value;
-
- if(!email||!password){
-  $("loginMsg").textContent=
-   "Bitte E-Mail und Passwort eingeben.";
-  return;
- }
-
- try{
-
-  const r=await request(
-   "/auth/v1/token?grant_type=password",
-   {
-    method:"POST",
-    body:JSON.stringify({email,password})
-   }
-  );
-
-  token=r.access_token;
-
-  player={
-   id:r.user.id,
-   username:r.user.user_metadata?.username||
-   email.split("@")[0],
-   coins:0,
-   highscore:0
-  };
-
-  await loadPlayer();
-  menu();
-
- }catch(e){
-
-  $("loginMsg").textContent=
-   "❌ "+e.message;
- }
-};
-
-
-/* =========================
-   REGISTRIERUNG
-========================= */
 
 $("registerBtn").onclick=async()=>{
 
- const name=$("username").value.trim();
- const email=$("regEmail").value.trim();
- const password=$("regPassword").value;
+const username=$("username").value.trim();
+const email=$("regEmail").value.trim();
+const password=$("regPassword").value;
 
- if(name.length<3){
-  $("regMsg").textContent=
-   "Benutzername mindestens 3 Zeichen.";
-  return;
- }
+if(username.length<3){
 
- if(password.length<6){
-  $("regMsg").textContent=
-   "Passwort mindestens 6 Zeichen.";
-  return;
- }
+$("regMsg").textContent=
+"Benutzername muss mindestens 3 Zeichen haben.";
 
- try{
+return;
+}
 
-  const r=await request(
-   "/auth/v1/signup",
-   {
-    method:"POST",
-    body:JSON.stringify({
-     email,
-     password,
-     data:{username:name}
-    })
-   }
-  );
+if(password.length<6){
 
-  if(!r.access_token){
-   $("regMsg").textContent=
-    "Account erstellt. Wenn Supabase eine Bestätigung verlangt, ist Confirm email noch aktiviert.";
-   return;
-  }
+$("regMsg").textContent=
+"Passwort muss mindestens 6 Zeichen haben.";
 
-  token=r.access_token;
+return;
+}
 
-  player={
-   id:r.user.id,
-   username:name,
-   coins:0,
-   highscore:0
-  };
+try{
 
-  await createPlayer();
-  menu();
+const result=await api(
+"/auth/v1/signup",
+{
+method:"POST",
+body:JSON.stringify({
+email,
+password,
+data:{
+username
+}
+})
+}
+);
 
- }catch(e){
+if(!result.access_token){
 
-  $("regMsg").textContent=
-   "❌ "+e.message;
- }
+$("regMsg").textContent=
+"Account erstellt. Falls eine Bestätigung verlangt wird, ist 'Confirm email' in Supabase noch aktiviert.";
+
+return;
+}
+
+saveSession(result);
+
+accessToken=result.access_token;
+
+player={
+id:result.user.id,
+username,
+coins:0,
+highscore:0
+};
+
+await createPlayer();
+
+openMenu();
+
+}catch(error){
+
+$("regMsg").textContent=
+"FEHLER: "+error.message;
+
+}
+
 };
 
 
-/* =========================
-   PLAYER
-========================= */
+/* =========================================
+LOGIN
+========================================= */
+
+$("loginBtn").onclick=async()=>{
+
+const email=$("email").value.trim();
+const password=$("password").value;
+
+if(!email||!password){
+
+$("loginMsg").textContent=
+"Bitte E-Mail und Passwort eingeben.";
+
+return;
+}
+
+try{
+
+const result=await api(
+"/auth/v1/token?grant_type=password",
+{
+method:"POST",
+body:JSON.stringify({
+email,
+password
+})
+}
+);
+
+saveSession(result);
+
+accessToken=result.access_token;
+
+player={
+id:result.user.id,
+username:
+result.user.user_metadata?.username||
+email.split("@")[0],
+coins:0,
+highscore:0
+};
+
+await loadPlayer();
+
+openMenu();
+
+}catch(error){
+
+$("loginMsg").textContent=
+"FEHLER: "+error.message;
+
+}
+
+};
+
+
+/* =========================================
+ACCOUNT AUTOMATISCH LADEN
+========================================= */
+
+async function restoreSession(){
+
+const session=loadSavedSession();
+
+if(!session)return;
+
+try{
+
+accessToken=session.access_token;
+refreshToken=session.refresh_token;
+
+const user=await api(
+"/auth/v1/user"
+);
+
+if(!user?.id)return;
+
+player={
+id:user.id,
+username:
+user.user_metadata?.username||
+"user",
+coins:0,
+highscore:0
+};
+
+await loadPlayer();
+
+openMenu();
+
+}catch(error){
+
+localStorage.removeItem("cubeRush_session");
+
+accessToken="";
+refreshToken="";
+
+}
+
+}
+
+
+/* =========================================
+PLAYER
+========================================= */
 
 async function createPlayer(){
 
- try{
-  await request(
-   "/rest/v1/Players",
-   {
-    method:"POST",
-    headers:{
-     Prefer:"resolution=ignore-duplicates"
-    },
-    body:JSON.stringify({
-     id:player.id,
-     username:player.username,
-     coins:0,
-     highscore:0
-    })
-   }
-  );
- }catch(e){
-  console.log(e.message);
- }
+try{
+
+await api(
+"/rest/v1/Players",
+{
+method:"POST",
+headers:{
+Prefer:"resolution=ignore-duplicates"
+},
+body:JSON.stringify({
+id:player.id,
+username:player.username,
+coins:0,
+highscore:0
+})
 }
+);
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
+
 
 async function loadPlayer(){
 
- try{
+try{
 
-  const rows=await request(
-   "/rest/v1/Players?id=eq."+
-   encodeURIComponent(player.id)+
-   "&select=*"
-  );
+const rows=await api(
+"/rest/v1/Players?id=eq."+
+encodeURIComponent(player.id)+
+"&select=*"
+);
 
-  if(rows?.length){
+if(rows&&rows.length){
 
-   player.username=
-    rows[0].username||player.username;
+player.username=
+rows[0].username||
+player.username;
 
-   player.coins=
-    Number(rows[0].coins||0);
+player.coins=
+Number(rows[0].coins||0);
 
-   player.highscore=
-    Number(rows[0].highscore||0);
-  }
+player.highscore=
+Number(rows[0].highscore||0);
 
- }catch(e){
-  console.log(e.message);
- }
 }
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
+
 
 async function savePlayer(){
 
- try{
+try{
 
-  await request(
-   "/rest/v1/Players?id=eq."+
-   encodeURIComponent(player.id),
-   {
-    method:"PATCH",
-    headers:{
-     Prefer:"return=minimal"
-    },
-    body:JSON.stringify({
-     username:player.username,
-     coins:Math.floor(player.coins),
-     highscore:Math.floor(player.highscore)
-    })
-   }
-  );
+await api(
+"/rest/v1/Players?id=eq."+
+encodeURIComponent(player.id),
+{
+method:"PATCH",
+headers:{
+Prefer:"return=minimal"
+},
+body:JSON.stringify({
+username:player.username,
+coins:Math.floor(player.coins),
+highscore:Math.floor(player.highscore)
+})
+}
+);
 
- }catch(e){
-  console.log(e.message);
- }
+}catch(error){
+
+console.log(error);
+
+}
+
 }
 
 
-/* =========================
-   MENU
-========================= */
+/* =========================================
+MENU
+========================================= */
 
-function menu(){
+function openMenu(){
 
- $("playerName").textContent=player.username;
- $("coins").textContent=
-  Math.floor(player.coins).toLocaleString();
+$("playerName").textContent=
+player.username;
 
- $("highscore").textContent=
-  Math.floor(player.highscore).toLocaleString();
+$("coins").textContent=
+Math.floor(player.coins).toLocaleString();
 
- screen("menu");
+$("highscore").textContent=
+Math.floor(player.highscore).toLocaleString();
+
+show("menu");
+
 }
+
 
 $("logout").onclick=()=>{
- token="";
- player=null;
- screen("login");
+
+localStorage.removeItem("cubeRush_session");
+
+accessToken="";
+refreshToken="";
+player=null;
+
+$("email").value="";
+$("password").value="";
+
+show("login");
+
 };
 
 
-/* =========================
-   SHOP
-========================= */
+/* =========================================
+SHOP
+========================================= */
 
 $("shop").onclick=()=>{
- renderChars();
- screen("shopScreen");
+renderCharacters();
+show("shopScreen");
 };
 
 $("charTab").onclick=()=>{
- $("charTab").classList.add("active");
- $("cityTab").classList.remove("active");
- renderChars();
+$("charTab").classList.add("active");
+$("cityTab").classList.remove("active");
+renderCharacters();
 };
 
 $("cityTab").onclick=()=>{
- $("cityTab").classList.add("active");
- $("charTab").classList.remove("active");
- renderWorlds();
+$("cityTab").classList.add("active");
+$("charTab").classList.remove("active");
+renderWorlds();
 };
 
-$("shopBack").onclick=menu;
+$("shopBack").onclick=openMenu;
 
 
-function renderChars(){
+function renderCharacters(){
 
- const grid=$("shopGrid");
- const owned=unlockedChars();
- const selected=selectedChar();
+const grid=$("shopGrid");
+const d=getData();
 
- grid.innerHTML="";
+const owned=d.chars||[0];
+const selected=Number(d.char||0);
 
- characters.forEach((c,i)=>{
+grid.innerHTML="";
 
-  const div=document.createElement("div");
+characters.forEach((character,index)=>{
 
-  div.className=
-   "item"+(selected===i?" selected":"");
+const item=document.createElement("div");
 
-  div.innerHTML=`
-   <div class="preview" style="color:${c.color}">
-    <div class="cube"
-         style="background:${c.color}"></div>
-   </div>
+item.className=
+"item"+
+(selected===index?" selected":"");
 
-   <div class="name">${c.name}</div>
+item.innerHTML=`
 
-   <div class="price">
-    ${c.price===0?"KOSTENLOS":
-      "🪙 "+c.price.toLocaleString()}
-   </div>
+<div class="preview">
 
-   <div class="mult">
-    Münzen ×${c.mult}
-   </div>
+<div
+ class="character"
+ style="
+ background:${character.color};
+ color:${character.color};
+ ">
+</div>
 
-   <button class="btn ${
-    owned.includes(i)?"secondary":"primary"
-   }">
-    ${
-     selected===i
-     ?"AUSGEWÄHLT"
-     :owned.includes(i)
-     ?"AUSWÄHLEN"
-     :"KAUFEN"
-    }
-   </button>
-  `;
+</div>
 
-  div.querySelector("button").onclick=async()=>{
+<div class="name">
+${character.name}
+</div>
 
-   const d=data();
+<div class="price">
+${character.price===0?
+"KOSTENLOS":
+"🪙 "+character.price.toLocaleString()}
+</div>
 
-   if(!d.chars)d.chars=[0];
+<div class="mult">
+Münzen ×${character.mult}
+</div>
 
-   if(d.chars.includes(i)){
+<button class="btn ${
+owned.includes(index)?
+"secondary":
+"primary"
+}">
+${
+selected===index?
+"AUSGEWÄHLT":
+owned.includes(index)?
+"AUSWÄHLEN":
+"KAUFEN"
+}
+</button>
 
-    d.char=i;
-    saveData(d);
+`;
 
-    renderChars();
-    return;
-   }
+item.querySelector("button").onclick=
+async()=>{
 
-   if(player.coins<c.price){
-    alert("Nicht genug Münzen!");
-    return;
-   }
+const data=getData();
 
-   player.coins-=c.price;
+data.chars=data.chars||[0];
 
-   d.chars.push(i);
-   d.char=i;
+if(data.chars.includes(index)){
 
-   saveData(d);
+data.char=index;
 
-   await savePlayer();
+saveData(data);
 
-   renderChars();
- };
+renderCharacters();
 
- grid.appendChild(div);
- });
+return;
 }
 
+if(player.coins<character.price){
+
+alert("Du hast nicht genug Münzen.");
+
+return;
+}
+
+player.coins-=character.price;
+
+data.chars.push(index);
+data.char=index;
+
+saveData(data);
+
+await savePlayer();
+
+renderCharacters();
+
+};
+
+grid.appendChild(item);
+
+});
+
+}
+
+
+/* =========================================
+STÄDTE SHOP
+========================================= */
 
 function renderWorlds(){
 
- const grid=$("shopGrid");
- const owned=unlockedWorlds();
- const selected=selectedWorld();
+const grid=$("shopGrid");
+const d=getData();
 
- grid.innerHTML="";
+const owned=d.worlds||[0];
+const selected=Number(d.world||0);
 
- worlds.forEach((w,i)=>{
+grid.innerHTML="";
 
-  const div=document.createElement("div");
+worlds.forEach((world,index)=>{
 
-  div.className=
-   "item"+(selected===i?" selected":"");
+const item=document.createElement("div");
 
-  div.innerHTML=`
-   <div class="city"
-        style="background:linear-gradient(${w.sky},${w.ground})">
-    ${[0,1,2,3,4].map(n=>`
-      <div class="building"
-           style="
-           left:${n*21+4}%;
-           width:${15+n*2}px;
-           height:${35+n*10}px">
-      </div>
-    `).join("")}
-   </div>
+item.className=
+"item"+
+(selected===index?" selected":"");
 
-   <div class="name">${w.name}</div>
+let buildings="";
 
-   <div class="price">
-    ${w.price===0?"KOSTENLOS":
-      "🪙 "+w.price.toLocaleString()}
-   </div>
+for(let i=0;i<5;i++){
 
-   <div class="mult">
-    Münzen ×${w.mult}
-   </div>
+buildings+=`
 
-   <button class="btn ${
-    owned.includes(i)?"secondary":"primary"
-   }">
-    ${
-     selected===i
-     ?"AUSGEWÄHLT"
-     :owned.includes(i)
-     ?"AUSWÄHLEN"
-     :"KAUFEN"
-    }
-   </button>
-  `;
+<div
+class="building"
+style="
+left:${i*21+3}%;
+width:${18+i*2}px;
+height:${35+i*10}px;
+">
+</div>
 
-  div.querySelector("button").onclick=async()=>{
+`;
 
-   const d=data();
+}
 
-   if(!d.worlds)d.worlds=[0];
+item.innerHTML=`
 
-   if(d.worlds.includes(i)){
+<div
+ class="city"
+ style="
+ background:
+ linear-gradient(
+ ${world.sky},
+ ${world.ground}
+ );
+ ">
+ ${buildings}
+</div>
 
-    d.world=i;
-    saveData(d);
+<div class="name">
+${world.name}
+</div>
 
-    renderWorlds();
-    return;
-   }
+<div class="price">
+${world.price===0?
+"KOSTENLOS":
+"🪙 "+world.price.toLocaleString()}
+</div>
 
-   if(player.coins<w.price){
-    alert("Nicht genug Münzen!");
-    return;
-   }
+<div class="mult">
+Münzen ×${world.mult}
+</div>
 
-   player.coins-=w.price;
+<button class="btn ${
+owned.includes(index)?
+"secondary":
+"primary"
+}">
+${
+selected===index?
+"AUSGEWÄHLT":
+owned.includes(index)?
+"AUSWÄHLEN":
+"KAUFEN"
+}
+</button>
 
-   d.worlds.push(i);
-   d.world=i;
+`;
 
-   saveData(d);
+item.querySelector("button").onclick=
+async()=>{
 
-   await savePlayer();
+const data=getData();
 
-   renderWorlds();
- };
+data.worlds=data.worlds||[0];
 
- grid.appendChild(div);
- });
+if(data.worlds.includes(index)){
+
+data.world=index;
+
+saveData(data);
+
+renderWorlds();
+
+return;
+}
+
+if(player.coins<world.price){
+
+alert("Nicht genug Münzen.");
+
+return;
+}
+
+player.coins-=world.price;
+
+data.worlds.push(index);
+data.world=index;
+
+saveData(data);
+
+await savePlayer();
+
+renderWorlds();
+
+};
+
+grid.appendChild(item);
+
+});
+
 }
 
 
-/* =========================
-   CODES
-========================= */
+/* =========================================
+ADMIN CODES
+========================================= */
 
 $("codeBtn").onclick=()=>{
- $("codeInput").value="";
- $("codeMsg").textContent="";
- screen("codeScreen");
+$("codeInput").value="";
+$("codeMsg").textContent="";
+show("codeScreen");
 };
 
-$("codeBack").onclick=menu;
+$("codeBack").onclick=openMenu;
+
 
 $("useCode").onclick=async()=>{
 
- const code=$("codeInput").value.trim();
- const d=data();
+const code=$("codeInput").value.trim();
+const data=getData();
 
- if(code==="110"){
+if(code==="110"){
 
-  player.coins=1000000;
-  player.highscore=1000000;
+player.coins=1000000;
+player.highscore=1000000;
 
-  d.chars=characters.map((_,i)=>i);
-  d.worlds=worlds.map((_,i)=>i);
+data.chars=
+characters.map((_,i)=>i);
 
-  d.char=0;
-  d.world=0;
+data.worlds=
+worlds.map((_,i)=>i);
 
-  saveData(d);
-  await savePlayer();
+data.char=0;
+data.world=0;
 
-  $("codeMsg").textContent=
-   "✅ 110 aktiviert! Alles freigeschaltet.";
+saveData(data);
 
- }else if(code==="112"){
+await savePlayer();
 
-  player.coins=100000;
-  d.chars=[0,1,2,3,4];
-  d.worlds=[0,1,2];
+$("codeMsg").textContent=
+"Code 110 aktiviert.";
 
-  d.char=0;
-  d.world=0;
+return;
+}
 
-  saveData(d);
-  await savePlayer();
 
-  $("codeMsg").textContent=
-   "✅ 112 aktiviert!";
+if(code==="112"){
 
- }else{
+player.coins=100000;
 
-  $("codeMsg").textContent=
-   "❌ Ungültiger Code.";
- }
+data.chars=[0,1,2,3,4];
+data.worlds=[0,1,2];
+
+data.char=0;
+data.world=0;
+
+saveData(data);
+
+await savePlayer();
+
+$("codeMsg").textContent=
+"Code 112 aktiviert.";
+
+return;
+}
+
+
+$("codeMsg").textContent=
+"Ungültiger Code.";
+
 };
 
 
-/* =========================
-   RANGLISTE
-========================= */
+/* =========================================
+RANGLISTE
+========================================= */
 
 $("rankBtn").onclick=async()=>{
 
- screen("rankScreen");
+show("rankScreen");
 
- try{
+try{
 
-  const rows=await request(
-   "/rest/v1/Players"+
-   "?select=username,highscore"+
-   "&order=highscore.desc"+
-   "&limit=50"
-  );
+const rows=await api(
+"/rest/v1/Players"+
+"?select=username,highscore"+
+"&order=highscore.desc"+
+"&limit=50"
+);
 
-  $("rankList").innerHTML=
-   rows.map((r,i)=>`
-    <div class="rank">
-     <b>${i+1}.</b>
-     ${String(r.username)}
-     — ${Number(r.highscore||0).toLocaleString()}
-    </div>
-   `).join("");
+$("rankList").innerHTML=
+rows.map((row,index)=>`
 
- }catch(e){
+<div class="rank">
+<b>${index+1}.</b>
+${String(row.username)}
+—
+${Number(row.highscore||0).toLocaleString()}
+</div>
 
-  $("rankList").textContent=
-   "❌ "+e.message;
- }
+`).join("");
+
+}catch(error){
+
+$("rankList").textContent=
+"Fehler: "+error.message;
+
+}
+
 };
 
-$("rankBack").onclick=menu;
+$("rankBack").onclick=openMenu;
 
 
-/* =========================
-   SPIEL
-========================= */
+/* =========================================
+GAME ENGINE
+========================================= */
 
 const canvas=$("game");
 const ctx=canvas.getContext("2d");
@@ -1211,13 +1599,17 @@ let W=innerWidth;
 let H=innerHeight;
 
 function resize(){
- W=innerWidth;
- H=innerHeight;
- canvas.width=W;
- canvas.height=H;
+
+W=innerWidth;
+H=innerHeight;
+
+canvas.width=W;
+canvas.height=H;
+
 }
 
 addEventListener("resize",resize);
+
 resize();
 
 
@@ -1225,10 +1617,12 @@ let running=false;
 let paused=false;
 
 let lane=0;
+
 let score=0;
 let earned=0;
 
 let speed=300;
+
 let objects=[];
 
 let coinTimer=0;
@@ -1237,810 +1631,1162 @@ let obstacleTimer=0;
 let doubleTime=0;
 let magnetTime=0;
 
-let last=performance.now();
+let lastTime=performance.now();
 
 
 function roadWidth(){
- return Math.min(W*.86,650);
+
+return Math.min(
+W*.86,
+650
+);
+
 }
+
 
 function roadLeft(){
- return (W-roadWidth())/2;
+
+return (W-roadWidth())/2;
+
 }
+
 
 function laneWidth(){
- return roadWidth()/3;
-}
 
-function laneX(n){
- return roadLeft()+
-  laneWidth()*(n+1)+
-  laneWidth()/2;
+return roadWidth()/3;
+
 }
 
 
-/* =========================
-   START
-========================= */
+function laneX(index){
+
+return roadLeft()+
+laneWidth()*(index+1)+
+laneWidth()/2;
+
+}
+
+
+/* =========================================
+GAME START
+========================================= */
 
 $("start").onclick=startGame;
 
 function startGame(){
 
- document.querySelectorAll(".screen")
-  .forEach(x=>x.classList.add("hidden"));
+document.querySelectorAll(".screen")
+.forEach(s=>s.classList.add("hidden"));
 
- canvas.style.display="block";
- $("hud").style.display="flex";
- $("pause").style.display="block";
+canvas.style.display="block";
 
- running=true;
- paused=false;
+$("hud").style.display="flex";
+$("pause").style.display="block";
 
- lane=0;
- score=0;
- earned=0;
+running=true;
+paused=false;
 
- speed=300;
+$("pauseMenu").style.display="none";
 
- objects=[];
+lane=0;
 
- coinTimer=.4;
- obstacleTimer=1;
+score=0;
+earned=0;
 
- doubleTime=0;
- magnetTime=0;
+speed=300;
 
- last=performance.now();
+objects=[];
 
- $("hudWorld").textContent=
-  worlds[selectedWorld()].name;
+coinTimer=.5;
+obstacleTimer=1;
 
- updatePowerUI();
+doubleTime=0;
+magnetTime=0;
+
+lastTime=performance.now();
+
+$("hudWorld").textContent=
+worlds[Number(getData().world||0)].name;
+
+updatePower();
+
 }
 
 
-/* =========================
-   WELT-FORTSCHRITT
-========================= */
+/* =========================================
+MÜNZEN
+========================================= */
 
-function worldDifficulty(){
+function coinAmount(){
 
- const w=selectedWorld();
+const world=
+worlds[Number(getData().world||0)];
 
- return w;
+return Math.floor(
+world.min+
+Math.random()*
+(world.max-world.min+1)
+);
+
 }
 
 
-/* =========================
-   MÜNZEN ANZAHL
-========================= */
-
-function coinsPerGroup(){
-
- const w=worlds[selectedWorld()];
-
- return Math.floor(
-  w.min+
-  Math.random()*(w.max-w.min+1)
- );
-}
-
-
-/* =========================
-   OBJEKT SPAWN
-========================= */
+/* =========================================
+FREIE SPUR
+========================================= */
 
 function freeLane(y){
 
- const choices=[-1,0,1].filter(laneNumber=>{
+const possible=[-1,0,1]
+.filter(laneNumber=>{
 
-  return !objects.some(o=>
-   o.lane===laneNumber &&
-   Math.abs(o.y-y)<150
-  );
- });
+return !objects.some(object=>
 
- if(!choices.length)return null;
+object.lane===laneNumber&&
+Math.abs(object.y-y)<180
 
- return choices[
-  Math.floor(Math.random()*choices.length)
- ];
+);
+
+});
+
+if(!possible.length)return null;
+
+return possible[
+Math.floor(Math.random()*possible.length)
+];
+
 }
 
 
-function spawnCoinGroup(){
+/* =========================================
+MÜNZEN SPAWNEN
+========================================= */
 
- const amount=coinsPerGroup();
+function spawnCoins(){
 
- let laneNumber=
-  Math.floor(Math.random()*3)-1;
+const amount=coinAmount();
 
- let startY=-50;
+let selectedLane=
+Math.floor(Math.random()*3)-1;
 
- for(let i=0;i<amount;i++){
+for(let i=0;i<amount;i++){
 
-  const y=startY-i*48;
+const y=-50-i*48;
 
-  /*
-   Keine Münze darf direkt vor einem Auto
-   auf derselben Spur erscheinen.
-  */
+const blocked=
+objects.some(object=>
 
-  const blocked=
-   objects.some(o=>
-    o.type==="car" &&
-    o.lane===laneNumber &&
-    Math.abs(o.y-y)<180
-   );
+object.type==="car"&&
+object.lane===selectedLane&&
+Math.abs(object.y-y)<180
 
-  if(blocked){
+);
 
-   laneNumber=
-    Math.floor(Math.random()*3)-1;
-  }
+if(blocked){
 
-  objects.push({
-   type:"coin",
-   lane:laneNumber,
-   y:y,
-   collected:false
-  });
- }
+const free=freeLane(y);
+
+if(free!==null){
+selectedLane=free;
 }
 
+}
+
+objects.push({
+type:"coin",
+lane:selectedLane,
+y
+});
+
+}
+
+}
+
+
+/* =========================================
+AUTOS
+========================================= */
 
 function spawnCar(){
 
- const laneNumber=freeLane(-120);
+const laneNumber=
+freeLane(-130);
 
- if(laneNumber===null)return;
+if(laneNumber===null)return;
 
- objects.push({
-  type:"car",
-  lane:laneNumber,
-  y:-130,
-  color:[
-   "#ff1744",
-   "#008cff",
-   "#ff9800",
-   "#ffffff",
-   "#9c27b0"
-  ][Math.floor(Math.random()*5)]
- });
+const colors=[
+"#ff1744",
+"#008cff",
+"#ff9800",
+"#ffffff",
+"#8e44ad"
+];
+
+objects.push({
+
+type:"car",
+lane:laneNumber,
+y:-130,
+
+color:
+colors[
+Math.floor(Math.random()*colors.length)
+]
+
+});
+
 }
 
+
+/* =========================================
+POWERUPS
+========================================= */
 
 function spawnPower(type){
 
- const laneNumber=freeLane(-100);
+const laneNumber=
+freeLane(-100);
 
- if(laneNumber===null)return;
+if(laneNumber===null)return;
 
- objects.push({
-  type:type,
-  lane:laneNumber,
-  y:-100
- });
+objects.push({
+
+type,
+lane:laneNumber,
+y:-100
+
+});
+
 }
 
 
-/* =========================
-   HINTERGRUND
-========================= */
+/* =========================================
+HINTERGRUND
+========================================= */
 
 function drawBackground(){
 
- const w=worlds[selectedWorld()];
+const world=
+worlds[Number(getData().world||0)];
 
- const g=ctx.createLinearGradient(0,0,0,H);
+const gradient=
+ctx.createLinearGradient(0,0,0,H);
 
- g.addColorStop(0,w.sky);
- g.addColorStop(1,w.ground);
+gradient.addColorStop(0,world.sky);
+gradient.addColorStop(1,world.ground);
 
- ctx.fillStyle=g;
- ctx.fillRect(0,0,W,H);
-
- /*
-   Sterne
- */
-
- if(selectedWorld()>=5){
-
-  ctx.fillStyle="#ffffff88";
-
-  for(let i=0;i<80;i++){
-
-   const x=(i*97)%W;
-   const y=(i*53)%H;
-
-   ctx.fillRect(x,y,2,2);
-  }
- }
+ctx.fillStyle=gradient;
+ctx.fillRect(0,0,W,H);
 
 
- /*
-   Gebäude
- */
+/* Sterne */
 
- for(let i=0;i<24;i++){
+if(Number(getData().world||0)>=5){
 
-  const width=
-   20+(i%5)*10;
+ctx.fillStyle="#ffffff99";
 
-  const height=
-   70+((i*43)%220);
+for(let i=0;i<70;i++){
 
-  const x=i*(W/24);
+const x=(i*97)%W;
+const y=(i*53)%H;
 
-  ctx.fillStyle=
-   selectedWorld()>=8
-   ?" #163b4a"
-   :"#071820";
+ctx.fillRect(x,y,2,2);
 
-  ctx.fillRect(
-   x,
-   H-height-95,
-   width,
-   height
-  );
+}
 
-  ctx.fillStyle="#00eaff77";
-
-  for(
-   let y=H-height-75;
-   y<H-110;
-   y+=22
-  ){
-
-   ctx.fillRect(
-    x+5,
-    y,
-    4,
-    6
-   );
-  }
- }
-
-
- /*
-   Straße
- */
-
- const rw=roadWidth();
- const rl=roadLeft();
-
- ctx.fillStyle="#111820";
- ctx.fillRect(rl,0,rw,H);
-
- ctx.fillStyle="#00eaff";
- ctx.fillRect(rl,0,3,H);
- ctx.fillRect(rl+rw-3,0,3,H);
-
- const lw=laneWidth();
-
- const offset=
-  (score*10)%90;
-
- ctx.fillStyle="#ffffff77";
-
- for(let y=-90+offset;y<H;y+=90){
-
-  ctx.fillRect(rl+lw-2,y,4,45);
-  ctx.fillRect(rl+lw*2-2,y,4,45);
- }
 }
 
 
-/* =========================
-   OBJEKTE ZEICHNEN
-========================= */
+/* Gebäude */
+
+for(let i=0;i<24;i++){
+
+const width=20+(i%5)*10;
+
+const height=
+70+((i*43)%220);
+
+const x=i*(W/24);
+
+ctx.fillStyle=
+"#071820";
+
+ctx.fillRect(
+x,
+H-height-95,
+width,
+height
+);
+
+ctx.fillStyle="#00eaff66";
+
+for(
+let y=H-height-75;
+y<H-110;
+y+=22
+){
+
+ctx.fillRect(
+x+5,
+y,
+4,
+6
+);
+
+}
+
+}
+
+
+/* Straße */
+
+const rw=roadWidth();
+const rl=roadLeft();
+
+ctx.fillStyle="#111820";
+
+ctx.fillRect(
+rl,
+0,
+rw,
+H
+);
+
+ctx.fillStyle="#00eaff";
+
+ctx.fillRect(rl,0,3,H);
+ctx.fillRect(rl+rw-3,0,3,H);
+
+
+const lw=laneWidth();
+
+const offset=
+(score*10)%90;
+
+ctx.fillStyle="#ffffff66";
+
+for(
+let y=-90+offset;
+y<H;
+y+=90
+){
+
+ctx.fillRect(
+rl+lw-2,
+y,
+4,
+45
+);
+
+ctx.fillRect(
+rl+lw*2-2,
+y,
+4,
+45
+);
+
+}
+
+}
+
+
+/* =========================================
+OBJEKTE
+========================================= */
 
 function drawObjects(){
 
- for(const o of objects){
+for(const object of objects){
 
-  const x=laneX(o.lane);
+const x=laneX(object.lane);
 
-  if(o.type==="coin"){
+if(object.type==="coin"){
 
-   ctx.save();
+ctx.save();
 
-   ctx.shadowColor="#ffd600";
-   ctx.shadowBlur=20;
+ctx.shadowColor="#ffd000";
+ctx.shadowBlur=20;
 
-   ctx.fillStyle="#ffd600";
+ctx.fillStyle="#ffd000";
 
-   ctx.beginPath();
-   ctx.arc(x,o.y,13,0,Math.PI*2);
-   ctx.fill();
+ctx.beginPath();
 
-   ctx.fillStyle="#fff7a0";
+ctx.arc(
+x,
+object.y,
+13,
+0,
+Math.PI*2
+);
 
-   ctx.beginPath();
-   ctx.arc(x-4,o.y-4,4,0,Math.PI*2);
-   ctx.fill();
+ctx.fill();
 
-   ctx.restore();
+ctx.fillStyle="#fff5a0";
 
-  }else if(o.type==="double"){
+ctx.beginPath();
 
-   ctx.save();
+ctx.arc(
+x-4,
+object.y-4,
+4,
+0,
+Math.PI*2
+);
 
-   ctx.shadowColor="#00eaff";
-   ctx.shadowBlur=25;
+ctx.fill();
 
-   ctx.fillStyle="#00eaff";
+ctx.restore();
 
-   ctx.beginPath();
-   ctx.arc(x,o.y,22,0,Math.PI*2);
-   ctx.fill();
-
-   ctx.fillStyle="#001018";
-   ctx.font="bold 17px Arial";
-   ctx.textAlign="center";
-   ctx.fillText("×2",x,o.y+6);
-
-   ctx.restore();
-
-  }else if(o.type==="magnet"){
-
-   ctx.save();
-
-   ctx.shadowColor="#ff1744";
-   ctx.shadowBlur=25;
-
-   ctx.strokeStyle="#ff1744";
-   ctx.lineWidth=7;
-
-   ctx.beginPath();
-   ctx.arc(x,o.y,17,0,Math.PI);
-   ctx.stroke();
-
-   ctx.fillStyle="#ff1744";
-   ctx.font="bold 18px Arial";
-   ctx.textAlign="center";
-   ctx.fillText("🧲",x,o.y+7);
-
-   ctx.restore();
-
-  }else{
-
-   ctx.save();
-
-   ctx.translate(x,o.y);
-
-   ctx.shadowColor=o.color;
-   ctx.shadowBlur=20;
-
-   ctx.fillStyle=o.color;
-
-   ctx.beginPath();
-   ctx.roundRect(-30,-50,60,100,12);
-   ctx.fill();
-
-   ctx.shadowBlur=0;
-
-   ctx.fillStyle="#17303b";
-   ctx.fillRect(-18,-27,36,22);
-
-   ctx.restore();
-  }
- }
 }
 
 
-/* =========================
-   CHARAKTER ZEICHNEN
-========================= */
+else if(object.type==="double"){
+
+ctx.save();
+
+ctx.shadowColor="#00eaff";
+ctx.shadowBlur=25;
+
+ctx.fillStyle="#00eaff";
+
+ctx.beginPath();
+
+ctx.arc(
+x,
+object.y,
+22,
+0,
+Math.PI*2
+);
+
+ctx.fill();
+
+ctx.fillStyle="#001018";
+
+ctx.font="bold 17px Arial";
+ctx.textAlign="center";
+
+ctx.fillText(
+"×2",
+x,
+object.y+6
+);
+
+ctx.restore();
+
+}
+
+
+else if(object.type==="magnet"){
+
+ctx.save();
+
+ctx.strokeStyle="#ff1744";
+ctx.shadowColor="#ff1744";
+ctx.shadowBlur=20;
+ctx.lineWidth=7;
+
+ctx.beginPath();
+
+ctx.arc(
+x,
+object.y,
+17,
+0,
+Math.PI
+);
+
+ctx.stroke();
+
+ctx.fillStyle="#ff1744";
+
+ctx.font="bold 20px Arial";
+ctx.textAlign="center";
+
+ctx.fillText(
+"M",
+x,
+object.y+7
+);
+
+ctx.restore();
+
+}
+
+
+else{
+
+ctx.save();
+
+ctx.translate(
+x,
+object.y
+);
+
+ctx.shadowColor=
+object.color;
+
+ctx.shadowBlur=20;
+
+ctx.fillStyle=
+object.color;
+
+ctx.beginPath();
+
+ctx.roundRect(
+-30,
+-50,
+60,
+100,
+12
+);
+
+ctx.fill();
+
+ctx.shadowBlur=0;
+
+ctx.fillStyle="#17303b";
+
+ctx.fillRect(
+-18,
+-27,
+36,
+22
+);
+
+ctx.restore();
+
+}
+
+}
+
+}
+
+
+/* =========================================
+CHARAKTER
+========================================= */
 
 function drawPlayer(){
 
- const c=characters[selectedChar()];
+const d=getData();
 
- const x=laneX(lane);
- const y=H*.76;
+const character=
+characters[
+Number(d.char||0)
+];
 
- ctx.save();
+const x=laneX(lane);
+const y=H*.76;
 
- ctx.translate(x,y);
+ctx.save();
 
- ctx.shadowColor=c.color;
- ctx.shadowBlur=30;
+ctx.translate(x,y);
 
- ctx.fillStyle=c.color;
+ctx.shadowColor=
+character.color;
 
- ctx.beginPath();
- ctx.roundRect(-28,-28,56,56,12);
- ctx.fill();
+ctx.shadowBlur=30;
 
- ctx.shadowBlur=0;
+ctx.fillStyle=
+character.color;
 
- /*
-   Je besser der Charakter,
-   desto mehr Glitzer.
- */
+ctx.beginPath();
 
- const glitter=
-  Math.min(20,Math.floor(c.mult*3));
-
- for(let i=0;i<glitter;i++){
-
-  const a=
-   performance.now()/500+i;
-
-  const gx=
-   Math.cos(a)*(30+(i%4)*4);
-
-  const gy=
-   Math.sin(a)*(30+(i%4)*4);
-
-  ctx.fillStyle="#ffffffcc";
-
-  ctx.fillRect(gx,gy,3,3);
- }
-
- ctx.fillStyle="#021017";
- ctx.fillRect(-13,-8,26,8);
-
- ctx.restore();
-}
-
-
-/* =========================
-   WISCHEN
-========================= */
-
-let touchX=0;
-let touchY=0;
-
-canvas.addEventListener(
- "touchstart",
- e=>{
-  const t=e.changedTouches[0];
-  touchX=t.clientX;
-  touchY=t.clientY;
- },
- {passive:true}
+ctx.roundRect(
+-28,
+-28,
+56,
+56,
+15
 );
 
-canvas.addEventListener(
- "touchend",
- e=>{
+ctx.fill();
 
-  if(!running||paused)return;
 
-  const t=e.changedTouches[0];
+/* Gesicht */
 
-  const dx=t.clientX-touchX;
-  const dy=t.clientY-touchY;
+ctx.shadowBlur=0;
 
-  /*
-    Nur horizontales Wischen.
-    Kein Springen.
-  */
+ctx.fillStyle="#061018";
 
-  if(Math.abs(dx)>45 &&
-     Math.abs(dx)>Math.abs(dy)){
+ctx.beginPath();
 
-   if(dx<0){
-    lane=Math.max(-1,lane-1);
-   }else{
-    lane=Math.min(1,lane+1);
-   }
-  }
- },
- {passive:true}
+ctx.arc(
+-11,
+-6,
+5,
+0,
+Math.PI*2
+);
+
+ctx.fill();
+
+ctx.beginPath();
+
+ctx.arc(
+11,
+-6,
+5,
+0,
+Math.PI*2
+);
+
+ctx.fill();
+
+
+/* Mund */
+
+ctx.fillRect(
+-12,
+10,
+24,
+5
 );
 
 
-/* =========================
-   POWER-UP UI
-========================= */
+/* Glitzer */
 
-function updatePowerUI(){
+const glitter=
+Math.min(
+24,
+Math.floor(character.mult*4)
+);
 
- const p=$("power");
+for(let i=0;i<glitter;i++){
 
- const parts=[];
+const angle=
+performance.now()/450+i;
 
- if(doubleTime>0)
-  parts.push("✖️2 "+Math.ceil(doubleTime)+"s");
+const distance=
+32+(i%5)*4;
 
- if(magnetTime>0)
-  parts.push("🧲 "+Math.ceil(magnetTime)+"s");
+const gx=
+Math.cos(angle)*distance;
 
- if(parts.length){
+const gy=
+Math.sin(angle)*distance;
 
-  p.textContent=parts.join("   ");
-  p.style.display="block";
+ctx.fillStyle="#ffffffcc";
 
- }else{
+ctx.fillRect(
+gx,
+gy,
+3,
+3
+);
 
-  p.style.display="none";
- }
+}
+
+ctx.restore();
+
 }
 
 
-/* =========================
-   MÜNZEN EINSAMMELN
-========================= */
+/* =========================================
+TOUCH / WISCHEN
+========================================= */
+
+let touchStartX=0;
+let touchStartY=0;
+
+canvas.addEventListener(
+"touchstart",
+event=>{
+
+const touch=
+event.changedTouches[0];
+
+touchStartX=
+touch.clientX;
+
+touchStartY=
+touch.clientY;
+
+},
+{passive:true}
+);
+
+
+canvas.addEventListener(
+"touchend",
+event=>{
+
+if(!running||paused)return;
+
+const touch=
+event.changedTouches[0];
+
+const dx=
+touch.clientX-touchStartX;
+
+const dy=
+touch.clientY-touchStartY;
+
+
+/* Nur Wischen */
+
+if(
+Math.abs(dx)>45&&
+Math.abs(dx)>Math.abs(dy)
+){
+
+if(dx<0){
+
+lane=
+Math.max(-1,lane-1);
+
+}else{
+
+lane=
+Math.min(1,lane+1);
+
+}
+
+}
+
+},
+{passive:true}
+);
+
+
+/* =========================================
+POWER UI
+========================================= */
+
+function updatePower(){
+
+const power=$("power");
+
+const parts=[];
+
+if(doubleTime>0){
+
+parts.push(
+"×2 "+Math.ceil(doubleTime)+"s"
+);
+
+}
+
+if(magnetTime>0){
+
+parts.push(
+"MAGNET "+Math.ceil(magnetTime)+"s"
+);
+
+}
+
+if(parts.length){
+
+power.textContent=
+parts.join("   ");
+
+power.style.display="block";
+
+}else{
+
+power.style.display="none";
+
+}
+
+}
+
+
+/* =========================================
+MÜNZE EINSAMMELN
+========================================= */
 
 function collectCoin(){
 
- const c=characters[selectedChar()];
- const w=worlds[selectedWorld()];
+const d=getData();
 
- let amount=
-  1*c.mult*w.mult;
+const character=
+characters[
+Number(d.char||0)
+];
 
- if(doubleTime>0)
-  amount*=2;
+const world=
+worlds[
+Number(d.world||0)
+];
 
- earned+=amount;
+
+/*
+Normale Münze = +1.
+Danach werden Charakter und Welt
+angewendet.
+*/
+
+let amount=
+1*
+character.mult*
+world.mult;
+
+if(doubleTime>0){
+
+amount*=2;
+
+}
+
+earned+=amount;
+
 }
 
 
-/* =========================
-   UPDATE
-========================= */
+/* =========================================
+GAME UPDATE
+========================================= */
 
 function update(dt){
 
- if(!running||paused)return;
+if(!running||paused)return;
 
- const s=dt/1000;
+const seconds=dt/1000;
 
- score+=s*10;
+score+=seconds*10;
 
- speed=
-  Math.min(
-   700,
-   speed+s*3+
-   selectedWorld()*0.7
-  );
-
-
- coinTimer-=s;
-
- if(coinTimer<=0){
-
-  spawnCoinGroup();
-
-  coinTimer=
-   3.8+
-   Math.random()*1.5;
- }
+speed=
+Math.min(
+700,
+speed+seconds*3
+);
 
 
- /*
-   Hindernisse werden mit jeder Welt
-   häufiger.
- */
+/* Münzen */
 
- obstacleTimer-=s;
+coinTimer-=seconds;
 
- if(obstacleTimer<=0){
+if(coinTimer<=0){
 
-  spawnCar();
+spawnCoins();
 
-  const difficulty=
-   selectedWorld();
+coinTimer=
+3.8+
+Math.random()*1.5;
 
-  obstacleTimer=
-   Math.max(
-    .65,
-    1.35-difficulty*.055
-   );
- }
-
-
- /*
-   Power-ups
- */
-
- if(Math.random()<0.0015){
-  spawnPower("double");
- }
-
- if(Math.random()<0.0012){
-  spawnPower("magnet");
- }
-
-
- if(doubleTime>0)
-  doubleTime=Math.max(0,doubleTime-s);
-
- if(magnetTime>0)
-  magnetTime=Math.max(0,magnetTime-s);
-
- updatePowerUI();
-
-
- const playerY=H*.76;
-
- for(let i=objects.length-1;i>=0;i--){
-
-  const o=objects[i];
-
-  o.y+=speed*s;
-
-
-  if(o.y>H+150){
-
-   objects.splice(i,1);
-   continue;
-  }
-
-
-  /*
-    Magnet:
-    Münzen auf allen Spuren
-    werden angezogen.
-  */
-
-  if(
-   o.type==="coin" &&
-   magnetTime>0 &&
-   Math.abs(o.y-playerY)<130
-  ){
-
-   o.lane=lane;
-  }
-
-
-  if(
-   o.type==="coin" &&
-   o.lane===lane &&
-   Math.abs(o.y-playerY)<55
-  ){
-
-   collectCoin();
-
-   objects.splice(i,1);
-
-   continue;
-  }
-
-
-  if(
-   o.type==="double" &&
-   o.lane===lane &&
-   Math.abs(o.y-playerY)<65
-  ){
-
-   doubleTime=30;
-
-   objects.splice(i,1);
-
-   continue;
-  }
-
-
-  if(
-   o.type==="magnet" &&
-   o.lane===lane &&
-   Math.abs(o.y-playerY)<65
-  ){
-
-   magnetTime=30;
-
-   objects.splice(i,1);
-
-   continue;
-  }
-
-
-  /*
-    Auto-Kollision.
-  */
-
-  if(
-   o.type==="car" &&
-   o.lane===lane &&
-   Math.abs(o.y-playerY)<65
-  ){
-
-   endGame();
-   return;
-  }
- }
-
-
- $("hudCoins").textContent=
-  Math.floor(
-   player.coins+earned
-  ).toLocaleString();
-
- $("hudScore").textContent=
-  Math.floor(score).toLocaleString();
 }
 
 
-/* =========================
-   GAME LOOP
-========================= */
+/* Autos */
 
-function loop(t){
+obstacleTimer-=seconds;
 
- const dt=Math.min(40,t-last);
+if(obstacleTimer<=0){
 
- last=t;
+spawnCar();
 
- if(canvas.style.display!=="none"){
+const world=
+Number(getData().world||0);
 
-  drawBackground();
-  drawObjects();
-  drawPlayer();
-  update(dt);
- }
+obstacleTimer=
+Math.max(
+.65,
+1.35-world*.055
+);
 
- requestAnimationFrame(loop);
 }
 
-requestAnimationFrame(loop);
+
+/* Powerups */
+
+if(Math.random()<.0015){
+
+spawnPower("double");
+
+}
+
+if(Math.random()<.0012){
+
+spawnPower("magnet");
+
+}
 
 
-/* =========================
-   PAUSE
-========================= */
+/* Timer */
+
+if(doubleTime>0){
+
+doubleTime=
+Math.max(
+0,
+doubleTime-seconds
+);
+
+}
+
+if(magnetTime>0){
+
+magnetTime=
+Math.max(
+0,
+magnetTime-seconds
+);
+
+}
+
+updatePower();
+
+
+/* Objekte bewegen */
+
+const playerY=H*.76;
+
+for(
+let i=objects.length-1;
+i>=0;
+i--
+){
+
+const object=objects[i];
+
+object.y+=speed*seconds;
+
+
+if(object.y>H+150){
+
+objects.splice(i,1);
+
+continue;
+
+}
+
+
+/* Magnet */
+
+if(
+object.type==="coin"&&
+magnetTime>0&&
+Math.abs(object.y-playerY)<150
+){
+
+object.lane=lane;
+
+}
+
+
+/* Münze */
+
+if(
+object.type==="coin"&&
+object.lane===lane&&
+Math.abs(object.y-playerY)<55
+){
+
+collectCoin();
+
+objects.splice(i,1);
+
+continue;
+
+}
+
+
+/* x2 */
+
+if(
+object.type==="double"&&
+object.lane===lane&&
+Math.abs(object.y-playerY)<65
+){
+
+doubleTime=30;
+
+objects.splice(i,1);
+
+continue;
+
+}
+
+
+/* Magnet */
+
+if(
+object.type==="magnet"&&
+object.lane===lane&&
+Math.abs(object.y-playerY)<65
+){
+
+magnetTime=30;
+
+objects.splice(i,1);
+
+continue;
+
+}
+
+
+/* Auto */
+
+if(
+object.type==="car"&&
+object.lane===lane&&
+Math.abs(object.y-playerY)<65
+){
+
+endGame();
+
+return;
+
+}
+
+}
+
+
+/* HUD */
+
+$("hudCoins").textContent=
+Math.floor(
+player.coins+earned
+).toLocaleString();
+
+$("hudScore").textContent=
+Math.floor(score).toLocaleString();
+
+}
+
+
+/* =========================================
+GAME LOOP
+========================================= */
+
+function gameLoop(time){
+
+const dt=
+Math.min(
+40,
+time-lastTime
+);
+
+lastTime=time;
+
+if(
+canvas.style.display!=="none"
+){
+
+drawBackground();
+drawObjects();
+drawPlayer();
+
+update(dt);
+
+}
+
+requestAnimationFrame(gameLoop);
+
+}
+
+requestAnimationFrame(gameLoop);
+
+
+/* =========================================
+PAUSE
+========================================= */
 
 $("pause").onclick=()=>{
 
- paused=!paused;
+if(!running)return;
 
- $("pause").textContent=
-  paused?"▶":"⏸";
+paused=true;
+
+$("pauseMenu").style.display="flex";
+
 };
 
 
-/* =========================
-   GAME OVER
-========================= */
+$("resumeBtn").onclick=()=>{
+
+paused=false;
+
+$("pauseMenu").style.display="none";
+
+lastTime=performance.now();
+
+};
+
+
+$("giveUpBtn").onclick=()=>{
+
+paused=false;
+
+$("pauseMenu").style.display="none";
+
+running=false;
+
+canvas.style.display="none";
+$("hud").style.display="none";
+$("pause").style.display="none";
+$("power").style.display="none";
+
+openMenu();
+
+};
+
+
+/* =========================================
+GAME OVER
+========================================= */
 
 async function endGame(){
 
- if(!running)return;
+if(!running)return;
 
- running=false;
+running=false;
 
- const final=Math.floor(score);
+const finalScore=
+Math.floor(score);
 
- player.coins+=Math.floor(earned);
+const finalCoins=
+Math.floor(earned);
 
- if(final>player.highscore)
-  player.highscore=final;
+player.coins+=finalCoins;
 
- await savePlayer();
+if(finalScore>player.highscore){
 
- $("finalScore").textContent=
-  final.toLocaleString();
+player.highscore=
+finalScore;
 
- $("finalCoins").textContent=
-  Math.floor(earned).toLocaleString();
+}
 
- canvas.style.display="none";
- $("hud").style.display="none";
- $("pause").style.display="none";
- $("power").style.display="none";
+await savePlayer();
 
- menu();
+$("finalScore").textContent=
+finalScore.toLocaleString();
+
+$("finalCoins").textContent=
+finalCoins.toLocaleString();
+
+canvas.style.display="none";
+
+$("hud").style.display="none";
+
+$("pause").style.display="none";
+
+$("power").style.display="none";
+
+$("pauseMenu").style.display="none";
+
+show("gameOver");
+
 }
 
 
-/* =========================
-   GAME OVER / MENÜ
-========================= */
+/* =========================================
+GAME OVER BUTTONS
+========================================= */
 
 $("again").onclick=startGame;
-$("gameMenu").onclick=menu;
+
+$("gameMenu").onclick=openMenu;
 
 
-/* =========================
-   START
-========================= */
+/* =========================================
+START
+========================================= */
 
-screen("login");
+show("login");
+
+restoreSession();
+
 </script>
 
 </body>
