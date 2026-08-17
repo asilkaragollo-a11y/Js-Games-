@@ -2,9 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>CUBE RUSH</title>
 
 <style>
@@ -29,102 +27,87 @@ button,input{
 
 button{
   border:0;
-  touch-action:manipulation;
+  cursor:pointer;
   -webkit-appearance:none;
-  appearance:none;
 }
 
 .screen{
   position:fixed;
   inset:0;
-  z-index:100;
+  z-index:20;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:18px;
+  padding:16px;
   overflow:auto;
   background:
-    radial-gradient(circle at 50% 0%,#07546a,#03151e 42%,#010306 100%);
+    radial-gradient(circle at 50% 0%,#07566b,#03151e 45%,#010306);
 }
 
 .card{
   width:min(470px,100%);
   max-height:94vh;
   overflow:auto;
-  padding:25px 20px;
+  padding:24px 18px;
   border-radius:28px;
   background:rgba(3,11,18,.97);
-  border:1px solid #00eaff77;
-  box-shadow:
-    0 0 25px #00eaff22,
-    0 0 90px #00eaff11;
+  border:1px solid #00eaff66;
+  box-shadow:0 0 40px #00eaff18;
   text-align:center;
 }
 
 .logo{
-  font-size:40px;
+  font-size:39px;
   font-weight:1000;
   letter-spacing:-2px;
   color:#08e9ff;
-  text-shadow:0 0 10px #08e9ff,0 0 30px #08e9ff;
-  margin-bottom:8px;
+  text-shadow:0 0 12px #08e9ff,0 0 30px #08e9ff;
 }
 
 .subtitle{
-  color:#a8c3cc;
-  line-height:1.5;
-  margin-bottom:18px;
+  color:#a7c4ce;
+  margin:8px 0 18px;
+  line-height:1.4;
 }
 
 input{
   width:100%;
-  height:56px;
-  margin:8px 0;
-  padding:0 16px;
-  border-radius:15px;
+  height:55px;
+  margin:7px 0;
+  padding:0 15px;
+  border-radius:14px;
   border:1px solid #00eaff55;
   outline:none;
-  background:#f5ffbd;
-  color:#050505;
-  font-size:17px;
-}
-
-input:focus{
-  border-color:#00eaff;
-  box-shadow:0 0 15px #00eaff66;
+  background:#f4ffbd;
+  color:#111;
+  font-size:16px;
 }
 
 .btn{
   width:100%;
-  min-height:55px;
-  margin:7px 0;
+  min-height:54px;
+  margin:6px 0;
   border-radius:15px;
-  font-size:16px;
   font-weight:900;
-  cursor:pointer;
-}
-
-.btn:active{
-  transform:scale(.98);
+  font-size:15px;
 }
 
 .primary{
-  background:linear-gradient(135deg,#05eaff,#078eff);
   color:#001018;
-  box-shadow:0 5px 20px #00baff33;
+  background:linear-gradient(135deg,#00edff,#078eff);
 }
 
 .secondary{
-  background:#071b25;
   color:white;
-  border:1px solid #00eaff55;
+  background:#071b25;
+  border:1px solid #00eaff44;
 }
 
 .message{
-  min-height:25px;
+  min-height:22px;
   margin-top:8px;
-  color:#8defff;
-  font-size:14px;
+  color:#8df5ff;
+  font-size:13px;
 }
 
 .hidden{
@@ -134,12 +117,12 @@ input:focus{
 .stats{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin:15px 0;
+  gap:8px;
+  margin:14px 0;
 }
 
 .stat{
-  padding:13px;
+  padding:12px;
   border-radius:14px;
   background:#071b25;
   border:1px solid #00eaff22;
@@ -147,112 +130,87 @@ input:focus{
 
 .stat small{
   display:block;
-  color:#7895a0;
-  font-size:10px;
+  color:#75939d;
 }
 
 .stat strong{
   display:block;
   margin-top:5px;
-  font-size:23px;
+  font-size:21px;
 }
 
 .grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  margin:12px 0;
+  gap:9px;
 }
 
-.shopItem{
-  position:relative;
-  padding:12px;
-  border-radius:18px;
-  background:#071821;
+.item{
+  padding:10px;
+  border-radius:17px;
+  background:#071820;
   border:1px solid #00eaff22;
-  overflow:hidden;
 }
 
-.shopItem.selected{
+.item.selected{
   border-color:#00eaff;
-  box-shadow:0 0 18px #00eaff33;
+  box-shadow:0 0 20px #00eaff22;
 }
 
 .preview{
   height:85px;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   position:relative;
 }
 
 .cube{
-  width:48px;
-  height:48px;
+  width:46px;
+  height:46px;
   border-radius:12px;
-  box-shadow:0 0 18px currentColor,0 0 40px currentColor;
+  box-shadow:0 0 20px currentColor;
 }
 
-.glow{
-  position:absolute;
-  width:75px;
-  height:75px;
-  border-radius:50%;
-  background:currentColor;
-  opacity:.12;
-  filter:blur(15px);
-}
-
-.shopName{
+.name{
   font-weight:900;
-  margin:3px;
-}
-
-.shopPrice{
-  color:#ffd600;
-  font-size:13px;
   margin:4px;
 }
 
-.mini{
-  font-size:11px;
-  color:#9ab0b9;
+.price{
+  color:#ffd600;
+  font-size:12px;
 }
 
-.cityPreview{
-  height:90px;
-  border-radius:13px;
-  margin-bottom:8px;
+.mult{
+  color:#8ba8b2;
+  font-size:11px;
+  margin:4px;
+}
+
+.city{
+  height:85px;
+  border-radius:12px;
   position:relative;
   overflow:hidden;
-  background:
-    linear-gradient(#061827,#02070d);
+  margin-bottom:7px;
 }
 
 .building{
   position:absolute;
   bottom:0;
-  width:25px;
-  background:#071b27;
+  background:#06141c;
   border-top:1px solid #00eaff77;
-}
-
-.cityStars{
-  position:absolute;
-  inset:0;
-  background-image:
-    radial-gradient(circle,#ffffffaa 1px,transparent 2px);
-  background-size:25px 25px;
 }
 
 #game{
   position:fixed;
   inset:0;
-  display:none;
   width:100%;
   height:100%;
-  background:#02070d;
+  display:none;
   z-index:1;
+  touch-action:none;
 }
 
 #hud{
@@ -263,65 +221,52 @@ input:focus{
   z-index:5;
   display:none;
   justify-content:space-between;
-  gap:6px;
+  gap:5px;
   pointer-events:none;
 }
 
 .hud{
-  padding:8px 10px;
-  border-radius:12px;
+  padding:7px 9px;
+  border-radius:11px;
   background:#031119dd;
   border:1px solid #00eaff55;
-  font-size:12px;
+  font-size:11px;
   font-weight:900;
-}
-
-#controls{
-  position:fixed;
-  left:12px;
-  right:12px;
-  bottom:18px;
-  z-index:6;
-  display:none;
-  justify-content:space-between;
-  pointer-events:none;
-}
-
-.control{
-  width:78px;
-  height:62px;
-  border-radius:17px;
-  background:#071b25ee;
-  border:1px solid #00eaff66;
-  color:white;
-  font-size:28px;
-  pointer-events:auto;
 }
 
 #pause{
   position:fixed;
-  top:55px;
-  right:10px;
-  z-index:7;
-  display:none;
-  width:68px;
-  height:40px;
-  border-radius:12px;
-  background:#071b25ee;
-  color:white;
+  top:53px;
+  right:9px;
+  z-index:6;
+  width:58px;
+  height:38px;
+  border-radius:11px;
+  background:#071b25dd;
   border:1px solid #00eaff55;
+  color:white;
+  display:none;
 }
 
-.ranking{
-  text-align:left;
-  max-height:55vh;
-  overflow:auto;
-  line-height:2;
+.power{
+  position:fixed;
+  top:95px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:6;
+  padding:7px 12px;
+  border-radius:14px;
+  background:#031119dd;
+  border:1px solid #00eaff66;
+  font-weight:900;
+  font-size:13px;
+  display:none;
 }
 
 .rank{
-  padding:4px 7px;
-  border-bottom:1px solid #ffffff0d;
+  text-align:left;
+  padding:7px;
+  border-bottom:1px solid #ffffff12;
 }
 
 .tabs{
@@ -332,7 +277,7 @@ input:focus{
 
 .tabs button{
   flex:1;
-  padding:11px 4px;
+  padding:11px 5px;
   border-radius:12px;
   background:#071b25;
   color:white;
@@ -340,46 +285,22 @@ input:focus{
   font-weight:900;
 }
 
-.tabs button.active{
-  background:#05dff5;
+.tabs .active{
+  background:#00eaff;
   color:#001018;
-}
-
-.codeBox{
-  margin-top:8px;
-  padding:12px;
-  border-radius:15px;
-  background:#071b25;
-}
-
-.note{
-  color:#77939d;
-  font-size:11px;
-  margin-top:8px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<section id="loginScreen" class="screen">
+<section id="login" class="screen">
   <div class="card">
     <div class="logo">CUBE RUSH</div>
+    <div class="subtitle">Melde dich bei CUBE RUSH an.</div>
 
-    <div class="subtitle">
-      Melde dich an und speichere deinen Fortschritt.
-    </div>
-
-    <input id="loginEmail"
-           type="email"
-           autocomplete="email"
-           placeholder="E-Mail">
-
-    <input id="loginPassword"
-           type="password"
-           autocomplete="current-password"
-           placeholder="Passwort">
+    <input id="email" type="email" placeholder="E-Mail">
+    <input id="password" type="password" placeholder="Passwort">
 
     <button id="loginBtn" class="btn primary">
       ANMELDEN
@@ -389,32 +310,17 @@ input:focus{
       ACCOUNT ERSTELLEN
     </button>
 
-    <div id="loginMessage" class="message"></div>
+    <div id="loginMsg" class="message"></div>
   </div>
 </section>
 
-
-<!-- REGISTER -->
-<section id="registerScreen" class="screen hidden">
+<section id="register" class="screen hidden">
   <div class="card">
     <div class="logo">ACCOUNT</div>
 
-    <div class="subtitle">
-      Erstelle deinen CUBE-RUSH-Account.
-    </div>
-
-    <input id="registerUsername"
-           type="text"
-           maxlength="20"
-           placeholder="Benutzername">
-
-    <input id="registerEmail"
-           type="email"
-           placeholder="E-Mail">
-
-    <input id="registerPassword"
-           type="password"
-           placeholder="Passwort">
+    <input id="username" maxlength="20" placeholder="Benutzername">
+    <input id="regEmail" type="email" placeholder="E-Mail">
+    <input id="regPassword" type="password" placeholder="Passwort">
 
     <button id="registerBtn" class="btn primary">
       ACCOUNT ERSTELLEN
@@ -424,45 +330,39 @@ input:focus{
       ZURÜCK
     </button>
 
-    <div id="registerMessage" class="message"></div>
+    <div id="regMsg" class="message"></div>
   </div>
 </section>
 
-
-<!-- MENU -->
-<section id="menuScreen" class="screen hidden">
+<section id="menu" class="screen hidden">
   <div class="card">
     <div class="logo">CUBE RUSH</div>
 
     <div class="subtitle">
-      Willkommen, <b id="menuUsername">Spieler</b>!
+      Willkommen, <b id="playerName"></b>
     </div>
 
     <div class="stats">
       <div class="stat">
-        <small>MÜNZEN</small>
-        <strong id="menuCoins">0</strong>
+        <small>🪙 MÜNZEN</small>
+        <strong id="coins">0</strong>
       </div>
 
       <div class="stat">
-        <small>HIGHSCORE</small>
-        <strong id="menuHighscore">0</strong>
+        <small>🏆 HIGHSCORE</small>
+        <strong id="highscore">0</strong>
       </div>
     </div>
 
-    <button id="startBtn" class="btn primary">
+    <button id="start" class="btn primary">
       ▶ SPIEL STARTEN
     </button>
 
-    <button id="shopBtn" class="btn secondary">
+    <button id="shop" class="btn secondary">
       🛍️ SHOP
     </button>
 
-    <button id="citiesBtn" class="btn secondary">
-      🌆 STÄDTE
-    </button>
-
-    <button id="rankingBtn" class="btn secondary">
+    <button id="rankBtn" class="btn secondary">
       🏆 RANGLISTE
     </button>
 
@@ -470,31 +370,20 @@ input:focus{
       🔐 CODE EINGEBEN
     </button>
 
-    <button id="logoutBtn" class="btn secondary">
+    <button id="logout" class="btn secondary">
       ABMELDEN
     </button>
   </div>
 </section>
 
-
-<!-- SHOP -->
 <section id="shopScreen" class="screen hidden">
   <div class="card">
 
-    <div class="logo">🛍️ SHOP</div>
-
-    <div class="subtitle">
-      Kaufe deinen Charakter.
-      Je teurer, desto mehr Münzen bekommst du.
-    </div>
+    <div class="logo">SHOP</div>
 
     <div class="tabs">
-      <button id="charactersTab" class="active">
-        CHARAKTERE
-      </button>
-      <button id="citiesTab">
-        STÄDTE
-      </button>
+      <button id="charTab" class="active">CHARAKTERE</button>
+      <button id="cityTab">STÄDTE</button>
     </div>
 
     <div id="shopGrid" class="grid"></div>
@@ -505,45 +394,31 @@ input:focus{
   </div>
 </section>
 
-
-<!-- RANKING -->
-<section id="rankingScreen" class="screen hidden">
+<section id="rankScreen" class="screen hidden">
   <div class="card">
-    <div class="logo">🏆 RANGLISTE</div>
+    <div class="logo">🏆</div>
+    <div id="rankList">Lade...</div>
 
-    <div id="rankingList" class="ranking">
-      Lade Rangliste...
-    </div>
-
-    <button id="rankingBack" class="btn secondary">
+    <button id="rankBack" class="btn secondary">
       ZURÜCK
     </button>
   </div>
 </section>
 
-
-<!-- CODE -->
 <section id="codeScreen" class="screen hidden">
   <div class="card">
     <div class="logo">🔐 CODE</div>
 
-    <div class="subtitle">
-      Gib einen Freischaltcode ein.
-    </div>
+    <input id="codeInput"
+           inputmode="numeric"
+           maxlength="3"
+           placeholder="Code">
 
-    <div class="codeBox">
-      <input id="adminCode"
-             type="text"
-             inputmode="numeric"
-             maxlength="3"
-             placeholder="Code">
+    <button id="useCode" class="btn primary">
+      EINLÖSEN
+    </button>
 
-      <button id="redeemCode" class="btn primary">
-        CODE EINLÖSEN
-      </button>
-
-      <div id="codeMessage" class="message"></div>
-    </div>
+    <div id="codeMsg" class="message"></div>
 
     <button id="codeBack" class="btn secondary">
       ZURÜCK
@@ -551,16 +426,9 @@ input:focus{
   </div>
 </section>
 
-
-<!-- GAME OVER -->
-<section id="gameOverScreen" class="screen hidden">
+<section id="gameOver" class="screen hidden">
   <div class="card">
-
-    <div class="logo">CRASH!</div>
-
-    <div class="subtitle">
-      Deine Runde ist vorbei.
-    </div>
+    <div class="logo">GAME OVER</div>
 
     <div class="stats">
       <div class="stat">
@@ -574,46 +442,33 @@ input:focus{
       </div>
     </div>
 
-    <button id="againBtn" class="btn primary">
+    <button id="again" class="btn primary">
       🔄 NOCHMAL
     </button>
 
-    <button id="gameMenuBtn" class="btn secondary">
+    <button id="gameMenu" class="btn secondary">
       MENÜ
     </button>
   </div>
 </section>
 
-
-<!-- GAME -->
 <canvas id="game"></canvas>
 
 <div id="hud">
-  <div class="hud">
-    🪙 <span id="hudCoins">0</span>
-  </div>
-
-  <div class="hud">
-    🏆 <span id="hudScore">0</span>
-  </div>
-
-  <div class="hud">
-    <span id="hudCity">NEON CITY</span>
-  </div>
+  <div class="hud">🪙 <span id="hudCoins">0</span></div>
+  <div class="hud">🏆 <span id="hudScore">0</span></div>
+  <div class="hud" id="hudWorld">NEON CITY</div>
 </div>
+
+<div id="power" class="power"></div>
 
 <button id="pause">⏸</button>
 
-<div id="controls">
-  <button id="leftBtn" class="control">←</button>
-  <button id="rightBtn" class="control">→</button>
-</div>
-
 
 <script>
-/* =====================================================
+/* =========================
    SUPABASE
-===================================================== */
+========================= */
 
 const SUPABASE_URL =
 "https://lfsifdmaftztykpckdsh.supabase.co";
@@ -621,892 +476,733 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxmc2lmZG1hZnR6dHlrcGNrZHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDczMTksImV4cCI6MjEwMjQ4MzMxOX0.dfMS0zgHO_IYU7_YmR2Si6DVkD8MWiJJUt6iSJXZfio";
 
-let authToken = "";
-let currentPlayer = null;
+let token="";
+let player=null;
 
 
-/* =====================================================
+/* =========================
    CHARAKTERE
-===================================================== */
+========================= */
 
-const characters = [
-  {name:"Cube",price:0,mult:1,color:"#00eaff"},
-  {name:"Neon",price:500,mult:1.1,color:"#00ff66"},
-  {name:"Fire",price:1000,mult:1.2,color:"#ff1744"},
-  {name:"Ocean",price:1500,mult:1.3,color:"#008cff"},
-  {name:"Purple",price:2500,mult:1.4,color:"#b000ff"},
-  {name:"Gold",price:4000,mult:1.5,color:"#ffd600"},
-  {name:"Lava",price:6000,mult:1.6,color:"#ff5a00"},
-  {name:"Ice",price:8000,mult:1.7,color:"#8df6ff"},
-  {name:"Rainbow",price:10000,mult:1.8,color:"#ff4dff"},
-  {name:"Toxic",price:12500,mult:2,color:"#aaff00"},
-  {name:"Diamond",price:15000,mult:2.2,color:"#b9f2ff"},
-  {name:"Galaxy",price:20000,mult:2.4,color:"#7c4dff"},
-  {name:"Plasma",price:25000,mult:2.6,color:"#ff00aa"},
-  {name:"Cyber",price:30000,mult:2.8,color:"#00ffcc"},
-  {name:"Royal",price:40000,mult:3,color:"#ffcc00"},
-  {name:"Shadow",price:50000,mult:3.2,color:"#8a8a8a"},
-  {name:"Cosmic",price:65000,mult:3.5,color:"#8b5cff"},
-  {name:"Legend",price:80000,mult:4,color:"#ff9100"},
-  {name:"Infinity",price:100000,mult:4.5,color:"#ffffff"},
-  {name:"CUBE GOD",price:150000,mult:5,color:"#00ffff"}
+const characters=[
+ {name:"Cube",price:0,mult:1,color:"#00eaff"},
+ {name:"Neon",price:500,mult:1.1,color:"#00ff66"},
+ {name:"Fire",price:1000,mult:1.2,color:"#ff1744"},
+ {name:"Ocean",price:2000,mult:1.3,color:"#008cff"},
+ {name:"Purple",price:3500,mult:1.4,color:"#b000ff"},
+ {name:"Gold",price:5000,mult:1.5,color:"#ffd600"},
+ {name:"Lava",price:7500,mult:1.7,color:"#ff5a00"},
+ {name:"Ice",price:10000,mult:1.9,color:"#8df6ff"},
+ {name:"Rainbow",price:15000,mult:2,color:"#ff4dff"},
+ {name:"Toxic",price:20000,mult:2.2,color:"#aaff00"},
+ {name:"Diamond",price:30000,mult:2.5,color:"#b9f2ff"},
+ {name:"Galaxy",price:45000,mult:2.8,color:"#7c4dff"},
+ {name:"Plasma",price:60000,mult:3,color:"#ff00aa"},
+ {name:"Cyber",price:80000,mult:3.3,color:"#00ffcc"},
+ {name:"Royal",price:100000,mult:3.6,color:"#ffcc00"},
+ {name:"Shadow",price:125000,mult:4,color:"#777777"},
+ {name:"Cosmic",price:160000,mult:4.5,color:"#8b5cff"},
+ {name:"Legend",price:220000,mult:5,color:"#ff9100"},
+ {name:"Infinity",price:350000,mult:6,color:"#ffffff"},
+ {name:"CUBE GOD",price:500000,mult:7,color:"#00ffff"}
 ];
 
 
-/* =====================================================
-   STÄDTE
-===================================================== */
+/* =========================
+   10 WELTEN
+========================= */
 
-const cities = [
-  {name:"Neon City",price:0,sky:"#063d50"},
-  {name:"Tokyo",price:1000,sky:"#30105c"},
-  {name:"New York",price:2500,sky:"#10294f"},
-  {name:"Miami",price:5000,sky:"#174f57"},
-  {name:"Dubai",price:10000,sky:"#55321b"},
-  {name:"Cyber City",price:25000,sky:"#25004f"}
+const worlds=[
+ {
+  name:"Neon City",
+  price:0,
+  mult:1,
+  min:3,
+  max:6,
+  sky:"#063d50",
+  ground:"#101820"
+ },
+ {
+  name:"Tokyo",
+  price:2500,
+  mult:1.5,
+  min:6,
+  max:10,
+  sky:"#39105b",
+  ground:"#160b1d"
+ },
+ {
+  name:"New York",
+  price:7500,
+  mult:2,
+  min:10,
+  max:14,
+  sky:"#10294f",
+  ground:"#111820"
+ },
+ {
+  name:"Miami",
+  price:15000,
+  mult:2.5,
+  min:14,
+  max:18,
+  sky:"#17606b",
+  ground:"#101d20"
+ },
+ {
+  name:"Dubai",
+  price:30000,
+  mult:3,
+  min:18,
+  max:23,
+  sky:"#633b19",
+  ground:"#20140a"
+ },
+ {
+  name:"Cyber City",
+  price:60000,
+  mult:4,
+  min:23,
+  max:28,
+  sky:"#25004f",
+  ground:"#0c0715"
+ },
+ {
+  name:"Galaxy City",
+  price:120000,
+  mult:5,
+  min:28,
+  max:34,
+  sky:"#05002d",
+  ground:"#05030f"
+ },
+ {
+  name:"Mars City",
+  price:250000,
+  mult:6,
+  min:34,
+  max:40,
+  sky:"#6b160e",
+  ground:"#28100d"
+ },
+ {
+  name:"Crystal City",
+  price:500000,
+  mult:8,
+  min:40,
+  max:48,
+  sky:"#103e55",
+  ground:"#07151e"
+ },
+ {
+  name:"Infinity City",
+  price:1000000,
+  mult:10,
+  min:48,
+  max:60,
+  sky:"#00001d",
+  ground:"#03030c"
+ }
 ];
 
 
-/* =====================================================
-   LOCAL SAVE
-===================================================== */
+/* =========================
+   DATEN
+========================= */
 
-function localData(){
-
-  if(!currentPlayer) return {};
-
-  const key =
-    "cubeRush_"+currentPlayer.id;
-
-  try{
-    return JSON.parse(
-      localStorage.getItem(key) || "{}"
-    );
-  }catch{
-    return {};
-  }
+function localKey(){
+ return "cubeRush_"+player.id;
 }
 
-function saveLocal(data){
-
-  if(!currentPlayer) return;
-
-  const key =
-    "cubeRush_"+currentPlayer.id;
-
-  localStorage.setItem(
-    key,
-    JSON.stringify(data)
-  );
+function data(){
+ try{
+  return JSON.parse(localStorage.getItem(localKey())||"{}");
+ }catch{
+  return {};
+ }
 }
 
-function getUnlockedCharacters(){
-
-  const d=localData();
-
-  if(Array.isArray(d.characters))
-    return d.characters;
-
-  return [0];
+function saveData(d){
+ localStorage.setItem(localKey(),JSON.stringify(d));
 }
 
-function getUnlockedCities(){
-
-  const d=localData();
-
-  if(Array.isArray(d.cities))
-    return d.cities;
-
-  return [0];
+function unlockedChars(){
+ return data().chars||[0];
 }
 
-function selectedCharacter(){
-
-  const d=localData();
-
-  return Number.isInteger(d.selectedCharacter)
-    ? d.selectedCharacter
-    : 0;
+function unlockedWorlds(){
+ return data().worlds||[0];
 }
 
-function selectedCity(){
-
-  const d=localData();
-
-  return Number.isInteger(d.selectedCity)
-    ? d.selectedCity
-    : 0;
+function selectedChar(){
+ return Number(data().char||0);
 }
 
-
-/* =====================================================
-   HILFSFUNKTIONEN
-===================================================== */
+function selectedWorld(){
+ return Number(data().world||0);
+}
 
 function $(id){
-  return document.getElementById(id);
+ return document.getElementById(id);
 }
 
-function showScreen(id){
-
-  document
-    .querySelectorAll(".screen")
-    .forEach(s=>{
-      s.classList.add("hidden");
-    });
-
-  $(id).classList.remove("hidden");
-}
-
-function message(id,text){
-  $(id).textContent=text;
+function screen(id){
+ document.querySelectorAll(".screen").forEach(x=>{
+  x.classList.add("hidden");
+ });
+ $(id).classList.remove("hidden");
 }
 
 
-/* =====================================================
-   SUPABASE REQUEST
-===================================================== */
+/* =========================
+   SUPABASE
+========================= */
 
-async function supabaseRequest(path,options={}){
+async function request(path,opt={}){
+ const headers={
+  apikey:SUPABASE_KEY,
+  "Content-Type":"application/json",
+  ...(token?{Authorization:"Bearer "+token}:{}),
+  ...(opt.headers||{})
+ };
 
-  const headers={
-    apikey:SUPABASE_KEY,
-    "Content-Type":"application/json",
-    ...(authToken
-      ? {Authorization:"Bearer "+authToken}
-      : {}),
-    ...(options.headers||{})
-  };
+ const r=await fetch(
+  SUPABASE_URL+path,
+  {...opt,headers}
+ );
 
-  const response=
-    await fetch(
-      SUPABASE_URL+path,
-      {
-        ...options,
-        headers
-      }
-    );
+ const text=await r.text();
 
-  const text=
-    await response.text();
+ let json=null;
 
-  let data=null;
+ try{
+  json=text?JSON.parse(text):null;
+ }catch{}
 
-  try{
-    data=text?JSON.parse(text):null;
-  }catch{
-    data=null;
-  }
+ if(!r.ok){
+  throw new Error(
+   json?.msg||
+   json?.message||
+   json?.error_description||
+   text||
+   "Supabase Fehler"
+  );
+ }
 
-  if(!response.ok){
-
-    throw new Error(
-      data?.msg ||
-      data?.message ||
-      data?.error_description ||
-      text ||
-      "Supabase-Fehler"
-    );
-  }
-
-  return data;
+ return json;
 }
 
 
-/* =====================================================
+/* =========================
    LOGIN
-===================================================== */
-
-$("loginBtn").onclick=async()=>{
-
-  const email=
-    $("loginEmail").value.trim();
-
-  const password=
-    $("loginPassword").value;
-
-  if(!email||!password){
-    message(
-      "loginMessage",
-      "Bitte E-Mail und Passwort eingeben."
-    );
-    return;
-  }
-
-  $("loginBtn").disabled=true;
-  $("loginBtn").textContent="ANMELDUNG...";
-
-  try{
-
-    const data=
-      await supabaseRequest(
-        "/auth/v1/token?grant_type=password",
-        {
-          method:"POST",
-          body:JSON.stringify({
-            email,
-            password
-          })
-        }
-      );
-
-    authToken=data.access_token;
-
-    currentPlayer={
-      id:data.user.id,
-      username:
-        data.user.user_metadata?.username ||
-        email.split("@")[0],
-      coins:0,
-      highscore:0
-    };
-
-    await loadPlayer();
-
-    openMenu();
-
-  }catch(error){
-
-    message(
-      "loginMessage",
-      "❌ "+error.message
-    );
-
-  }finally{
-
-    $("loginBtn").disabled=false;
-    $("loginBtn").textContent="ANMELDEN";
-  }
-};
-
-
-/* =====================================================
-   REGISTER
-===================================================== */
+========================= */
 
 $("registerOpen").onclick=()=>{
-  message("loginMessage","");
-  showScreen("registerScreen");
+ screen("register");
 };
 
 $("backLogin").onclick=()=>{
-  message("registerMessage","");
-  showScreen("loginScreen");
+ screen("login");
 };
+
+$("loginBtn").onclick=async()=>{
+
+ const email=$("email").value.trim();
+ const password=$("password").value;
+
+ if(!email||!password){
+  $("loginMsg").textContent=
+   "Bitte E-Mail und Passwort eingeben.";
+  return;
+ }
+
+ try{
+
+  const r=await request(
+   "/auth/v1/token?grant_type=password",
+   {
+    method:"POST",
+    body:JSON.stringify({email,password})
+   }
+  );
+
+  token=r.access_token;
+
+  player={
+   id:r.user.id,
+   username:r.user.user_metadata?.username||
+   email.split("@")[0],
+   coins:0,
+   highscore:0
+  };
+
+  await loadPlayer();
+  menu();
+
+ }catch(e){
+
+  $("loginMsg").textContent=
+   "❌ "+e.message;
+ }
+};
+
+
+/* =========================
+   REGISTRIERUNG
+========================= */
 
 $("registerBtn").onclick=async()=>{
 
-  const username=
-    $("registerUsername").value.trim();
+ const name=$("username").value.trim();
+ const email=$("regEmail").value.trim();
+ const password=$("regPassword").value;
 
-  const email=
-    $("registerEmail").value.trim();
+ if(name.length<3){
+  $("regMsg").textContent=
+   "Benutzername mindestens 3 Zeichen.";
+  return;
+ }
 
-  const password=
-    $("registerPassword").value;
+ if(password.length<6){
+  $("regMsg").textContent=
+   "Passwort mindestens 6 Zeichen.";
+  return;
+ }
 
-  if(username.length<3){
-    message(
-      "registerMessage",
-      "Benutzername: mindestens 3 Zeichen."
-    );
-    return;
+ try{
+
+  const r=await request(
+   "/auth/v1/signup",
+   {
+    method:"POST",
+    body:JSON.stringify({
+     email,
+     password,
+     data:{username:name}
+    })
+   }
+  );
+
+  if(!r.access_token){
+   $("regMsg").textContent=
+    "Account erstellt. Wenn Supabase eine Bestätigung verlangt, ist Confirm email noch aktiviert.";
+   return;
   }
 
-  if(!email.includes("@")){
-    message(
-      "registerMessage",
-      "Bitte eine gültige E-Mail eingeben."
-    );
-    return;
-  }
+  token=r.access_token;
 
-  if(password.length<6){
-    message(
-      "registerMessage",
-      "Passwort: mindestens 6 Zeichen."
-    );
-    return;
-  }
+  player={
+   id:r.user.id,
+   username:name,
+   coins:0,
+   highscore:0
+  };
 
-  $("registerBtn").disabled=true;
-  $("registerBtn").textContent="ERSTELLE ACCOUNT...";
+  await createPlayer();
+  menu();
 
-  try{
+ }catch(e){
 
-    const data=
-      await supabaseRequest(
-        "/auth/v1/signup",
-        {
-          method:"POST",
-          body:JSON.stringify({
-            email,
-            password,
-            data:{username}
-          })
-        }
-      );
-
-    /*
-      Falls Confirm Email in Supabase wirklich
-      ausgeschaltet ist, kommt direkt ein Token.
-    */
-
-    if(!data.access_token){
-
-      message(
-        "registerMessage",
-        "Der Account wurde erstellt. Falls Supabase noch eine Bestätigung verlangt, ist „Confirm email“ noch aktiviert."
-      );
-
-      return;
-    }
-
-    authToken=data.access_token;
-
-    currentPlayer={
-      id:data.user.id,
-      username,
-      coins:0,
-      highscore:0
-    };
-
-    await createPlayer();
-
-    openMenu();
-
-  }catch(error){
-
-    message(
-      "registerMessage",
-      "❌ "+error.message
-    );
-
-  }finally{
-
-    $("registerBtn").disabled=false;
-    $("registerBtn").textContent="ACCOUNT ERSTELLEN";
-  }
+  $("regMsg").textContent=
+   "❌ "+e.message;
+ }
 };
 
 
-/* =====================================================
+/* =========================
    PLAYER
-===================================================== */
+========================= */
 
 async function createPlayer(){
 
-  try{
-
-    await supabaseRequest(
-      "/rest/v1/Players",
-      {
-        method:"POST",
-        headers:{
-          Prefer:"resolution=ignore-duplicates"
-        },
-        body:JSON.stringify({
-          id:currentPlayer.id,
-          username:currentPlayer.username,
-          coins:0,
-          highscore:0
-        })
-      }
-    );
-
-  }catch(error){
-
-    console.log(
-      "Player konnte nicht erstellt werden:",
-      error.message
-    );
-  }
+ try{
+  await request(
+   "/rest/v1/Players",
+   {
+    method:"POST",
+    headers:{
+     Prefer:"resolution=ignore-duplicates"
+    },
+    body:JSON.stringify({
+     id:player.id,
+     username:player.username,
+     coins:0,
+     highscore:0
+    })
+   }
+  );
+ }catch(e){
+  console.log(e.message);
+ }
 }
 
 async function loadPlayer(){
 
-  try{
+ try{
 
-    const rows=
-      await supabaseRequest(
-        "/rest/v1/Players"+
-        "?id=eq."+
-        encodeURIComponent(currentPlayer.id)+
-        "&select=*"
-      );
+  const rows=await request(
+   "/rest/v1/Players?id=eq."+
+   encodeURIComponent(player.id)+
+   "&select=*"
+  );
 
-    if(rows?.length){
+  if(rows?.length){
 
-      currentPlayer.username=
-        rows[0].username ||
-        currentPlayer.username;
+   player.username=
+    rows[0].username||player.username;
 
-      currentPlayer.coins=
-        Number(rows[0].coins||0);
+   player.coins=
+    Number(rows[0].coins||0);
 
-      currentPlayer.highscore=
-        Number(rows[0].highscore||0);
-    }
-
-  }catch(error){
-
-    console.log(
-      "Player laden:",
-      error.message
-    );
+   player.highscore=
+    Number(rows[0].highscore||0);
   }
+
+ }catch(e){
+  console.log(e.message);
+ }
 }
 
 async function savePlayer(){
 
-  try{
+ try{
 
-    await supabaseRequest(
-      "/rest/v1/Players?id=eq."+
-      encodeURIComponent(currentPlayer.id),
-      {
-        method:"PATCH",
-        headers:{
-          Prefer:"return=minimal"
-        },
-        body:JSON.stringify({
-          username:currentPlayer.username,
-          coins:currentPlayer.coins,
-          highscore:currentPlayer.highscore
-        })
-      }
-    );
+  await request(
+   "/rest/v1/Players?id=eq."+
+   encodeURIComponent(player.id),
+   {
+    method:"PATCH",
+    headers:{
+     Prefer:"return=minimal"
+    },
+    body:JSON.stringify({
+     username:player.username,
+     coins:Math.floor(player.coins),
+     highscore:Math.floor(player.highscore)
+    })
+   }
+  );
 
-  }catch(error){
-
-    console.log(
-      "Speichern:",
-      error.message
-    );
-  }
+ }catch(e){
+  console.log(e.message);
+ }
 }
 
 
-/* =====================================================
+/* =========================
    MENU
-===================================================== */
+========================= */
 
-function openMenu(){
+function menu(){
 
-  $("menuUsername").textContent=
-    currentPlayer.username;
+ $("playerName").textContent=player.username;
+ $("coins").textContent=
+  Math.floor(player.coins).toLocaleString();
 
-  $("menuCoins").textContent=
-    currentPlayer.coins.toLocaleString();
+ $("highscore").textContent=
+  Math.floor(player.highscore).toLocaleString();
 
-  $("menuHighscore").textContent=
-    currentPlayer.highscore.toLocaleString();
-
-  showScreen("menuScreen");
+ screen("menu");
 }
 
-$("logoutBtn").onclick=()=>{
-
-  authToken="";
-  currentPlayer=null;
-
-  $("loginEmail").value="";
-  $("loginPassword").value="";
-
-  showScreen("loginScreen");
+$("logout").onclick=()=>{
+ token="";
+ player=null;
+ screen("login");
 };
 
 
-/* =====================================================
+/* =========================
    SHOP
-===================================================== */
+========================= */
 
-$("shopBtn").onclick=()=>{
-  renderCharacters();
-  showScreen("shopScreen");
+$("shop").onclick=()=>{
+ renderChars();
+ screen("shopScreen");
 };
 
-$("citiesBtn").onclick=()=>{
-  renderCities();
-  showScreen("shopScreen");
+$("charTab").onclick=()=>{
+ $("charTab").classList.add("active");
+ $("cityTab").classList.remove("active");
+ renderChars();
 };
 
-$("charactersTab").onclick=()=>{
-  $("charactersTab").classList.add("active");
-  $("citiesTab").classList.remove("active");
-  renderCharacters();
+$("cityTab").onclick=()=>{
+ $("cityTab").classList.add("active");
+ $("charTab").classList.remove("active");
+ renderWorlds();
 };
 
-$("citiesTab").onclick=()=>{
-  $("citiesTab").classList.add("active");
-  $("charactersTab").classList.remove("active");
-  renderCities();
-};
-
-$("shopBack").onclick=openMenu;
+$("shopBack").onclick=menu;
 
 
-function renderCharacters(){
+function renderChars(){
 
-  const grid=$("shopGrid");
+ const grid=$("shopGrid");
+ const owned=unlockedChars();
+ const selected=selectedChar();
 
-  const unlocked=
-    getUnlockedCharacters();
+ grid.innerHTML="";
 
-  const selected=
-    selectedCharacter();
+ characters.forEach((c,i)=>{
 
-  grid.innerHTML="";
+  const div=document.createElement("div");
 
-  characters.forEach((c,index)=>{
+  div.className=
+   "item"+(selected===i?" selected":"");
 
-    const owned=
-      unlocked.includes(index);
+  div.innerHTML=`
+   <div class="preview" style="color:${c.color}">
+    <div class="cube"
+         style="background:${c.color}"></div>
+   </div>
 
-    const item=
-      document.createElement("div");
+   <div class="name">${c.name}</div>
 
-    item.className=
-      "shopItem"+
-      (selected===index?" selected":"");
+   <div class="price">
+    ${c.price===0?"KOSTENLOS":
+      "🪙 "+c.price.toLocaleString()}
+   </div>
 
-    item.innerHTML=`
-      <div class="preview"
-           style="color:${c.color}">
-        <div class="glow"></div>
-        <div class="cube"
-             style="background:${c.color}">
-        </div>
-      </div>
+   <div class="mult">
+    Münzen ×${c.mult}
+   </div>
 
-      <div class="shopName">
-        ${c.name}
-      </div>
+   <button class="btn ${
+    owned.includes(i)?"secondary":"primary"
+   }">
+    ${
+     selected===i
+     ?"AUSGEWÄHLT"
+     :owned.includes(i)
+     ?"AUSWÄHLEN"
+     :"KAUFEN"
+    }
+   </button>
+  `;
 
-      <div class="shopPrice">
-        ${
-          c.price===0
-          ? "KOSTENLOS"
-          : "🪙 "+c.price.toLocaleString()
-        }
-      </div>
+  div.querySelector("button").onclick=async()=>{
 
-      <div class="mini">
-        Münzen ×${c.mult}
-      </div>
+   const d=data();
 
-      <button class="btn ${
-        owned ? "secondary":"primary"
-      }">
-        ${
-          selected===index
-          ? "AUSGEWÄHLT"
-          : owned
-            ? "AUSWÄHLEN"
-            : "KAUFEN"
-        }
-      </button>
-    `;
+   if(!d.chars)d.chars=[0];
 
-    const btn=item.querySelector("button");
+   if(d.chars.includes(i)){
 
-    btn.onclick=()=>{
+    d.char=i;
+    saveData(d);
 
-      const d=localData();
+    renderChars();
+    return;
+   }
 
-      if(!Array.isArray(d.characters))
-        d.characters=[0];
+   if(player.coins<c.price){
+    alert("Nicht genug Münzen!");
+    return;
+   }
 
-      if(owned){
+   player.coins-=c.price;
 
-        d.selectedCharacter=index;
-        saveLocal(d);
+   d.chars.push(i);
+   d.char=i;
 
-        renderCharacters();
-        return;
-      }
+   saveData(d);
 
-      if(currentPlayer.coins<c.price){
+   await savePlayer();
 
-        alert(
-          "Du hast nicht genug Münzen!"
-        );
+   renderChars();
+ };
 
-        return;
-      }
-
-      currentPlayer.coins-=c.price;
-
-      d.characters.push(index);
-      d.selectedCharacter=index;
-
-      saveLocal(d);
-
-      savePlayer();
-
-      renderCharacters();
-      openMenu();
-    };
-
-    grid.appendChild(item);
-  });
+ grid.appendChild(div);
+ });
 }
 
 
-function renderCities(){
+function renderWorlds(){
 
-  const grid=$("shopGrid");
+ const grid=$("shopGrid");
+ const owned=unlockedWorlds();
+ const selected=selectedWorld();
 
-  const unlocked=
-    getUnlockedCities();
+ grid.innerHTML="";
 
-  const selected=
-    selectedCity();
+ worlds.forEach((w,i)=>{
 
-  grid.innerHTML="";
+  const div=document.createElement("div");
 
-  cities.forEach((c,index)=>{
+  div.className=
+   "item"+(selected===i?" selected":"");
 
-    const owned=
-      unlocked.includes(index);
-
-    const item=
-      document.createElement("div");
-
-    item.className=
-      "shopItem"+
-      (selected===index?" selected":"");
-
-    item.innerHTML=`
-      <div class="cityPreview"
-           style="background:
-           linear-gradient(${c.sky},#02070d)">
-        <div class="cityStars"></div>
-        ${[0,1,2,3,4].map(
-          n=>`
-          <div class="building"
-               style="
-               left:${n*22+5}%;
-               height:${35+n*10}px;
-               ">
-          </div>`
-        ).join("")}
+  div.innerHTML=`
+   <div class="city"
+        style="background:linear-gradient(${w.sky},${w.ground})">
+    ${[0,1,2,3,4].map(n=>`
+      <div class="building"
+           style="
+           left:${n*21+4}%;
+           width:${15+n*2}px;
+           height:${35+n*10}px">
       </div>
+    `).join("")}
+   </div>
 
-      <div class="shopName">
-        ${c.name}
-      </div>
+   <div class="name">${w.name}</div>
 
-      <div class="shopPrice">
-        ${
-          c.price===0
-          ? "KOSTENLOS"
-          : "🪙 "+c.price.toLocaleString()
-        }
-      </div>
+   <div class="price">
+    ${w.price===0?"KOSTENLOS":
+      "🪙 "+w.price.toLocaleString()}
+   </div>
 
-      <button class="btn ${
-        owned ? "secondary":"primary"
-      }">
-        ${
-          selected===index
-          ? "AUSGEWÄHLT"
-          : owned
-            ? "AUSWÄHLEN"
-            : "KAUFEN"
-        }
-      </button>
-    `;
+   <div class="mult">
+    Münzen ×${w.mult}
+   </div>
 
-    const btn=item.querySelector("button");
+   <button class="btn ${
+    owned.includes(i)?"secondary":"primary"
+   }">
+    ${
+     selected===i
+     ?"AUSGEWÄHLT"
+     :owned.includes(i)
+     ?"AUSWÄHLEN"
+     :"KAUFEN"
+    }
+   </button>
+  `;
 
-    btn.onclick=()=>{
+  div.querySelector("button").onclick=async()=>{
 
-      const d=localData();
+   const d=data();
 
-      if(!Array.isArray(d.cities))
-        d.cities=[0];
+   if(!d.worlds)d.worlds=[0];
 
-      if(owned){
+   if(d.worlds.includes(i)){
 
-        d.selectedCity=index;
-        saveLocal(d);
+    d.world=i;
+    saveData(d);
 
-        renderCities();
-        return;
-      }
+    renderWorlds();
+    return;
+   }
 
-      if(currentPlayer.coins<c.price){
+   if(player.coins<w.price){
+    alert("Nicht genug Münzen!");
+    return;
+   }
 
-        alert(
-          "Du hast nicht genug Münzen!"
-        );
+   player.coins-=w.price;
 
-        return;
-      }
+   d.worlds.push(i);
+   d.world=i;
 
-      currentPlayer.coins-=c.price;
+   saveData(d);
 
-      d.cities.push(index);
-      d.selectedCity=index;
+   await savePlayer();
 
-      saveLocal(d);
+   renderWorlds();
+ };
 
-      savePlayer();
-
-      renderCities();
-      openMenu();
-    };
-
-    grid.appendChild(item);
-  });
+ grid.appendChild(div);
+ });
 }
 
 
-/* =====================================================
-   ADMIN-CODES
-===================================================== */
+/* =========================
+   CODES
+========================= */
 
 $("codeBtn").onclick=()=>{
-  $("adminCode").value="";
-  $("codeMessage").textContent="";
-  showScreen("codeScreen");
+ $("codeInput").value="";
+ $("codeMsg").textContent="";
+ screen("codeScreen");
 };
 
-$("codeBack").onclick=openMenu;
+$("codeBack").onclick=menu;
 
-$("redeemCode").onclick=async()=>{
+$("useCode").onclick=async()=>{
 
-  const code=
-    $("adminCode").value.trim();
+ const code=$("codeInput").value.trim();
+ const d=data();
 
-  const d=localData();
+ if(code==="110"){
 
-  if(code==="110"){
+  player.coins=1000000;
+  player.highscore=1000000;
 
-    currentPlayer.coins=1000000;
-    currentPlayer.highscore=1000000;
+  d.chars=characters.map((_,i)=>i);
+  d.worlds=worlds.map((_,i)=>i);
 
-    d.characters=
-      characters.map((_,i)=>i);
+  d.char=0;
+  d.world=0;
 
-    d.cities=
-      cities.map((_,i)=>i);
+  saveData(d);
+  await savePlayer();
 
-    d.selectedCharacter=0;
-    d.selectedCity=0;
+  $("codeMsg").textContent=
+   "✅ 110 aktiviert! Alles freigeschaltet.";
 
-    saveLocal(d);
+ }else if(code==="112"){
 
-    await savePlayer();
+  player.coins=100000;
+  d.chars=[0,1,2,3,4];
+  d.worlds=[0,1,2];
 
-    message(
-      "codeMessage",
-      "✅ Code 110 aktiviert! Alles freigeschaltet."
-    );
+  d.char=0;
+  d.world=0;
 
-  }else if(code==="112"){
+  saveData(d);
+  await savePlayer();
 
-    currentPlayer.coins=100000;
+  $("codeMsg").textContent=
+   "✅ 112 aktiviert!";
 
-    d.characters=
-      [0,1,2,3,4];
+ }else{
 
-    d.cities=
-      [0,1,2];
-
-    d.selectedCharacter=0;
-    d.selectedCity=0;
-
-    saveLocal(d);
-
-    await savePlayer();
-
-    message(
-      "codeMessage",
-      "✅ Code 112 aktiviert!"
-    );
-
-  }else{
-
-    message(
-      "codeMessage",
-      "❌ Ungültiger Code."
-    );
-
-    return;
-  }
-
-  setTimeout(
-    openMenu,
-    1200
-  );
+  $("codeMsg").textContent=
+   "❌ Ungültiger Code.";
+ }
 };
 
 
-/* =====================================================
+/* =========================
    RANGLISTE
-===================================================== */
+========================= */
 
-$("rankingBtn").onclick=async()=>{
+$("rankBtn").onclick=async()=>{
 
-  showScreen("rankingScreen");
+ screen("rankScreen");
 
-  $("rankingList").textContent=
-    "Lade Rangliste...";
+ try{
 
-  try{
+  const rows=await request(
+   "/rest/v1/Players"+
+   "?select=username,highscore"+
+   "&order=highscore.desc"+
+   "&limit=50"
+  );
 
-    const rows=
-      await supabaseRequest(
-        "/rest/v1/Players"+
-        "?select=username,highscore"+
-        "&order=highscore.desc"+
-        "&limit=50"
-      );
+  $("rankList").innerHTML=
+   rows.map((r,i)=>`
+    <div class="rank">
+     <b>${i+1}.</b>
+     ${String(r.username)}
+     — ${Number(r.highscore||0).toLocaleString()}
+    </div>
+   `).join("");
 
-    if(!rows?.length){
+ }catch(e){
 
-      $("rankingList").textContent=
-        "Noch keine Spieler.";
-
-      return;
-    }
-
-    $("rankingList").innerHTML=
-      rows.map(
-        (r,i)=>`
-          <div class="rank">
-            <b>${i+1}.</b>
-            ${escapeHTML(r.username)}
-            — ${Number(r.highscore||0)
-              .toLocaleString()}
-          </div>
-        `
-      ).join("");
-
-  }catch(error){
-
-    $("rankingList").textContent=
-      "❌ "+error.message;
-  }
+  $("rankList").textContent=
+   "❌ "+e.message;
+ }
 };
 
-$("rankingBack").onclick=openMenu;
-
-function escapeHTML(text){
-
-  return String(text)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;");
-}
+$("rankBack").onclick=menu;
 
 
-/* =====================================================
-   GAME
-===================================================== */
+/* =========================
+   SPIEL
+========================= */
 
 const canvas=$("game");
 const ctx=canvas.getContext("2d");
@@ -1515,12 +1211,10 @@ let W=innerWidth;
 let H=innerHeight;
 
 function resize(){
-
-  W=innerWidth;
-  H=innerHeight;
-
-  canvas.width=W;
-  canvas.height=H;
+ W=innerWidth;
+ H=innerHeight;
+ canvas.width=W;
+ canvas.height=H;
 }
 
 addEventListener("resize",resize);
@@ -1531,699 +1225,822 @@ let running=false;
 let paused=false;
 
 let lane=0;
-
 let score=0;
-let roundCoins=0;
+let earned=0;
 
-let speed=330;
-
+let speed=300;
 let objects=[];
 
-let carTimer=1;
+let coinTimer=0;
+let obstacleTimer=0;
 
-let coinTimer=2;
+let doubleTime=0;
+let magnetTime=0;
 
-let lastTime=performance.now();
+let last=performance.now();
 
 
 function roadWidth(){
-  return Math.min(W*.86,650);
+ return Math.min(W*.86,650);
 }
 
 function roadLeft(){
-  return (W-roadWidth())/2;
+ return (W-roadWidth())/2;
 }
 
 function laneWidth(){
-  return roadWidth()/3;
+ return roadWidth()/3;
 }
 
 function laneX(n){
-  return roadLeft()+
-    laneWidth()*(n+1)+
-    laneWidth()/2;
+ return roadLeft()+
+  laneWidth()*(n+1)+
+  laneWidth()/2;
 }
 
 
-/* =====================================================
+/* =========================
    START
-===================================================== */
+========================= */
 
-$("startBtn").onclick=startGame;
+$("start").onclick=startGame;
 
 function startGame(){
 
-  document
-    .querySelectorAll(".screen")
-    .forEach(s=>{
-      s.classList.add("hidden");
-    });
+ document.querySelectorAll(".screen")
+  .forEach(x=>x.classList.add("hidden"));
 
-  canvas.style.display="block";
-  $("hud").style.display="flex";
-  $("controls").style.display="flex";
-  $("pause").style.display="block";
+ canvas.style.display="block";
+ $("hud").style.display="flex";
+ $("pause").style.display="block";
 
-  running=true;
-  paused=false;
+ running=true;
+ paused=false;
 
-  lane=0;
+ lane=0;
+ score=0;
+ earned=0;
 
-  score=0;
-  roundCoins=0;
+ speed=300;
 
-  speed=330;
+ objects=[];
 
-  objects=[];
+ coinTimer=.4;
+ obstacleTimer=1;
 
-  carTimer=1;
-  coinTimer=2;
+ doubleTime=0;
+ magnetTime=0;
 
-  lastTime=performance.now();
+ last=performance.now();
 
-  $("hudCity").textContent=
-    cities[selectedCity()].name;
+ $("hudWorld").textContent=
+  worlds[selectedWorld()].name;
+
+ updatePowerUI();
 }
 
 
-/* =====================================================
-   BACKGROUND
-===================================================== */
+/* =========================
+   WELT-FORTSCHRITT
+========================= */
 
-function drawBackground(){
+function worldDifficulty(){
 
-  const city=
-    cities[selectedCity()];
+ const w=selectedWorld();
 
-  const gradient=
-    ctx.createLinearGradient(0,0,0,H);
-
-  gradient.addColorStop(
-    0,
-    city.sky
-  );
-
-  gradient.addColorStop(
-    1,
-    "#02050a"
-  );
-
-  ctx.fillStyle=gradient;
-  ctx.fillRect(0,0,W,H);
-
-
-  /* STADT */
-
-  for(let i=0;i<26;i++){
-
-    const width=
-      20+(i%5)*11;
-
-    const height=
-      80+((i*47)%230);
-
-    const x=
-      i*(W/25);
-
-    ctx.fillStyle="#071820";
-
-    ctx.fillRect(
-      x,
-      H-height-100,
-      width,
-      height
-    );
-
-    ctx.fillStyle="#00eaff66";
-
-    for(
-      let y=H-height-80;
-      y<H-115;
-      y+=23
-    ){
-
-      ctx.fillRect(
-        x+5,
-        y,
-        4,
-        7
-      );
-    }
-  }
-
-
-  /* ROAD */
-
-  const rw=roadWidth();
-  const rl=roadLeft();
-
-  ctx.fillStyle="#111820";
-
-  ctx.fillRect(
-    rl,
-    0,
-    rw,
-    H
-  );
-
-  ctx.fillStyle="#00eaff";
-
-  ctx.fillRect(rl,0,3,H);
-  ctx.fillRect(rl+rw-3,0,3,H);
-
-
-  /* LANES */
-
-  const lw=laneWidth();
-
-  const offset=
-    (score*9)%90;
-
-  ctx.fillStyle="#ffffff88";
-
-  for(
-    let y=-90+offset;
-    y<H;
-    y+=90
-  ){
-
-    ctx.fillRect(
-      rl+lw-2,
-      y,
-      4,
-      45
-    );
-
-    ctx.fillRect(
-      rl+lw*2-2,
-      y,
-      4,
-      45
-    );
-  }
+ return w;
 }
 
 
-/* =====================================================
-   OBJECTS
-===================================================== */
+/* =========================
+   MÜNZEN ANZAHL
+========================= */
+
+function coinsPerGroup(){
+
+ const w=worlds[selectedWorld()];
+
+ return Math.floor(
+  w.min+
+  Math.random()*(w.max-w.min+1)
+ );
+}
+
+
+/* =========================
+   OBJEKT SPAWN
+========================= */
+
+function freeLane(y){
+
+ const choices=[-1,0,1].filter(laneNumber=>{
+
+  return !objects.some(o=>
+   o.lane===laneNumber &&
+   Math.abs(o.y-y)<150
+  );
+ });
+
+ if(!choices.length)return null;
+
+ return choices[
+  Math.floor(Math.random()*choices.length)
+ ];
+}
+
+
+function spawnCoinGroup(){
+
+ const amount=coinsPerGroup();
+
+ let laneNumber=
+  Math.floor(Math.random()*3)-1;
+
+ let startY=-50;
+
+ for(let i=0;i<amount;i++){
+
+  const y=startY-i*48;
+
+  /*
+   Keine Münze darf direkt vor einem Auto
+   auf derselben Spur erscheinen.
+  */
+
+  const blocked=
+   objects.some(o=>
+    o.type==="car" &&
+    o.lane===laneNumber &&
+    Math.abs(o.y-y)<180
+   );
+
+  if(blocked){
+
+   laneNumber=
+    Math.floor(Math.random()*3)-1;
+  }
+
+  objects.push({
+   type:"coin",
+   lane:laneNumber,
+   y:y,
+   collected:false
+  });
+ }
+}
+
 
 function spawnCar(){
 
-  const possible=
-    [-1,0,1].filter(n=>
-      !objects.some(o=>
-        o.type==="car" &&
-        o.lane===n &&
-        o.y<220
-      )
-    );
+ const laneNumber=freeLane(-120);
 
-  if(!possible.length)return;
+ if(laneNumber===null)return;
 
-  const selected=
-    possible[
-      Math.floor(
-        Math.random()*possible.length
-      )
-    ];
-
-  objects.push({
-    type:"car",
-    lane:selected,
-    y:-120,
-    color:[
-      "#ff1744",
-      "#008cff",
-      "#ff9800",
-      "#ffffff",
-      "#a000ff"
-    ][
-      Math.floor(Math.random()*5)
-    ]
-  });
+ objects.push({
+  type:"car",
+  lane:laneNumber,
+  y:-130,
+  color:[
+   "#ff1744",
+   "#008cff",
+   "#ff9800",
+   "#ffffff",
+   "#9c27b0"
+  ][Math.floor(Math.random()*5)]
+ });
 }
 
 
-function spawnCoins(){
+function spawnPower(type){
 
-  const amount=
-    3+Math.floor(Math.random()*4);
+ const laneNumber=freeLane(-100);
 
-  const selectedLane=
-    [-1,0,1][
-      Math.floor(Math.random()*3)
-    ];
+ if(laneNumber===null)return;
 
-  for(let i=0;i<amount;i++){
+ objects.push({
+  type:type,
+  lane:laneNumber,
+  y:-100
+ });
+}
 
-    objects.push({
-      type:"coin",
-      lane:selectedLane,
-      y:-40-i*65
-    });
+
+/* =========================
+   HINTERGRUND
+========================= */
+
+function drawBackground(){
+
+ const w=worlds[selectedWorld()];
+
+ const g=ctx.createLinearGradient(0,0,0,H);
+
+ g.addColorStop(0,w.sky);
+ g.addColorStop(1,w.ground);
+
+ ctx.fillStyle=g;
+ ctx.fillRect(0,0,W,H);
+
+ /*
+   Sterne
+ */
+
+ if(selectedWorld()>=5){
+
+  ctx.fillStyle="#ffffff88";
+
+  for(let i=0;i<80;i++){
+
+   const x=(i*97)%W;
+   const y=(i*53)%H;
+
+   ctx.fillRect(x,y,2,2);
   }
+ }
+
+
+ /*
+   Gebäude
+ */
+
+ for(let i=0;i<24;i++){
+
+  const width=
+   20+(i%5)*10;
+
+  const height=
+   70+((i*43)%220);
+
+  const x=i*(W/24);
+
+  ctx.fillStyle=
+   selectedWorld()>=8
+   ?" #163b4a"
+   :"#071820";
+
+  ctx.fillRect(
+   x,
+   H-height-95,
+   width,
+   height
+  );
+
+  ctx.fillStyle="#00eaff77";
+
+  for(
+   let y=H-height-75;
+   y<H-110;
+   y+=22
+  ){
+
+   ctx.fillRect(
+    x+5,
+    y,
+    4,
+    6
+   );
+  }
+ }
+
+
+ /*
+   Straße
+ */
+
+ const rw=roadWidth();
+ const rl=roadLeft();
+
+ ctx.fillStyle="#111820";
+ ctx.fillRect(rl,0,rw,H);
+
+ ctx.fillStyle="#00eaff";
+ ctx.fillRect(rl,0,3,H);
+ ctx.fillRect(rl+rw-3,0,3,H);
+
+ const lw=laneWidth();
+
+ const offset=
+  (score*10)%90;
+
+ ctx.fillStyle="#ffffff77";
+
+ for(let y=-90+offset;y<H;y+=90){
+
+  ctx.fillRect(rl+lw-2,y,4,45);
+  ctx.fillRect(rl+lw*2-2,y,4,45);
+ }
 }
 
+
+/* =========================
+   OBJEKTE ZEICHNEN
+========================= */
 
 function drawObjects(){
 
-  for(const object of objects){
+ for(const o of objects){
 
-    const x=laneX(object.lane);
+  const x=laneX(o.lane);
 
-    if(object.type==="coin"){
+  if(o.type==="coin"){
 
-      ctx.save();
+   ctx.save();
 
-      ctx.shadowColor="#ffd600";
-      ctx.shadowBlur=22;
+   ctx.shadowColor="#ffd600";
+   ctx.shadowBlur=20;
 
-      ctx.fillStyle="#ffd600";
+   ctx.fillStyle="#ffd600";
 
-      ctx.beginPath();
+   ctx.beginPath();
+   ctx.arc(x,o.y,13,0,Math.PI*2);
+   ctx.fill();
 
-      ctx.arc(
-        x,
-        object.y,
-        14,
-        0,
-        Math.PI*2
-      );
+   ctx.fillStyle="#fff7a0";
 
-      ctx.fill();
+   ctx.beginPath();
+   ctx.arc(x-4,o.y-4,4,0,Math.PI*2);
+   ctx.fill();
 
-      ctx.fillStyle="#fff7a0";
+   ctx.restore();
 
-      ctx.beginPath();
+  }else if(o.type==="double"){
 
-      ctx.arc(
-        x-4,
-        object.y-4,
-        4,
-        0,
-        Math.PI*2
-      );
+   ctx.save();
 
-      ctx.fill();
+   ctx.shadowColor="#00eaff";
+   ctx.shadowBlur=25;
 
-      ctx.restore();
+   ctx.fillStyle="#00eaff";
 
-    }else{
+   ctx.beginPath();
+   ctx.arc(x,o.y,22,0,Math.PI*2);
+   ctx.fill();
 
-      ctx.save();
+   ctx.fillStyle="#001018";
+   ctx.font="bold 17px Arial";
+   ctx.textAlign="center";
+   ctx.fillText("×2",x,o.y+6);
 
-      ctx.translate(x,object.y);
+   ctx.restore();
 
-      ctx.shadowColor=object.color;
-      ctx.shadowBlur=20;
+  }else if(o.type==="magnet"){
 
-      ctx.fillStyle=object.color;
+   ctx.save();
 
-      ctx.beginPath();
+   ctx.shadowColor="#ff1744";
+   ctx.shadowBlur=25;
 
-      ctx.roundRect(
-        -30,
-        -50,
-        60,
-        100,
-        12
-      );
+   ctx.strokeStyle="#ff1744";
+   ctx.lineWidth=7;
 
-      ctx.fill();
+   ctx.beginPath();
+   ctx.arc(x,o.y,17,0,Math.PI);
+   ctx.stroke();
 
-      ctx.shadowBlur=0;
+   ctx.fillStyle="#ff1744";
+   ctx.font="bold 18px Arial";
+   ctx.textAlign="center";
+   ctx.fillText("🧲",x,o.y+7);
 
-      ctx.fillStyle="#17303b";
+   ctx.restore();
 
-      ctx.fillRect(
-        -19,
-        -29,
-        38,
-        24
-      );
+  }else{
 
-      ctx.restore();
-    }
+   ctx.save();
+
+   ctx.translate(x,o.y);
+
+   ctx.shadowColor=o.color;
+   ctx.shadowBlur=20;
+
+   ctx.fillStyle=o.color;
+
+   ctx.beginPath();
+   ctx.roundRect(-30,-50,60,100,12);
+   ctx.fill();
+
+   ctx.shadowBlur=0;
+
+   ctx.fillStyle="#17303b";
+   ctx.fillRect(-18,-27,36,22);
+
+   ctx.restore();
   }
+ }
 }
 
 
-/* =====================================================
-   PLAYER
-===================================================== */
+/* =========================
+   CHARAKTER ZEICHNEN
+========================= */
 
 function drawPlayer(){
 
-  const character=
-    characters[selectedCharacter()];
+ const c=characters[selectedChar()];
 
-  const x=laneX(lane);
-  const y=H*.76;
+ const x=laneX(lane);
+ const y=H*.76;
 
-  ctx.save();
+ ctx.save();
 
-  ctx.translate(x,y);
+ ctx.translate(x,y);
 
-  ctx.shadowColor=
-    character.color;
+ ctx.shadowColor=c.color;
+ ctx.shadowBlur=30;
 
-  ctx.shadowBlur=
-    28;
+ ctx.fillStyle=c.color;
 
-  ctx.fillStyle=
-    character.color;
+ ctx.beginPath();
+ ctx.roundRect(-28,-28,56,56,12);
+ ctx.fill();
 
-  ctx.beginPath();
+ ctx.shadowBlur=0;
 
-  ctx.roundRect(
-    -27,
-    -27,
-    54,
-    54,
-    12
-  );
+ /*
+   Je besser der Charakter,
+   desto mehr Glitzer.
+ */
 
-  ctx.fill();
+ const glitter=
+  Math.min(20,Math.floor(c.mult*3));
+
+ for(let i=0;i<glitter;i++){
+
+  const a=
+   performance.now()/500+i;
+
+  const gx=
+   Math.cos(a)*(30+(i%4)*4);
+
+  const gy=
+   Math.sin(a)*(30+(i%4)*4);
+
+  ctx.fillStyle="#ffffffcc";
+
+  ctx.fillRect(gx,gy,3,3);
+ }
+
+ ctx.fillStyle="#021017";
+ ctx.fillRect(-13,-8,26,8);
+
+ ctx.restore();
+}
+
+
+/* =========================
+   WISCHEN
+========================= */
+
+let touchX=0;
+let touchY=0;
+
+canvas.addEventListener(
+ "touchstart",
+ e=>{
+  const t=e.changedTouches[0];
+  touchX=t.clientX;
+  touchY=t.clientY;
+ },
+ {passive:true}
+);
+
+canvas.addEventListener(
+ "touchend",
+ e=>{
+
+  if(!running||paused)return;
+
+  const t=e.changedTouches[0];
+
+  const dx=t.clientX-touchX;
+  const dy=t.clientY-touchY;
 
   /*
-    Mehr Glitzer für teurere Charaktere
+    Nur horizontales Wischen.
+    Kein Springen.
   */
 
-  const glitter=
-    Math.min(
-      20,
-      Math.floor(character.mult*3)
-    );
+  if(Math.abs(dx)>45 &&
+     Math.abs(dx)>Math.abs(dy)){
 
-  ctx.shadowBlur=0;
-
-  for(let i=0;i<glitter;i++){
-
-    const a=
-      (performance.now()/400+i);
-
-    const gx=
-      Math.cos(a)*(25+i%5*3);
-
-    const gy=
-      Math.sin(a)*(25+i%4*3);
-
-    ctx.fillStyle="#ffffffcc";
-
-    ctx.fillRect(
-      gx,
-      gy,
-      3,
-      3
-    );
+   if(dx<0){
+    lane=Math.max(-1,lane-1);
+   }else{
+    lane=Math.min(1,lane+1);
+   }
   }
-
-  ctx.fillStyle="#021017";
-
-  ctx.fillRect(
-    -13,
-    -9,
-    26,
-    9
-  );
-
-  ctx.restore();
-}
-
-
-/* =====================================================
-   MOVEMENT
-===================================================== */
-
-function moveLeft(){
-
-  if(!running||paused)return;
-
-  lane=Math.max(-1,lane-1);
-}
-
-function moveRight(){
-
-  if(!running||paused)return;
-
-  lane=Math.min(1,lane+1);
-}
-
-$("leftBtn").onclick=moveLeft;
-$("rightBtn").onclick=moveRight;
-
-
-document.addEventListener(
-  "keydown",
-  e=>{
-
-    if(e.key==="ArrowLeft")
-      moveLeft();
-
-    if(e.key==="ArrowRight")
-      moveRight();
-  }
+ },
+ {passive:true}
 );
 
 
-/* =====================================================
-   SWIPE
-===================================================== */
+/* =========================
+   POWER-UP UI
+========================= */
 
-let startX=0;
+function updatePowerUI(){
 
-canvas.addEventListener(
-  "touchstart",
-  e=>{
-    startX=
-      e.changedTouches[0].clientX;
-  },
-  {passive:true}
-);
+ const p=$("power");
 
-canvas.addEventListener(
-  "touchend",
-  e=>{
+ const parts=[];
 
-    const endX=
-      e.changedTouches[0].clientX;
+ if(doubleTime>0)
+  parts.push("✖️2 "+Math.ceil(doubleTime)+"s");
 
-    const dx=endX-startX;
+ if(magnetTime>0)
+  parts.push("🧲 "+Math.ceil(magnetTime)+"s");
 
-    if(dx>35)
-      moveRight();
+ if(parts.length){
 
-    if(dx<-35)
-      moveLeft();
-  },
-  {passive:true}
-);
+  p.textContent=parts.join("   ");
+  p.style.display="block";
+
+ }else{
+
+  p.style.display="none";
+ }
+}
 
 
-/* =====================================================
+/* =========================
+   MÜNZEN EINSAMMELN
+========================= */
+
+function collectCoin(){
+
+ const c=characters[selectedChar()];
+ const w=worlds[selectedWorld()];
+
+ let amount=
+  1*c.mult*w.mult;
+
+ if(doubleTime>0)
+  amount*=2;
+
+ earned+=amount;
+}
+
+
+/* =========================
    UPDATE
-===================================================== */
+========================= */
 
 function update(dt){
 
-  if(!running||paused)return;
+ if(!running||paused)return;
 
-  const seconds=dt/1000;
+ const s=dt/1000;
 
-  score+=seconds*10;
+ score+=s*10;
 
-  speed=
-    Math.min(
-      700,
-      speed+seconds*3
-    );
+ speed=
+  Math.min(
+   700,
+   speed+s*3+
+   selectedWorld()*0.7
+  );
 
 
-  coinTimer-=seconds;
+ coinTimer-=s;
 
-  if(coinTimer<=0){
+ if(coinTimer<=0){
 
-    spawnCoins();
+  spawnCoinGroup();
 
-    coinTimer=
-      4+Math.random()*1.5;
+  coinTimer=
+   3.8+
+   Math.random()*1.5;
+ }
+
+
+ /*
+   Hindernisse werden mit jeder Welt
+   häufiger.
+ */
+
+ obstacleTimer-=s;
+
+ if(obstacleTimer<=0){
+
+  spawnCar();
+
+  const difficulty=
+   selectedWorld();
+
+  obstacleTimer=
+   Math.max(
+    .65,
+    1.35-difficulty*.055
+   );
+ }
+
+
+ /*
+   Power-ups
+ */
+
+ if(Math.random()<0.0015){
+  spawnPower("double");
+ }
+
+ if(Math.random()<0.0012){
+  spawnPower("magnet");
+ }
+
+
+ if(doubleTime>0)
+  doubleTime=Math.max(0,doubleTime-s);
+
+ if(magnetTime>0)
+  magnetTime=Math.max(0,magnetTime-s);
+
+ updatePowerUI();
+
+
+ const playerY=H*.76;
+
+ for(let i=objects.length-1;i>=0;i--){
+
+  const o=objects[i];
+
+  o.y+=speed*s;
+
+
+  if(o.y>H+150){
+
+   objects.splice(i,1);
+   continue;
   }
 
 
-  carTimer-=seconds;
+  /*
+    Magnet:
+    Münzen auf allen Spuren
+    werden angezogen.
+  */
 
-  if(carTimer<=0){
-
-    spawnCar();
-
-    carTimer=
-      1.15+Math.random()*.7;
-  }
-
-
-  for(
-    let i=objects.length-1;
-    i>=0;
-    i--
+  if(
+   o.type==="coin" &&
+   magnetTime>0 &&
+   Math.abs(o.y-playerY)<130
   ){
 
-    const object=objects[i];
-
-    object.y+=speed*seconds;
-
-    if(object.y>H+120){
-
-      objects.splice(i,1);
-      continue;
-    }
-
-    const playerY=H*.76;
-
-
-    /* COIN */
-
-    if(
-      object.type==="coin" &&
-      object.lane===lane &&
-      Math.abs(object.y-playerY)<55
-    ){
-
-      const character=
-        characters[selectedCharacter()];
-
-      const multiplier=
-        character.mult;
-
-      roundCoins+=multiplier;
-
-      objects.splice(i,1);
-
-      continue;
-    }
-
-
-    /* CAR */
-
-    if(
-      object.type==="car" &&
-      object.lane===lane &&
-      Math.abs(object.y-playerY)<65
-    ){
-
-      endGame();
-
-      return;
-    }
+   o.lane=lane;
   }
 
 
-  $("hudCoins").textContent=
-    Math.floor(
-      currentPlayer.coins+
-      roundCoins
-    ).toLocaleString();
+  if(
+   o.type==="coin" &&
+   o.lane===lane &&
+   Math.abs(o.y-playerY)<55
+  ){
 
-  $("hudScore").textContent=
-    Math.floor(score).toLocaleString();
+   collectCoin();
+
+   objects.splice(i,1);
+
+   continue;
+  }
+
+
+  if(
+   o.type==="double" &&
+   o.lane===lane &&
+   Math.abs(o.y-playerY)<65
+  ){
+
+   doubleTime=30;
+
+   objects.splice(i,1);
+
+   continue;
+  }
+
+
+  if(
+   o.type==="magnet" &&
+   o.lane===lane &&
+   Math.abs(o.y-playerY)<65
+  ){
+
+   magnetTime=30;
+
+   objects.splice(i,1);
+
+   continue;
+  }
+
+
+  /*
+    Auto-Kollision.
+  */
+
+  if(
+   o.type==="car" &&
+   o.lane===lane &&
+   Math.abs(o.y-playerY)<65
+  ){
+
+   endGame();
+   return;
+  }
+ }
+
+
+ $("hudCoins").textContent=
+  Math.floor(
+   player.coins+earned
+  ).toLocaleString();
+
+ $("hudScore").textContent=
+  Math.floor(score).toLocaleString();
 }
 
 
-/* =====================================================
+/* =========================
    GAME LOOP
-===================================================== */
+========================= */
 
-function gameLoop(time){
+function loop(t){
 
-  const dt=
-    Math.min(
-      40,
-      time-lastTime
-    );
+ const dt=Math.min(40,t-last);
 
-  lastTime=time;
+ last=t;
 
-  if(canvas.style.display!=="none"){
+ if(canvas.style.display!=="none"){
 
-    drawBackground();
-    drawObjects();
-    drawPlayer();
-    update(dt);
-  }
+  drawBackground();
+  drawObjects();
+  drawPlayer();
+  update(dt);
+ }
 
-  requestAnimationFrame(gameLoop);
+ requestAnimationFrame(loop);
 }
 
-requestAnimationFrame(gameLoop);
+requestAnimationFrame(loop);
 
 
-/* =====================================================
+/* =========================
    PAUSE
-===================================================== */
+========================= */
 
 $("pause").onclick=()=>{
 
-  paused=!paused;
+ paused=!paused;
 
-  $("pause").textContent=
-    paused ? "▶" : "⏸";
+ $("pause").textContent=
+  paused?"▶":"⏸";
 };
 
 
-/* =====================================================
+/* =========================
    GAME OVER
-===================================================== */
+========================= */
 
 async function endGame(){
 
-  if(!running)return;
+ if(!running)return;
 
-  running=false;
+ running=false;
 
-  const final=
-    Math.floor(score);
+ const final=Math.floor(score);
 
-  currentPlayer.coins+=
-    Math.floor(roundCoins);
+ player.coins+=Math.floor(earned);
 
-  if(final>currentPlayer.highscore){
+ if(final>player.highscore)
+  player.highscore=final;
 
-    currentPlayer.highscore=final;
-  }
+ await savePlayer();
 
-  await savePlayer();
+ $("finalScore").textContent=
+  final.toLocaleString();
 
-  $("finalScore").textContent=
-    final.toLocaleString();
+ $("finalCoins").textContent=
+  Math.floor(earned).toLocaleString();
 
-  $("finalCoins").textContent=
-    Math.floor(roundCoins)
-      .toLocaleString();
+ canvas.style.display="none";
+ $("hud").style.display="none";
+ $("pause").style.display="none";
+ $("power").style.display="none";
 
-  canvas.style.display="none";
-  $("hud").style.display="none";
-  $("controls").style.display="none";
-  $("pause").style.display="none";
-
-  showScreen("gameOverScreen");
+ menu();
 }
 
 
-/* =====================================================
-   GAME OVER BUTTONS
-===================================================== */
+/* =========================
+   GAME OVER / MENÜ
+========================= */
 
-$("againBtn").onclick=startGame;
+$("again").onclick=startGame;
+$("gameMenu").onclick=menu;
 
-$("gameMenuBtn").onclick=openMenu;
 
-
-/* =====================================================
+/* =========================
    START
-===================================================== */
+========================= */
 
-showScreen("loginScreen");
-
+screen("login");
 </script>
 
 </body>
