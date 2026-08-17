@@ -2,7 +2,8 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
 <title>CUBE RUSH</title>
 
 <style>
@@ -29,11 +30,10 @@ button,input{
 }
 
 button{
-  -webkit-appearance:none;
   appearance:none;
+  -webkit-appearance:none;
   touch-action:manipulation;
   user-select:none;
-  -webkit-user-select:none;
 }
 
 .screen{
@@ -45,7 +45,12 @@ button{
   justify-content:center;
   padding:20px;
   background:
-    radial-gradient(circle at 50% 15%,#074b60 0%,#03151f 42%,#010408 100%);
+    radial-gradient(
+      circle at 50% 15%,
+      #074b60 0%,
+      #03151f 42%,
+      #010408 100%
+    );
 }
 
 .card{
@@ -78,23 +83,61 @@ button{
   margin-bottom:20px;
 }
 
-input{
-  display:block;
+/* ================= EINGABEFELDER ================= */
+
+.field{
+  position:relative;
   width:100%;
-  height:58px;
-  margin:10px 0;
-  padding:0 17px;
-  border-radius:16px;
-  border:1px solid #00eaff55;
-  outline:none;
-  background:#f5ffb9;
-  color:#050505;
-  font-size:17px;
+  margin:12px 0;
 }
 
-input:focus{
+.field input{
+  display:block;
+  width:100%;
+  height:60px;
+  margin:0;
+  padding:0 18px;
+  border-radius:16px;
+  border:2px solid rgba(0,234,255,.35);
+  outline:none;
+  background:#ffffff;
+  color:#000000;
+  font-size:18px;
+  font-weight:600;
+  -webkit-text-fill-color:#000000;
+  opacity:1;
+}
+
+.field input::placeholder{
+  color:#52616a;
+  opacity:1;
+}
+
+.field input:focus{
   border-color:#00eaff;
-  box-shadow:0 0 15px #00eaff55;
+  box-shadow:
+    0 0 15px rgba(0,234,255,.35);
+  background:#ffffff;
+  color:#000000;
+  -webkit-text-fill-color:#000000;
+}
+
+.passwordField input{
+  padding-right:65px;
+}
+
+.showPassword{
+  position:absolute;
+  right:8px;
+  top:8px;
+  width:48px;
+  height:44px;
+  border:0;
+  border-radius:12px;
+  background:#e7f8fb;
+  color:#00313c;
+  font-size:20px;
+  cursor:pointer;
 }
 
 .btn{
@@ -112,10 +155,13 @@ input:focus{
   transform:scale(.98);
 }
 
+.btn:disabled{
+  opacity:.55;
+}
+
 .primary{
   background:linear-gradient(135deg,#05eaff,#078eff);
   color:#001018;
-  box-shadow:0 5px 20px rgba(0,180,255,.2);
 }
 
 .secondary{
@@ -200,7 +246,6 @@ input:focus{
   display:none;
   width:72px;
   height:42px;
-  min-height:42px;
   border-radius:12px;
   background:#071b25;
   color:white;
@@ -228,13 +273,11 @@ input:focus{
 .control{
   width:64px;
   height:60px;
-  min-height:60px;
   border-radius:16px;
   background:rgba(5,24,34,.94);
   color:white;
   border:1px solid #00eaff55;
   font-size:25px;
-  pointer-events:auto;
 }
 
 .jump{
@@ -243,7 +286,6 @@ input:focus{
   color:#001018;
   font-weight:900;
   font-size:14px;
-  pointer-events:auto;
 }
 
 .ranking{
@@ -258,340 +300,30 @@ input:focus{
 
 <body>
 
-<!-- ==================================================
-     SUPABASE
-     ==================================================
-
-     DEIN SUPABASE-PROJEKT:
-     https://lfsifdmaftztykpckdsh.supabase.co
-
-     NUR HIER DEN ANON/PUBLIC/PUBLISHABLE KEY EINTRAGEN.
-
-     NICHT den service_role KEY verwenden.
-================================================== -->
-
 <script>
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
 const SUPABASE_URL =
 "https://lfsifdmaftztykpckdsh.supabase.co";
 
 /*
-=========================================================
-HIER EINMAL DEINEN ANON / PUBLIC / PUBLISHABLE KEY
-EINTRAGEN:
-=========================================================
+   HIER DEINEN PUBLISHABLE KEY EINSETZEN.
+
+   Beispiel:
+   sb_publishable_xxxxxxxxx
+
+   NICHT service_role
+   NICHT sb_secret
 */
 
 const SUPABASE_KEY =
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxmc2lmZG1hZnR6dHlrcGNrZHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDczMTksImV4cCI6MjEwMjQ4MzMxOX0.dfMS0zgHO_IYU7_YmR2Si6DVkD8MWiJJUt6iSJXZfio
-</script>
-
-
-<!-- ================= LOGIN ================= -->
-
-<section id="loginScreen" class="screen">
-
-  <div class="card">
-
-    <div class="logo">CUBE RUSH</div>
-
-    <div class="subtitle">
-      Melde dich an und speichere deinen Highscore
-      in der Rangliste.
-    </div>
-
-    <input
-      id="loginEmail"
-      type="email"
-      autocomplete="email"
-      placeholder="E-Mail"
-    >
-
-    <input
-      id="loginPassword"
-      type="password"
-      autocomplete="current-password"
-      placeholder="Passwort"
-    >
-
-    <button
-      type="button"
-      id="loginBtn"
-      class="btn primary"
-    >
-      ANMELDEN
-    </button>
-
-    <button
-      type="button"
-      id="registerOpen"
-      class="btn secondary"
-    >
-      ACCOUNT ERSTELLEN
-    </button>
-
-    <div id="loginMessage" class="message"></div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= REGISTRIERUNG ================= -->
-
-<section id="registerScreen" class="screen hidden">
-
-  <div class="card">
-
-    <div class="logo">ACCOUNT</div>
-
-    <div class="subtitle">
-      Erstelle deinen Cube-Rush-Account.
-    </div>
-
-    <input
-      id="registerUsername"
-      type="text"
-      maxlength="20"
-      autocomplete="username"
-      placeholder="Benutzername"
-    >
-
-    <input
-      id="registerEmail"
-      type="email"
-      autocomplete="email"
-      placeholder="E-Mail"
-    >
-
-    <input
-      id="registerPassword"
-      type="password"
-      autocomplete="new-password"
-      placeholder="Passwort"
-    >
-
-    <button
-      type="button"
-      id="registerBtn"
-      class="btn primary"
-    >
-      ACCOUNT ERSTELLEN
-    </button>
-
-    <button
-      type="button"
-      id="backLogin"
-      class="btn secondary"
-    >
-      ZURÜCK
-    </button>
-
-    <div id="registerMessage" class="message"></div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= MENÜ ================= -->
-
-<section id="menuScreen" class="screen hidden">
-
-  <div class="card">
-
-    <div class="logo">CUBE RUSH</div>
-
-    <div class="subtitle">
-      Willkommen,
-      <b id="menuUsername">Spieler</b>!
-    </div>
-
-    <div class="stats">
-
-      <div class="stat">
-        <small>MÜNZEN</small>
-        <strong id="menuCoins">0</strong>
-      </div>
-
-      <div class="stat">
-        <small>HIGHSCORE</small>
-        <strong id="menuHighscore">0</strong>
-      </div>
-
-    </div>
-
-    <button
-      type="button"
-      id="startBtn"
-      class="btn primary"
-    >
-      ▶ SPIEL STARTEN
-    </button>
-
-    <button
-      type="button"
-      id="rankingBtn"
-      class="btn secondary"
-    >
-      🏆 RANGLISTE
-    </button>
-
-    <button
-      type="button"
-      id="logoutBtn"
-      class="btn secondary"
-    >
-      ABMELDEN
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- ================= RANGLISTE ================= -->
-
-<section id="rankingScreen" class="screen hidden">
-
-  <div class="card">
-
-    <div class="logo">🏆 RANGLISTE</div>
-
-    <div id="rankingList" class="ranking">
-      Lade Rangliste...
-    </div>
-
-    <button
-      type="button"
-      id="rankingBack"
-      class="btn secondary"
-    >
-      ZURÜCK
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- ================= GAME OVER ================= -->
-
-<section id="gameOverScreen" class="screen hidden">
-
-  <div class="card">
-
-    <div class="logo">CRASH!</div>
-
-    <div class="subtitle">
-      Deine Runde ist vorbei.
-    </div>
-
-    <div class="stats">
-
-      <div class="stat">
-        <small>SCORE</small>
-        <strong id="finalScore">0</strong>
-      </div>
-
-      <div class="stat">
-        <small>MÜNZEN</small>
-        <strong id="finalCoins">0</strong>
-      </div>
-
-    </div>
-
-    <button
-      type="button"
-      id="againBtn"
-      class="btn primary"
-    >
-      🔄 NOCHMAL
-    </button>
-
-    <button
-      type="button"
-      id="gameMenuBtn"
-      class="btn secondary"
-    >
-      MENÜ
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- ================= SPIEL ================= -->
-
-<canvas id="game"></canvas>
-
-<div id="hud">
-
-  <div class="hud">
-    🪙 <span id="hudCoins">0</span>
-  </div>
-
-  <div class="hud">
-    🏆 <span id="hudScore">0</span>
-  </div>
-
-  <div class="hud">
-    🌆 NEON CITY
-  </div>
-
-</div>
-
-<button type="button" id="pause">⏸</button>
-
-<div id="controls">
-
-  <div class="control-row">
-
-    <button type="button" id="leftBtn" class="control">
-      ←
-    </button>
-
-    <button type="button" id="rightBtn" class="control">
-      →
-    </button>
-
-  </div>
-
-  <button type="button" id="jumpBtn" class="control jump">
-    SPRINGEN
-  </button>
-
-</div>
-
-
-<script>
-
-/* =====================================================
-   SPIEL / APP
-===================================================== */
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxmc2lmZG1hZnR6dHlrcGNrZHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDczMTksImV4cCI6MjEwMjQ4MzMxOX0.dfMS0zgHO_IYU7_YmR2Si6DVkD8MWiJJUt6iSJXZfio";
 
 let authToken = "";
 let currentPlayer = null;
-
-const canvas =
-  document.getElementById("game");
-
-const ctx =
-  canvas.getContext("2d");
-
-let W = window.innerWidth;
-let H = window.innerHeight;
-
-canvas.width = W;
-canvas.height = H;
-
-window.addEventListener("resize",()=>{
-  W = window.innerWidth;
-  H = window.innerHeight;
-
-  canvas.width = W;
-  canvas.height = H;
-});
 
 
 /* =====================================================
@@ -625,7 +357,9 @@ function clean(text){
   return String(text)
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;");
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
 
@@ -633,21 +367,26 @@ function clean(text){
    SUPABASE REQUEST
 ===================================================== */
 
-async function supabaseRequest(url,options={}){
+async function supabaseRequest(
+  endpoint,
+  options={}
+){
 
   if(
+    !SUPABASE_KEY ||
     SUPABASE_KEY ===
-    "DEIN_ANON_PUBLIC_KEY_HIER"
+    "DEIN_SB_PUBLISHABLE_KEY_HIER"
   ){
 
     throw new Error(
-      "Der Supabase ANON/PUBLIC-Key fehlt."
+      "Supabase-Key fehlt."
     );
   }
 
   const headers = {
 
-    "apikey":SUPABASE_KEY,
+    "apikey":
+      SUPABASE_KEY,
 
     "Content-Type":
       "application/json",
@@ -660,11 +399,12 @@ async function supabaseRequest(url,options={}){
       : {}),
 
     ...(options.headers || {})
+
   };
 
   const response =
     await fetch(
-      SUPABASE_URL + url,
+      SUPABASE_URL+endpoint,
       {
         ...options,
         headers
@@ -674,25 +414,36 @@ async function supabaseRequest(url,options={}){
   const text =
     await response.text();
 
-  let data = null;
+  let data=null;
 
   try{
+
     data =
       text
         ? JSON.parse(text)
         : null;
+
   }
   catch{
-    data = null;
+
+    data=null;
+
   }
 
   if(!response.ok){
+
+    console.error(
+      "Supabase:",
+      response.status,
+      text
+    );
 
     throw new Error(
       data?.msg ||
       data?.message ||
       data?.error_description ||
-      "Supabase-Fehler"
+      data?.error ||
+      `Supabase Fehler ${response.status}`
     );
   }
 
@@ -701,41 +452,141 @@ async function supabaseRequest(url,options={}){
 
 
 /* =====================================================
-   LOGIN
+   FEHLER
 ===================================================== */
 
-document
-  .getElementById("loginBtn")
-  .addEventListener("click",login);
+function friendlyError(error){
+
+  const text =
+    String(error.message || error);
+
+  const lower =
+    text.toLowerCase();
+
+  if(
+    lower.includes(
+      "invalid api key"
+    )
+  ){
+
+    return "❌ Der Supabase-API-Key ist ungültig.";
+
+  }
+
+  if(
+    lower.includes(
+      "invalid login credentials"
+    )
+  ){
+
+    return "❌ E-Mail oder Passwort ist falsch.";
+
+  }
+
+  if(
+    lower.includes(
+      "email not confirmed"
+    )
+  ){
+
+    return "❌ Bitte bestätige zuerst deine E-Mail.";
+
+  }
+
+  if(
+    lower.includes(
+      "user already registered"
+    )
+  ){
+
+    return "❌ Diese E-Mail ist bereits registriert.";
+
+  }
+
+  return "❌ "+text;
+}
+
+
+/* =====================================================
+   PASSWORT SICHTBAR MACHEN
+===================================================== */
+
+function togglePassword(
+  inputId,
+  button
+){
+
+  const input =
+    document.getElementById(
+      inputId
+    );
+
+  if(input.type==="password"){
+
+    input.type="text";
+
+    button.textContent="🙈";
+
+  }
+  else{
+
+    input.type="password";
+
+    button.textContent="👁️";
+
+  }
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
 
 async function login(){
 
   const email =
     document
-      .getElementById("loginEmail")
+      .getElementById(
+        "loginEmail"
+      )
       .value
       .trim();
 
   const password =
     document
-      .getElementById("loginPassword")
+      .getElementById(
+        "loginPassword"
+      )
       .value;
 
-  if(!email || !password){
+  if(!email){
 
     setMessage(
       "loginMessage",
-      "Bitte E-Mail und Passwort eingeben."
+      "Bitte deine E-Mail eingeben."
+    );
+
+    return;
+  }
+
+  if(!password){
+
+    setMessage(
+      "loginMessage",
+      "Bitte dein Passwort eingeben."
     );
 
     return;
   }
 
   const button =
-    document.getElementById("loginBtn");
+    document.getElementById(
+      "loginBtn"
+    );
 
-  button.disabled = true;
-  button.textContent = "ANMELDUNG...";
+  button.disabled=true;
+  button.textContent=
+    "ANMELDUNG...";
 
   try{
 
@@ -746,26 +597,44 @@ async function login(){
           method:"POST",
 
           body:JSON.stringify({
+
             email:email,
+
             password:password
+
           })
         }
       );
 
+    if(
+      !data ||
+      !data.access_token ||
+      !data.user
+    ){
+
+      throw new Error(
+        "Keine gültige Anmeldung erhalten."
+      );
+
+    }
+
     authToken =
       data.access_token;
 
-    currentPlayer = {
+    currentPlayer={
 
       id:data.user.id,
 
       username:
-        data.user.user_metadata?.username ||
+        data.user
+          .user_metadata
+          ?.username ||
         email.split("@")[0],
 
       coins:0,
 
       highscore:0
+
     };
 
     await loadPlayer();
@@ -777,72 +646,61 @@ async function login(){
 
     setMessage(
       "loginMessage",
-      "❌ "+error.message
+      friendlyError(error)
     );
 
   }
   finally{
 
-    button.disabled = false;
-    button.textContent = "ANMELDEN";
+    button.disabled=false;
+
+    button.textContent=
+      "ANMELDEN";
+
   }
 }
+
+
+document
+  .getElementById(
+    "loginBtn"
+  )
+  .addEventListener(
+    "click",
+    login
+  );
 
 
 /* =====================================================
    REGISTRIERUNG
 ===================================================== */
 
-document
-  .getElementById("registerOpen")
-  .addEventListener(
-    "click",
-    ()=>{
-      setMessage("loginMessage","");
-      showScreen("registerScreen");
-    }
-  );
-
-
-document
-  .getElementById("backLogin")
-  .addEventListener(
-    "click",
-    ()=>{
-      setMessage("registerMessage","");
-      showScreen("loginScreen");
-    }
-  );
-
-
-document
-  .getElementById("registerBtn")
-  .addEventListener(
-    "click",
-    register
-  );
-
-
 async function register(){
 
   const username =
     document
-      .getElementById("registerUsername")
+      .getElementById(
+        "registerUsername"
+      )
       .value
       .trim();
 
   const email =
     document
-      .getElementById("registerEmail")
+      .getElementById(
+        "registerEmail"
+      )
       .value
       .trim();
 
   const password =
     document
-      .getElementById("registerPassword")
+      .getElementById(
+        "registerPassword"
+      )
       .value;
 
-  if(username.length < 3){
+  if(username.length<3){
 
     setMessage(
       "registerMessage",
@@ -862,7 +720,7 @@ async function register(){
     return;
   }
 
-  if(password.length < 6){
+  if(password.length<6){
 
     setMessage(
       "registerMessage",
@@ -873,10 +731,15 @@ async function register(){
   }
 
   const button =
-    document.getElementById("registerBtn");
+    document.getElementById(
+      "registerBtn"
+    );
 
-  button.disabled = true;
-  button.textContent = "ACCOUNT WIRD ERSTELLT...";
+  button.disabled=true;
+
+  button.textContent=
+    "ACCOUNT WIRD ERSTELLT...";
+
 
   try{
 
@@ -888,32 +751,37 @@ async function register(){
 
           body:JSON.stringify({
 
-            email:email,
+            email,
 
-            password:password,
+            password,
 
             data:{
-              username:username
+              username
             }
 
           })
         }
       );
 
-    if(data.access_token){
+
+    if(
+      data.access_token &&
+      data.user
+    ){
 
       authToken =
         data.access_token;
 
-      currentPlayer = {
+      currentPlayer={
 
         id:data.user.id,
 
-        username:username,
+        username,
 
         coins:0,
 
         highscore:0
+
       };
 
       await createPlayer();
@@ -935,24 +803,78 @@ async function register(){
 
     setMessage(
       "registerMessage",
-      "❌ "+error.message
+      friendlyError(error)
     );
 
   }
   finally{
 
-    button.disabled = false;
-    button.textContent =
+    button.disabled=false;
+
+    button.textContent=
       "ACCOUNT ERSTELLEN";
+
   }
+
 }
 
 
+document
+  .getElementById(
+    "registerBtn"
+  )
+  .addEventListener(
+    "click",
+    register
+  );
+
+
+document
+  .getElementById(
+    "registerOpen"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+      setMessage(
+        "loginMessage",
+        ""
+      );
+
+      showScreen(
+        "registerScreen"
+      );
+    }
+  );
+
+
+document
+  .getElementById(
+    "backLogin"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+      setMessage(
+        "registerMessage",
+        ""
+      );
+
+      showScreen(
+        "loginScreen"
+      );
+    }
+  );
+
+
 /* =====================================================
-   PLAYER ERSTELLEN
+   PLAYER
 ===================================================== */
 
 async function createPlayer(){
+
+  if(!currentPlayer)
+    return;
 
   try{
 
@@ -968,7 +890,8 @@ async function createPlayer(){
 
         body:JSON.stringify({
 
-          id:currentPlayer.id,
+          id:
+            currentPlayer.id,
 
           username:
             currentPlayer.username,
@@ -976,6 +899,7 @@ async function createPlayer(){
           coins:0,
 
           highscore:0
+
         })
       }
     );
@@ -983,19 +907,19 @@ async function createPlayer(){
   }
   catch(error){
 
-    console.log(
-      "Player-Tabelle:",
-      error.message
+    console.error(
+      "Player:",
+      error
     );
+
   }
 }
 
 
-/* =====================================================
-   PLAYER LADEN
-===================================================== */
-
 async function loadPlayer(){
+
+  if(!currentPlayer)
+    return;
 
   try{
 
@@ -1016,30 +940,38 @@ async function loadPlayer(){
         currentPlayer.username;
 
       currentPlayer.coins =
-        Number(rows[0].coins || 0);
+        Number(
+          rows[0].coins || 0
+        );
 
       currentPlayer.highscore =
         Number(
           rows[0].highscore || 0
         );
+
+    }
+    else{
+
+      await createPlayer();
+
     }
 
   }
   catch(error){
 
-    console.log(
+    console.error(
       "Player laden:",
-      error.message
+      error
     );
+
   }
 }
 
 
-/* =====================================================
-   PLAYER SPEICHERN
-===================================================== */
-
 async function savePlayer(){
+
+  if(!currentPlayer)
+    return;
 
   try{
 
@@ -1066,6 +998,7 @@ async function savePlayer(){
 
           highscore:
             currentPlayer.highscore
+
         })
       }
     );
@@ -1073,10 +1006,11 @@ async function savePlayer(){
   }
   catch(error){
 
-    console.log(
+    console.error(
       "Speichern:",
-      error.message
+      error
     );
+
   }
 }
 
@@ -1087,24 +1021,41 @@ async function savePlayer(){
 
 function openMenu(){
 
+  if(!currentPlayer){
+
+    showScreen(
+      "loginScreen"
+    );
+
+    return;
+  }
+
   document
-    .getElementById("menuUsername")
+    .getElementById(
+      "menuUsername"
+    )
     .textContent =
       currentPlayer.username;
 
   document
-    .getElementById("menuCoins")
+    .getElementById(
+      "menuCoins"
+    )
     .textContent =
       currentPlayer.coins
         .toLocaleString();
 
   document
-    .getElementById("menuHighscore")
+    .getElementById(
+      "menuHighscore"
+    )
     .textContent =
       currentPlayer.highscore
         .toLocaleString();
 
-  showScreen("menuScreen");
+  showScreen(
+    "menuScreen"
+  );
 }
 
 
@@ -1113,22 +1064,30 @@ function openMenu(){
 ===================================================== */
 
 document
-  .getElementById("logoutBtn")
+  .getElementById(
+    "logoutBtn"
+  )
   .addEventListener(
     "click",
     ()=>{
-      authToken = "";
-      currentPlayer = null;
+      authToken="";
+      currentPlayer=null;
 
       document
-        .getElementById("loginEmail")
-        .value = "";
+        .getElementById(
+          "loginEmail"
+        )
+        .value="";
 
       document
-        .getElementById("loginPassword")
-        .value = "";
+        .getElementById(
+          "loginPassword"
+        )
+        .value="";
 
-      showScreen("loginScreen");
+      showScreen(
+        "loginScreen"
+      );
     }
   );
 
@@ -1137,33 +1096,20 @@ document
    RANGLISTE
 ===================================================== */
 
-document
-  .getElementById("rankingBtn")
-  .addEventListener(
-    "click",
-    loadRanking
-  );
-
-
-document
-  .getElementById("rankingBack")
-  .addEventListener(
-    "click",
-    openMenu
-  );
-
-
 async function loadRanking(){
 
-  showScreen("rankingScreen");
+  showScreen(
+    "rankingScreen"
+  );
 
   const list =
     document.getElementById(
       "rankingList"
     );
 
-  list.textContent =
+  list.textContent=
     "Lade Rangliste...";
+
 
   try{
 
@@ -1177,7 +1123,7 @@ async function loadRanking(){
 
     if(!rows.length){
 
-      list.textContent =
+      list.textContent=
         "Noch keine Spieler.";
 
       return;
@@ -1202,74 +1148,126 @@ async function loadRanking(){
   }
   catch(error){
 
-    list.textContent =
-      "❌ "+error.message;
+    list.textContent=
+      friendlyError(error);
+
   }
 }
 
 
+document
+  .getElementById(
+    "rankingBtn"
+  )
+  .addEventListener(
+    "click",
+    loadRanking
+  );
+
+
+document
+  .getElementById(
+    "rankingBack"
+  )
+  .addEventListener(
+    "click",
+    openMenu
+  );
+
+
 /* =====================================================
-   GAME
+   SPIEL
 ===================================================== */
 
-let running = false;
-let paused = false;
+const canvas =
+document.getElementById(
+  "game"
+);
 
-let lane = 0;
+const ctx =
+canvas.getContext("2d");
 
-let score = 0;
-let roundCoins = 0;
+let W=innerWidth;
+let H=innerHeight;
 
-let speed = 330;
+function resize(){
 
-let objects = [];
+  W=innerWidth;
+  H=innerHeight;
 
-let carTimer = 1;
-let coinTimer = 2;
+  canvas.width=W;
+  canvas.height=H;
+}
 
-let jumpY = 0;
-let jumpVelocity = 0;
+resize();
 
-let lastTime =
-  performance.now();
+window.addEventListener(
+  "resize",
+  resize
+);
 
 
-/* ================= ROAD ================= */
+let running=false;
+let paused=false;
+
+let lane=0;
+
+let score=0;
+let roundCoins=0;
+
+let speed=330;
+
+let objects=[];
+
+let carTimer=1;
+let coinTimer=2;
+
+let jumpY=0;
+let jumpVelocity=0;
+
+let lastTime=
+performance.now();
+
 
 function roadWidth(){
 
   return Math.min(
-    W * .86,
+    W*.86,
     650
   );
 }
 
+
 function roadLeft(){
 
-  return (
-    W - roadWidth()
-  ) / 2;
+  return(
+    W-roadWidth()
+  )/2;
 }
+
 
 function laneWidth(){
 
   return roadWidth()/3;
 }
 
+
 function laneX(n){
 
-  return (
-    roadLeft() +
-    laneWidth()*(n+1) +
+  return(
+    roadLeft()+
+    laneWidth()*(n+1)+
     laneWidth()/2
   );
 }
 
 
-/* ================= START ================= */
+/* START */
 
 document
-  .getElementById("startBtn")
+  .getElementById(
+    "startBtn"
+  )
   .addEventListener(
     "click",
     startGame
@@ -1284,52 +1282,54 @@ function startGame(){
       x.classList.add("hidden");
     });
 
-  canvas.style.display =
-    "block";
+  canvas.style.display="block";
 
   document
-    .getElementById("hud")
-    .style.display =
-      "flex";
+    .getElementById(
+      "hud"
+    )
+    .style.display="flex";
 
   document
-    .getElementById("controls")
-    .style.display =
-      "flex";
+    .getElementById(
+      "controls"
+    )
+    .style.display="flex";
 
   document
-    .getElementById("pause")
-    .style.display =
-      "block";
+    .getElementById(
+      "pause"
+    )
+    .style.display="block";
 
-  running = true;
-  paused = false;
+  running=true;
+  paused=false;
 
-  lane = 0;
+  lane=0;
 
-  score = 0;
-  roundCoins = 0;
+  score=0;
+  roundCoins=0;
 
-  speed = 330;
+  speed=330;
 
-  objects = [];
+  objects=[];
 
-  carTimer = 1;
-  coinTimer = 2;
+  carTimer=1;
+  coinTimer=2;
 
-  jumpY = 0;
-  jumpVelocity = 0;
+  jumpY=0;
+  jumpVelocity=0;
 
-  lastTime =
+  lastTime=
     performance.now();
 }
 
 
-/* ================= BACKGROUND ================= */
+/* BACKGROUND */
 
 function drawBackground(){
 
-  const gradient =
+  const gradient=
     ctx.createLinearGradient(
       0,0,0,H
     );
@@ -1344,15 +1344,12 @@ function drawBackground(){
     "#02050a"
   );
 
-  ctx.fillStyle =
-    gradient;
+  ctx.fillStyle=gradient;
 
   ctx.fillRect(
     0,0,W,H
   );
 
-
-  /* CITY */
 
   for(
     let i=0;
@@ -1360,17 +1357,16 @@ function drawBackground(){
     i++
   ){
 
-    const width =
+    const width=
       25+(i%5)*12;
 
-    const height =
-      100+
-      ((i*53)%240);
+    const height=
+      100+((i*53)%240);
 
-    const x =
+    const x=
       i*(W/23);
 
-    ctx.fillStyle =
+    ctx.fillStyle=
       "#071820";
 
     ctx.fillRect(
@@ -1380,12 +1376,11 @@ function drawBackground(){
       height
     );
 
-    ctx.fillStyle =
+    ctx.fillStyle=
       "#00eaff55";
 
     for(
-      let y=
-        H-height-105;
+      let y=H-height-105;
       y<H-140;
       y+=25
     ){
@@ -1396,19 +1391,15 @@ function drawBackground(){
         5,
         8
       );
+
     }
   }
 
 
-  /* ROAD */
+  const rw=roadWidth();
+  const rl=roadLeft();
 
-  const rw =
-    roadWidth();
-
-  const rl =
-    roadLeft();
-
-  ctx.fillStyle =
+  ctx.fillStyle=
     "#111820";
 
   ctx.fillRect(
@@ -1418,10 +1409,7 @@ function drawBackground(){
     H
   );
 
-
-  /* ROAD EDGES */
-
-  ctx.fillStyle =
+  ctx.fillStyle=
     "#00eaff";
 
   ctx.fillRect(
@@ -1439,15 +1427,12 @@ function drawBackground(){
   );
 
 
-  /* LANES */
+  const lw=laneWidth();
 
-  const lw =
-    laneWidth();
-
-  const offset =
+  const offset=
     (score*9)%90;
 
-  ctx.fillStyle =
+  ctx.fillStyle=
     "#ffffff88";
 
   for(
@@ -1469,20 +1454,17 @@ function drawBackground(){
       4,
       45
     );
+
   }
+
 }
 
 
-/* ================= CARS ================= */
+/* CARS */
 
 function spawnCar(){
 
-  /*
-    Nicht alle drei Spuren gleichzeitig blockieren.
-    Dadurch bleibt immer eine Ausweichmöglichkeit.
-  */
-
-  const possible =
+  const possible=
     [-1,0,1].filter(
       n=>
         !objects.some(
@@ -1496,7 +1478,7 @@ function spawnCar(){
   if(!possible.length)
     return;
 
-  const selected =
+  const selected=
     possible[
       Math.floor(
         Math.random()*
@@ -1527,23 +1509,17 @@ function spawnCar(){
 }
 
 
-/* ================= COINS ================= */
+/* COINS */
 
 function spawnCoins(){
 
-  /*
-    NEON CITY:
-    Genau 3 bis 6 Münzen
-    pro Gruppe.
-  */
-
-  const amount =
+  const amount=
     3+
     Math.floor(
       Math.random()*4
     );
 
-  const selectedLane =
+  const selectedLane=
     [-1,0,1][
       Math.floor(
         Math.random()*3
@@ -1562,15 +1538,15 @@ function spawnCoins(){
 
       lane:selectedLane,
 
-      y:
-        -40 -
-        i*65
+      y:-40-i*65
+
     });
+
   }
 }
 
 
-/* ================= OBJECTS ================= */
+/* OBJECTS */
 
 function drawObjects(){
 
@@ -1578,21 +1554,21 @@ function drawObjects(){
     const object of objects
   ){
 
-    const x =
+    const x=
       laneX(object.lane);
 
-
-    if(object.type==="coin"){
+    if(
+      object.type==="coin"
+    ){
 
       ctx.save();
 
-      ctx.shadowColor =
+      ctx.shadowColor=
         "#ffd600";
 
-      ctx.shadowBlur =
-        20;
+      ctx.shadowBlur=20;
 
-      ctx.fillStyle =
+      ctx.fillStyle=
         "#ffd600";
 
       ctx.beginPath();
@@ -1619,13 +1595,12 @@ function drawObjects(){
         object.y
       );
 
-      ctx.shadowColor =
+      ctx.shadowColor=
         object.color;
 
-      ctx.shadowBlur =
-        18;
+      ctx.shadowBlur=18;
 
-      ctx.fillStyle =
+      ctx.fillStyle=
         object.color;
 
       ctx.beginPath();
@@ -1642,7 +1617,7 @@ function drawObjects(){
 
       ctx.shadowBlur=0;
 
-      ctx.fillStyle =
+      ctx.fillStyle=
         "#17303b";
 
       ctx.fillRect(
@@ -1653,19 +1628,22 @@ function drawObjects(){
       );
 
       ctx.restore();
+
     }
+
   }
+
 }
 
 
-/* ================= PLAYER ================= */
+/* PLAYER */
 
 function drawPlayer(){
 
-  const x =
+  const x=
     laneX(lane);
 
-  const y =
+  const y=
     H*.76-jumpY;
 
   ctx.save();
@@ -1675,13 +1653,12 @@ function drawPlayer(){
     y
   );
 
-  ctx.shadowColor =
+  ctx.shadowColor=
     "#00eaff";
 
-  ctx.shadowBlur =
-    25;
+  ctx.shadowBlur=25;
 
-  ctx.fillStyle =
+  ctx.fillStyle=
     "#00eaff";
 
   ctx.beginPath();
@@ -1698,7 +1675,7 @@ function drawPlayer(){
 
   ctx.shadowBlur=0;
 
-  ctx.fillStyle =
+  ctx.fillStyle=
     "#021017";
 
   ctx.fillRect(
@@ -1709,71 +1686,77 @@ function drawPlayer(){
   );
 
   ctx.restore();
+
 }
 
 
-/* ================= MOVEMENT ================= */
+/* MOVEMENT */
 
 function moveLeft(){
 
   if(!running || paused)
     return;
 
-  lane =
+  lane=
     Math.max(
       -1,
       lane-1
     );
 }
 
+
 function moveRight(){
 
   if(!running || paused)
     return;
 
-  lane =
+  lane=
     Math.min(
       1,
       lane+1
     );
 }
 
+
 function jump(){
 
   if(!running || paused)
     return;
 
-  if(jumpY<=0){
-
-    jumpVelocity =
-      850;
-  }
+  if(jumpY<=0)
+    jumpVelocity=850;
 }
 
 
 document
-  .getElementById("leftBtn")
+  .getElementById(
+    "leftBtn"
+  )
   .addEventListener(
     "click",
     moveLeft
   );
 
 document
-  .getElementById("rightBtn")
+  .getElementById(
+    "rightBtn"
+  )
   .addEventListener(
     "click",
     moveRight
   );
 
 document
-  .getElementById("jumpBtn")
+  .getElementById(
+    "jumpBtn"
+  )
   .addEventListener(
     "click",
     jump
   );
 
 
-/* ================= KEYBOARD ================= */
+/* KEYBOARD */
 
 document.addEventListener(
   "keydown",
@@ -1790,11 +1773,12 @@ document.addEventListener(
       event.key===" "
     )
       jump();
+
   }
 );
 
 
-/* ================= TOUCH ================= */
+/* TOUCH */
 
 let startX=0;
 let startY=0;
@@ -1803,14 +1787,15 @@ canvas.addEventListener(
   "touchstart",
   event=>{
 
-    const touch =
+    const touch=
       event.changedTouches[0];
 
-    startX =
+    startX=
       touch.clientX;
 
-    startY =
+    startY=
       touch.clientY;
+
   },
   {passive:true}
 );
@@ -1820,13 +1805,13 @@ canvas.addEventListener(
   "touchend",
   event=>{
 
-    const touch =
+    const touch=
       event.changedTouches[0];
 
-    const dx =
+    const dx=
       touch.clientX-startX;
 
-    const dy =
+    const dy=
       touch.clientY-startY;
 
     if(
@@ -1844,78 +1829,73 @@ canvas.addEventListener(
     else if(dy<-35){
 
       jump();
+
     }
+
   },
   {passive:true}
 );
 
 
-/* ================= UPDATE ================= */
+/* UPDATE */
 
 function update(dt){
 
   if(!running || paused)
     return;
 
-  const seconds =
+  const seconds=
     dt/1000;
 
-  score +=
+  score+=
     seconds*10;
 
-  speed =
+  speed=
     Math.min(
       700,
       speed+seconds*3
     );
 
 
-  /* JUMP */
-
-  jumpVelocity -=
+  jumpVelocity-=
     1900*seconds;
 
-  jumpY +=
+  jumpY+=
     jumpVelocity*seconds;
 
   if(jumpY<0){
 
     jumpY=0;
     jumpVelocity=0;
+
   }
 
 
-  /* COINS */
-
-  coinTimer -=
-    seconds;
+  coinTimer-=seconds;
 
   if(coinTimer<=0){
 
     spawnCoins();
 
-    coinTimer =
+    coinTimer=
       4+
       Math.random()*1.5;
+
   }
 
 
-  /* CARS */
-
-  carTimer -=
-    seconds;
+  carTimer-=seconds;
 
   if(carTimer<=0){
 
     spawnCar();
 
-    carTimer =
+    carTimer=
       1.25+
       Math.random()*.75;
+
   }
 
-
-  /* OBJECTS */
 
   for(
     let i=objects.length-1;
@@ -1923,32 +1903,23 @@ function update(dt){
     i--
   ){
 
-    const object =
+    const object=
       objects[i];
 
-    object.y +=
+    object.y+=
       speed*seconds;
 
+    if(object.y>H+120){
 
-    if(
-      object.y >
-      H+120
-    ){
-
-      objects.splice(
-        i,
-        1
-      );
+      objects.splice(i,1);
 
       continue;
     }
 
 
-    const playerY =
+    const playerY=
       H*.76-jumpY;
 
-
-    /* COIN */
 
     if(
       object.type==="coin" &&
@@ -1960,16 +1931,11 @@ function update(dt){
 
       roundCoins++;
 
-      objects.splice(
-        i,
-        1
-      );
+      objects.splice(i,1);
 
       continue;
     }
 
-
-    /* CAR */
 
     if(
       object.type==="car" &&
@@ -1985,31 +1951,38 @@ function update(dt){
 
         return;
       }
+
     }
+
   }
 
 
   document
-    .getElementById("hudCoins")
-    .textContent =
+    .getElementById(
+      "hudCoins"
+    )
+    .textContent=
       (
         currentPlayer.coins+
         roundCoins
       ).toLocaleString();
 
   document
-    .getElementById("hudScore")
-    .textContent =
+    .getElementById(
+      "hudScore"
+    )
+    .textContent=
       Math.floor(score)
         .toLocaleString();
+
 }
 
 
-/* ================= GAME LOOP ================= */
+/* GAME LOOP */
 
 function gameLoop(time){
 
-  const dt =
+  const dt=
     Math.min(
       40,
       time-lastTime
@@ -2026,11 +1999,13 @@ function gameLoop(time){
     drawPlayer();
 
     update(dt);
+
   }
 
   requestAnimationFrame(
     gameLoop
   );
+
 }
 
 requestAnimationFrame(
@@ -2038,10 +2013,12 @@ requestAnimationFrame(
 );
 
 
-/* ================= PAUSE ================= */
+/* PAUSE */
 
 document
-  .getElementById("pause")
+  .getElementById(
+    "pause"
+  )
   .addEventListener(
     "click",
     ()=>{
@@ -2049,25 +2026,28 @@ document
       paused=!paused;
 
       document
-        .getElementById("pause")
-        .textContent =
+        .getElementById(
+          "pause"
+        )
+        .textContent=
           paused
-            ? "▶"
-            : "⏸";
+          ?"▶"
+          :"⏸";
+
     }
   );
 
 
-/* ================= GAME OVER ================= */
+/* GAME OVER */
 
 async function endGame(){
 
   running=false;
 
-  const final =
+  const final=
     Math.floor(score);
 
-  currentPlayer.coins +=
+  currentPlayer.coins+=
     roundCoins;
 
   if(
@@ -2075,50 +2055,61 @@ async function endGame(){
     currentPlayer.highscore
   ){
 
-    currentPlayer.highscore =
+    currentPlayer.highscore=
       final;
+
   }
 
   await savePlayer();
 
+
   document
-    .getElementById("finalScore")
-    .textContent =
+    .getElementById(
+      "finalScore"
+    )
+    .textContent=
       final.toLocaleString();
 
   document
-    .getElementById("finalCoins")
-    .textContent =
+    .getElementById(
+      "finalCoins"
+    )
+    .textContent=
       roundCoins.toLocaleString();
 
-  canvas.style.display =
-    "none";
+
+  canvas.style.display="none";
 
   document
-    .getElementById("hud")
-    .style.display =
-      "none";
+    .getElementById(
+      "hud"
+    )
+    .style.display="none";
 
   document
-    .getElementById("controls")
-    .style.display =
-      "none";
+    .getElementById(
+      "controls"
+    )
+    .style.display="none";
 
   document
-    .getElementById("pause")
-    .style.display =
-      "none";
+    .getElementById(
+      "pause"
+    )
+    .style.display="none";
+
 
   showScreen(
     "gameOverScreen"
   );
+
 }
 
 
-/* ================= GAME OVER BUTTONS ================= */
-
 document
-  .getElementById("againBtn")
+  .getElementById(
+    "againBtn"
+  )
   .addEventListener(
     "click",
     startGame
@@ -2126,20 +2117,412 @@ document
 
 
 document
-  .getElementById("gameMenuBtn")
+  .getElementById(
+    "gameMenuBtn"
+  )
   .addEventListener(
     "click",
     openMenu
   );
 
 
-/* ================= START ================= */
+/* =====================================================
+   PASSWORT BUTTONS
+===================================================== */
+
+document
+  .getElementById(
+    "loginShowPassword"
+  )
+  .addEventListener(
+    "click",
+    function(){
+
+      togglePassword(
+        "loginPassword",
+        this
+      );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "registerShowPassword"
+  )
+  .addEventListener(
+    "click",
+    function(){
+
+      togglePassword(
+        "registerPassword",
+        this
+      );
+
+    }
+  );
+
+
+/* START */
 
 showScreen(
   "loginScreen"
 );
 
 </script>
+
+
+<!-- =====================================================
+     LOGIN HTML
+===================================================== -->
+
+<script>
+
+const loginScreen =
+document.getElementById(
+  "loginScreen"
+);
+
+loginScreen.innerHTML = `
+
+<div class="card">
+
+  <div class="logo">
+    CUBE RUSH
+  </div>
+
+  <div class="subtitle">
+    Melde dich an und speichere deinen
+    Highscore in der Rangliste.
+  </div>
+
+  <div class="field">
+
+    <input
+      id="loginEmail"
+      type="email"
+      autocomplete="email"
+      inputmode="email"
+      placeholder="E-Mail"
+      spellcheck="false"
+    >
+
+  </div>
+
+  <div class="field passwordField">
+
+    <input
+      id="loginPassword"
+      type="password"
+      autocomplete="current-password"
+      placeholder="Passwort"
+    >
+
+    <button
+      type="button"
+      id="loginShowPassword"
+      class="showPassword">
+      👁️
+    </button>
+
+  </div>
+
+  <button
+    type="button"
+    id="loginBtn"
+    class="btn primary">
+    ANMELDEN
+  </button>
+
+  <button
+    type="button"
+    id="registerOpen"
+    class="btn secondary">
+    ACCOUNT ERSTELLEN
+  </button>
+
+  <div
+    id="loginMessage"
+    class="message">
+  </div>
+
+</div>
+
+`;
+
+
+/* =====================================================
+   REGISTRIERUNG HTML
+===================================================== */
+
+const registerScreen =
+document.getElementById(
+  "registerScreen"
+);
+
+registerScreen.innerHTML = `
+
+<div class="card">
+
+  <div class="logo">
+    ACCOUNT
+  </div>
+
+  <div class="subtitle">
+    Erstelle deinen Cube-Rush-Account.
+  </div>
+
+  <div class="field">
+
+    <input
+      id="registerUsername"
+      type="text"
+      maxlength="20"
+      autocomplete="username"
+      placeholder="Benutzername"
+      spellcheck="false"
+    >
+
+  </div>
+
+  <div class="field">
+
+    <input
+      id="registerEmail"
+      type="email"
+      autocomplete="email"
+      inputmode="email"
+      placeholder="E-Mail"
+      spellcheck="false"
+    >
+
+  </div>
+
+  <div class="field passwordField">
+
+    <input
+      id="registerPassword"
+      type="password"
+      autocomplete="new-password"
+      placeholder="Passwort"
+    >
+
+    <button
+      type="button"
+      id="registerShowPassword"
+      class="showPassword">
+      👁️
+    </button>
+
+  </div>
+
+  <button
+    type="button"
+    id="registerBtn"
+    class="btn primary">
+    ACCOUNT ERSTELLEN
+  </button>
+
+  <button
+    type="button"
+    id="backLogin"
+    class="btn secondary">
+    ZURÜCK
+  </button>
+
+  <div
+    id="registerMessage"
+    class="message">
+  </div>
+
+</div>
+
+`;
+
+</script>
+
+
+<!-- MENÜ -->
+
+<section id="menuScreen" class="screen hidden">
+
+<div class="card">
+
+<div class="logo">CUBE RUSH</div>
+
+<div class="subtitle">
+Willkommen,
+<b id="menuUsername">Spieler</b>!
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<small>MÜNZEN</small>
+<strong id="menuCoins">0</strong>
+</div>
+
+<div class="stat">
+<small>HIGHSCORE</small>
+<strong id="menuHighscore">0</strong>
+</div>
+
+</div>
+
+<button
+id="startBtn"
+type="button"
+class="btn primary">
+▶ SPIEL STARTEN
+</button>
+
+<button
+id="rankingBtn"
+type="button"
+class="btn secondary">
+🏆 RANGLISTE
+</button>
+
+<button
+id="logoutBtn"
+type="button"
+class="btn secondary">
+ABMELDEN
+</button>
+
+</div>
+
+</section>
+
+
+<!-- RANGLISTE -->
+
+<section id="rankingScreen" class="screen hidden">
+
+<div class="card">
+
+<div class="logo">
+🏆 RANGLISTE
+</div>
+
+<div
+id="rankingList"
+class="ranking">
+Lade Rangliste...
+</div>
+
+<button
+id="rankingBack"
+type="button"
+class="btn secondary">
+ZURÜCK
+</button>
+
+</div>
+
+</section>
+
+
+<!-- GAME OVER -->
+
+<section id="gameOverScreen" class="screen hidden">
+
+<div class="card">
+
+<div class="logo">
+CRASH!
+</div>
+
+<div class="subtitle">
+Deine Runde ist vorbei.
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<small>SCORE</small>
+<strong id="finalScore">0</strong>
+</div>
+
+<div class="stat">
+<small>MÜNZEN</small>
+<strong id="finalCoins">0</strong>
+</div>
+
+</div>
+
+<button
+id="againBtn"
+type="button"
+class="btn primary">
+🔄 NOCHMAL
+</button>
+
+<button
+id="gameMenuBtn"
+type="button"
+class="btn secondary">
+MENÜ
+</button>
+
+</div>
+
+</section>
+
+
+<canvas id="game"></canvas>
+
+<div id="hud">
+
+<div class="hud">
+🪙 <span id="hudCoins">0</span>
+</div>
+
+<div class="hud">
+🏆 <span id="hudScore">0</span>
+</div>
+
+<div class="hud">
+🌆 NEON CITY
+</div>
+
+</div>
+
+<button
+id="pause"
+type="button">
+⏸
+</button>
+
+<div id="controls">
+
+<div class="control-row">
+
+<button
+id="leftBtn"
+type="button"
+class="control">
+←
+</button>
+
+<button
+id="rightBtn"
+type="button"
+class="control">
+→
+</button>
+
+</div>
+
+<button
+id="jumpBtn"
+type="button"
+class="control jump">
+SPRINGEN
+</button>
+
+</div>
 
 </body>
 </html>
