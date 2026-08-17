@@ -7,357 +7,381 @@
 
 <style>
 *{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
 }
 
 html,body{
-  margin:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:#02050a;
-  color:white;
-  font-family:Arial,sans-serif;
+ margin:0;
+ width:100%;
+ height:100%;
+ overflow:hidden;
+ background:#02050a;
+ color:white;
+ font-family:Arial,sans-serif;
 }
 
 button,input{
-  font-family:inherit;
+ font-family:inherit;
 }
 
 button{
-  border:0;
-  cursor:pointer;
-}
-
-.screen{
-  position:fixed;
-  inset:0;
-  z-index:20;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:16px;
-  background:
-    radial-gradient(circle at 50% 0%,#073f52,#03131c 48%,#010307);
-}
-
-.card{
-  width:min(470px,100%);
-  max-height:94vh;
-  overflow:auto;
-  padding:24px 18px;
-  border-radius:28px;
-  background:rgba(3,10,17,.97);
-  border:1px solid #00eaff55;
-  box-shadow:0 0 45px #00eaff18;
-  text-align:center;
+ border:0;
+ cursor:pointer;
 }
 
 .hidden{
-  display:none!important;
+ display:none!important;
+}
+
+.screen{
+ position:fixed;
+ inset:0;
+ z-index:20;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ padding:15px;
+ background:
+ radial-gradient(circle at 50% 0%,#06475b,#03131b 45%,#010307);
+}
+
+.card{
+ width:min(470px,100%);
+ max-height:94vh;
+ overflow:auto;
+ padding:24px 18px;
+ border-radius:28px;
+ background:#030b12f7;
+ border:1px solid #00eaff55;
+ box-shadow:0 0 50px #00eaff18;
+ text-align:center;
 }
 
 .logo{
-  font-size:38px;
-  font-weight:1000;
-  letter-spacing:-2px;
-  color:#00eaff;
-  text-shadow:0 0 12px #00eaff,0 0 30px #00eaff;
+ font-size:40px;
+ font-weight:1000;
+ color:#00eaff;
+ text-shadow:0 0 12px #00eaff,0 0 30px #00eaff;
 }
 
 .subtitle{
-  color:#a6c1ca;
-  margin:8px 0 18px;
+ color:#9bb6bf;
+ margin:8px 0 18px;
 }
 
 input{
-  width:100%;
-  height:54px;
-  margin:6px 0;
-  padding:0 15px;
-  border-radius:14px;
-  border:1px solid #00eaff55;
-  outline:none;
-  background:#f2ffbd;
-  color:#111;
-  font-size:16px;
+ width:100%;
+ height:53px;
+ margin:6px 0;
+ padding:0 15px;
+ border-radius:14px;
+ border:1px solid #00eaff55;
+ background:#efffc0;
+ color:#111;
+ font-size:16px;
+ outline:none;
 }
 
 .btn{
-  width:100%;
-  min-height:53px;
-  margin:6px 0;
-  border-radius:15px;
-  font-weight:900;
-  font-size:15px;
+ width:100%;
+ min-height:53px;
+ margin:6px 0;
+ border-radius:15px;
+ font-size:15px;
+ font-weight:900;
 }
 
 .primary{
-  background:linear-gradient(135deg,#00eaff,#168dff);
-  color:#001018;
+ background:linear-gradient(135deg,#00eaff,#138cff);
+ color:#001018;
 }
 
 .secondary{
-  background:#071b25;
-  color:white;
-  border:1px solid #00eaff44;
+ background:#071b25;
+ color:white;
+ border:1px solid #00eaff33;
 }
 
 .message{
-  min-height:22px;
-  margin-top:8px;
-  color:#8df6ff;
-  font-size:13px;
+ min-height:22px;
+ margin-top:7px;
+ color:#8df7ff;
+ font-size:13px;
 }
 
 .stats{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin:15px 0;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+ margin:15px 0;
 }
 
 .stat{
-  background:#071b25;
-  border:1px solid #00eaff22;
-  border-radius:14px;
-  padding:12px;
+ background:#071b25;
+ border:1px solid #00eaff22;
+ border-radius:14px;
+ padding:12px;
 }
 
 .stat small{
-  display:block;
-  color:#76939d;
+ display:block;
+ color:#75939d;
 }
 
 .stat strong{
-  display:block;
-  margin-top:4px;
-  font-size:20px;
+ display:block;
+ margin-top:4px;
+ font-size:20px;
 }
 
 .tabs{
-  display:flex;
-  gap:7px;
-  margin-bottom:10px;
+ display:flex;
+ gap:7px;
+ margin-bottom:10px;
 }
 
 .tabs button{
-  flex:1;
-  padding:11px 5px;
-  border-radius:12px;
-  background:#071b25;
-  color:white;
-  border:1px solid #00eaff33;
-  font-weight:900;
+ flex:1;
+ padding:11px;
+ border-radius:12px;
+ background:#071b25;
+ color:white;
+ border:1px solid #00eaff33;
+ font-weight:900;
 }
 
 .tabs .active{
-  background:#00eaff;
-  color:#001018;
+ background:#00eaff;
+ color:#001018;
 }
 
 .grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:9px;
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:9px;
 }
 
 .item{
-  padding:9px;
-  border-radius:17px;
-  background:#071820;
-  border:1px solid #00eaff22;
+ padding:9px;
+ border-radius:17px;
+ background:#071820;
+ border:1px solid #00eaff22;
 }
 
 .item.selected{
-  border-color:#00eaff;
-  box-shadow:0 0 22px #00eaff22;
+ border-color:#00eaff;
+ box-shadow:0 0 22px #00eaff22;
 }
 
 .preview{
-  height:100px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+ height:100px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
 }
 
 .character{
-  width:55px;
-  height:55px;
-  border-radius:16px;
-  position:relative;
-  box-shadow:0 0 25px currentColor;
-}
-
-.character:before,
-.character:after{
-  content:"";
-  position:absolute;
-  background:#061018;
+ width:56px;
+ height:56px;
+ border-radius:17px;
+ position:relative;
+ box-shadow:0 0 25px currentColor;
 }
 
 .character:before{
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  left:13px;
-  top:17px;
-  box-shadow:20px 0 #061018;
+ content:"";
+ position:absolute;
+ width:9px;
+ height:9px;
+ border-radius:50%;
+ left:13px;
+ top:17px;
+ background:#061018;
+ box-shadow:21px 0 #061018;
 }
 
 .character:after{
-  width:24px;
-  height:5px;
-  border-radius:10px;
-  left:15px;
-  bottom:12px;
+ content:"";
+ position:absolute;
+ width:24px;
+ height:5px;
+ border-radius:10px;
+ left:16px;
+ bottom:12px;
+ background:#061018;
+}
+
+.adminCharacter{
+ background:
+ repeating-linear-gradient(
+ 45deg,
+ #ff00ff 0,
+ #ff00ff 8px,
+ #00eaff 8px,
+ #00eaff 16px,
+ #ffd000 16px,
+ #ffd000 24px
+ )!important;
+
+ animation:adminGlow 1s infinite alternate;
+}
+
+@keyframes adminGlow{
+ from{
+  transform:scale(1);
+  box-shadow:0 0 20px #ff00ff;
+ }
+ to{
+  transform:scale(1.08);
+  box-shadow:
+   0 0 30px #ff00ff,
+   0 0 60px #00eaff;
+ }
 }
 
 .name{
-  font-weight:900;
+ font-weight:900;
 }
 
 .price{
-  color:#ffd600;
-  font-size:12px;
-  margin:3px;
+ color:#ffd000;
+ font-size:12px;
+ margin:3px;
 }
 
 .mult{
-  color:#91aab3;
-  font-size:11px;
+ color:#91aab3;
+ font-size:11px;
 }
 
 .city{
-  height:90px;
-  border-radius:12px;
-  overflow:hidden;
-  position:relative;
-  margin-bottom:7px;
+ height:90px;
+ border-radius:12px;
+ overflow:hidden;
+ position:relative;
+ margin-bottom:7px;
 }
 
 .building{
-  position:absolute;
-  bottom:0;
-  background:#06131b;
-  border-top:1px solid #00eaff77;
-}
-
-#game{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  display:none;
-  z-index:1;
-  touch-action:none;
-}
-
-#hud{
-  position:fixed;
-  top:9px;
-  left:8px;
-  right:8px;
-  z-index:5;
-  display:none;
-  justify-content:space-between;
-  gap:5px;
-  pointer-events:none;
-}
-
-.hud{
-  padding:7px 9px;
-  border-radius:11px;
-  background:#031119dd;
-  border:1px solid #00eaff55;
-  font-size:11px;
-  font-weight:900;
-}
-
-#pause{
-  position:fixed;
-  top:54px;
-  right:9px;
-  z-index:7;
-  width:58px;
-  height:38px;
-  border-radius:11px;
-  background:#071b25dd;
-  color:white;
-  border:1px solid #00eaff55;
-  display:none;
-}
-
-#power{
-  position:fixed;
-  top:98px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:6;
-  padding:7px 13px;
-  border-radius:14px;
-  background:#031119dd;
-  border:1px solid #00eaff66;
-  font-size:13px;
-  font-weight:900;
-  display:none;
-}
-
-/* PAUSE */
-
-#pauseMenu{
-  position:fixed;
-  inset:0;
-  z-index:30;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.72);
-  backdrop-filter:blur(7px);
-}
-
-.pauseCard{
-  width:min(350px,90%);
-  padding:28px 20px;
-  border-radius:26px;
-  background:#041019f5;
-  border:1px solid #00eaff66;
-  box-shadow:0 0 45px #00eaff22;
-  text-align:center;
-}
-
-.pauseTitle{
-  font-size:32px;
-  font-weight:1000;
-  color:#00eaff;
-  margin-bottom:18px;
-}
-
-.pauseBtn{
-  width:100%;
-  min-height:55px;
-  margin:6px 0;
-  border-radius:15px;
-  font-weight:900;
-  font-size:16px;
-}
-
-.resume{
-  background:#00eaff;
-  color:#001018;
-}
-
-.giveup{
-  background:#271018;
-  color:#ff6175;
-  border:1px solid #ff174455;
+ position:absolute;
+ bottom:0;
+ background:#06131b;
+ border-top:1px solid #00eaff77;
 }
 
 .rank{
-  text-align:left;
-  padding:8px;
-  border-bottom:1px solid #ffffff12;
+ text-align:left;
+ padding:9px;
+ border-bottom:1px solid #ffffff12;
+}
+
+#game{
+ position:fixed;
+ inset:0;
+ width:100%;
+ height:100%;
+ display:none;
+ z-index:1;
+ touch-action:none;
+}
+
+#hud{
+ position:fixed;
+ top:9px;
+ left:8px;
+ right:8px;
+ z-index:5;
+ display:none;
+ justify-content:space-between;
+ gap:5px;
+ pointer-events:none;
+}
+
+.hud{
+ padding:7px 9px;
+ border-radius:11px;
+ background:#031119dd;
+ border:1px solid #00eaff55;
+ font-size:11px;
+ font-weight:900;
+}
+
+#pause{
+ position:fixed;
+ top:54px;
+ right:9px;
+ z-index:7;
+ width:68px;
+ height:38px;
+ border-radius:11px;
+ background:#071b25dd;
+ color:white;
+ border:1px solid #00eaff55;
+ display:none;
+}
+
+#power{
+ position:fixed;
+ top:98px;
+ left:50%;
+ transform:translateX(-50%);
+ z-index:6;
+ padding:7px 13px;
+ border-radius:14px;
+ background:#031119dd;
+ border:1px solid #00eaff66;
+ font-size:13px;
+ font-weight:900;
+ display:none;
+}
+
+#pauseMenu{
+ position:fixed;
+ inset:0;
+ z-index:30;
+ display:none;
+ align-items:center;
+ justify-content:center;
+ background:#000b;
+ backdrop-filter:blur(7px);
+}
+
+.pauseCard{
+ width:min(350px,90%);
+ padding:28px 20px;
+ border-radius:26px;
+ background:#041019f5;
+ border:1px solid #00eaff66;
+ box-shadow:0 0 45px #00eaff22;
+ text-align:center;
+}
+
+.pauseTitle{
+ font-size:32px;
+ font-weight:1000;
+ color:#00eaff;
+ margin-bottom:18px;
+}
+
+.pauseBtn{
+ width:100%;
+ min-height:55px;
+ margin:6px 0;
+ border-radius:15px;
+ font-size:16px;
+ font-weight:900;
+}
+
+.resume{
+ background:#00eaff;
+ color:#001018;
+}
+
+.giveup{
+ background:#271018;
+ color:#ff6175;
+ border:1px solid #ff174455;
 }
 </style>
 </head>
@@ -370,10 +394,7 @@ input{
 <div class="card">
 
 <div class="logo">CUBE RUSH</div>
-
-<div class="subtitle">
-Dein Endless Runner
-</div>
+<div class="subtitle">ENDLESS RUNNER</div>
 
 <input id="email" type="email" placeholder="E-Mail">
 <input id="password" type="password" placeholder="Passwort">
@@ -399,7 +420,7 @@ ACCOUNT ERSTELLEN
 
 <div class="logo">ACCOUNT</div>
 
-<input id="username" maxlength="20" placeholder="Benutzername">
+<input id="username" placeholder="Benutzername">
 <input id="regEmail" type="email" placeholder="E-Mail">
 <input id="regPassword" type="password" placeholder="Passwort">
 
@@ -417,7 +438,7 @@ ZURÜCK
 </section>
 
 
-<!-- HAUPTMENÜ -->
+<!-- MENÜ -->
 
 <section id="menu" class="screen hidden">
 <div class="card">
@@ -425,7 +446,7 @@ ZURÜCK
 <div class="logo">CUBE RUSH</div>
 
 <div class="subtitle">
-Willkommen, <b id="playerName"></b>
+Willkommen <b id="playerName"></b>
 </div>
 
 <div class="stats">
@@ -474,8 +495,15 @@ ABMELDEN
 <div class="logo">SHOP</div>
 
 <div class="tabs">
-<button id="charTab" class="active">CHARAKTERE</button>
-<button id="cityTab">STÄDTE</button>
+
+<button id="charTab" class="active">
+CHARAKTERE
+</button>
+
+<button id="cityTab">
+STÄDTE
+</button>
+
 </div>
 
 <div id="shopGrid" class="grid"></div>
@@ -507,12 +535,12 @@ ZURÜCK
 </section>
 
 
-<!-- CODES -->
+<!-- CODE -->
 
 <section id="codeScreen" class="screen hidden">
 <div class="card">
 
-<div class="logo">ADMIN CODE</div>
+<div class="logo">CODE</div>
 
 <input
  id="codeInput"
@@ -594,7 +622,7 @@ PAUSE
 </button>
 
 
-<!-- PAUSE-MENÜ -->
+<!-- PAUSE -->
 
 <div id="pauseMenu">
 
@@ -619,24 +647,39 @@ AUFGEBEN
 
 <script>
 
-/* =========================================
+/* =====================================================
 SUPABASE
-========================================= */
+===================================================== */
 
-const SUPABASE_URL =
+const SUPABASE_URL=
 "https://lfsifdmaftztykpckdsh.supabase.co";
 
-const SUPABASE_KEY =
+/*
+DEIN SUPABASE ANON/PUBLISHABLE KEY
+hier einsetzen
+*/
+const SUPABASE_KEY=
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxmc2lmZG1hZnR6dHlrcGNrZHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDczMTksImV4cCI6MjEwMjQ4MzMxOX0.dfMS0zgHO_IYU7_YmR2Si6DVkD8MWiJJUt6iSJXZfio";
 
 let accessToken="";
 let refreshToken="";
 let player=null;
 
+const $=id=>document.getElementById(id);
 
-/* =========================================
-CHARAKTERE
-========================================= */
+function show(id){
+
+document.querySelectorAll(".screen")
+.forEach(s=>s.classList.add("hidden"));
+
+$(id).classList.remove("hidden");
+
+}
+
+
+/* =====================================================
+20 CHARAKTERE + ADMIN
+===================================================== */
 
 const characters=[
 
@@ -659,14 +702,22 @@ const characters=[
 {name:"Cosmic",price:160000,mult:4.5,color:"#915cff"},
 {name:"Legend",price:220000,mult:5,color:"#ff8c00"},
 {name:"Infinity",price:350000,mult:6,color:"#ffffff"},
-{name:"Cube God",price:500000,mult:7,color:"#00ffff"}
+{name:"Cube God",price:500000,mult:7,color:"#00ffff"},
+
+{
+ name:"ADMIN",
+ price:0,
+ mult:10,
+ color:"#ff00ff",
+ admin:true
+}
 
 ];
 
 
-/* =========================================
+/* =====================================================
 10 STÄDTE
-========================================= */
+===================================================== */
 
 const worlds=[
 
@@ -773,65 +824,56 @@ ground:"#02020b"
 ];
 
 
-/* =========================================
-HELPER
-========================================= */
-
-const $=id=>document.getElementById(id);
-
-function show(id){
-
-document.querySelectorAll(".screen")
-.forEach(s=>s.classList.add("hidden"));
-
-$(id).classList.remove("hidden");
-}
+/* =====================================================
+LOCAL PLAYER DATA
+===================================================== */
 
 function localKey(){
-
-return "cubeRush_"+player.id;
+ return "cubeRush_"+player.id;
 }
 
 function getData(){
 
 try{
-return JSON.parse(
-localStorage.getItem(localKey())||"{}"
-);
+ return JSON.parse(
+  localStorage.getItem(localKey())||"{}"
+ );
 }catch{
-return {};
-}
+ return {};
 }
 
-function saveData(d){
+}
+
+function saveData(data){
 
 localStorage.setItem(
-localKey(),
-JSON.stringify(d)
+ localKey(),
+ JSON.stringify(data)
 );
+
 }
 
 
-/* =========================================
-SUPABASE REQUEST
-========================================= */
+/* =====================================================
+SUPABASE API
+===================================================== */
 
 async function api(path,options={}){
 
 const headers={
-apikey:SUPABASE_KEY,
-"Content-Type":"application/json",
-...(accessToken?
-{Authorization:"Bearer "+accessToken}:{}),
-...(options.headers||{})
+ apikey:SUPABASE_KEY,
+ "Content-Type":"application/json",
+ ...(accessToken?
+ {Authorization:"Bearer "+accessToken}:{}),
+ ...(options.headers||{})
 };
 
 const response=await fetch(
-SUPABASE_URL+path,
-{
-...options,
-headers
-}
+ SUPABASE_URL+path,
+ {
+  ...options,
+  headers
+ }
 );
 
 const text=await response.text();
@@ -839,27 +881,29 @@ const text=await response.text();
 let data=null;
 
 try{
-data=text?JSON.parse(text):null;
+ data=text?JSON.parse(text):null;
 }catch{}
 
 if(!response.ok){
 
 throw new Error(
-data?.msg||
-data?.message||
-data?.error_description||
-text||
-"Fehler"
+ data?.msg||
+ data?.message||
+ data?.error_description||
+ text||
+ "Fehler"
 );
+
 }
 
 return data;
+
 }
 
 
-/* =========================================
-SESSION SPEICHERN
-========================================= */
+/* =====================================================
+SESSION
+===================================================== */
 
 function saveSession(session){
 
@@ -869,53 +913,84 @@ accessToken=session.access_token||"";
 refreshToken=session.refresh_token||"";
 
 localStorage.setItem(
-"cubeRush_session",
-JSON.stringify({
-access_token:accessToken,
-refresh_token:refreshToken
-})
+ "cubeRush_session",
+ JSON.stringify({
+  access_token:accessToken,
+  refresh_token:refreshToken
+ })
 );
+
 }
 
-
-function loadSavedSession(){
+async function restoreSession(){
 
 try{
 
-const s=JSON.parse(
-localStorage.getItem("cubeRush_session")
+const saved=
+JSON.parse(
+ localStorage.getItem("cubeRush_session")
 );
 
-if(!s)return null;
+if(!saved)return;
 
-return s;
+accessToken=saved.access_token;
+
+refreshToken=saved.refresh_token;
+
+const user=await api(
+ "/auth/v1/user"
+);
+
+if(!user?.id)return;
+
+player={
+ id:user.id,
+ username:
+ user.user_metadata?.username||
+ user.email?.split("@")[0]||
+"Player",
+ coins:0,
+ highscore:0
+};
+
+await loadPlayer();
+
+openMenu();
 
 }catch{
 
-return null;
+localStorage.removeItem(
+ "cubeRush_session"
+);
 
 }
+
 }
 
 
-/* =========================================
-ACCOUNT
-========================================= */
+/* =====================================================
+REGISTRIERUNG
+===================================================== */
 
 $("registerOpen").onclick=()=>{
-show("register");
+ show("register");
 };
 
 $("backLogin").onclick=()=>{
-show("login");
+ show("login");
 };
 
 
 $("registerBtn").onclick=async()=>{
 
-const username=$("username").value.trim();
-const email=$("regEmail").value.trim();
-const password=$("regPassword").value;
+const username=
+$("username").value.trim();
+
+const email=
+$("regEmail").value.trim();
+
+const password=
+$("regPassword").value;
 
 if(username.length<3){
 
@@ -936,23 +1011,21 @@ return;
 try{
 
 const result=await api(
-"/auth/v1/signup",
-{
-method:"POST",
-body:JSON.stringify({
-email,
-password,
-data:{
-username
-}
-})
-}
+ "/auth/v1/signup",
+ {
+  method:"POST",
+  body:JSON.stringify({
+   email,
+   password,
+   data:{username}
+  })
+ }
 );
 
 if(!result.access_token){
 
 $("regMsg").textContent=
-"Account erstellt. Falls eine Bestätigung verlangt wird, ist 'Confirm email' in Supabase noch aktiviert.";
+"Account erstellt. Wenn Supabase eine Bestätigung verlangt, deaktiviere Confirm email.";
 
 return;
 }
@@ -962,10 +1035,10 @@ saveSession(result);
 accessToken=result.access_token;
 
 player={
-id:result.user.id,
-username,
-coins:0,
-highscore:0
+ id:result.user.id,
+ username,
+ coins:0,
+ highscore:0
 };
 
 await createPlayer();
@@ -982,14 +1055,17 @@ $("regMsg").textContent=
 };
 
 
-/* =========================================
+/* =====================================================
 LOGIN
-========================================= */
+===================================================== */
 
 $("loginBtn").onclick=async()=>{
 
-const email=$("email").value.trim();
-const password=$("password").value;
+const email=
+$("email").value.trim();
+
+const password=
+$("password").value;
 
 if(!email||!password){
 
@@ -1002,14 +1078,14 @@ return;
 try{
 
 const result=await api(
-"/auth/v1/token?grant_type=password",
-{
-method:"POST",
-body:JSON.stringify({
-email,
-password
-})
-}
+ "/auth/v1/token?grant_type=password",
+ {
+  method:"POST",
+  body:JSON.stringify({
+   email,
+   password
+  })
+ }
 );
 
 saveSession(result);
@@ -1017,12 +1093,12 @@ saveSession(result);
 accessToken=result.access_token;
 
 player={
-id:result.user.id,
-username:
-result.user.user_metadata?.username||
-email.split("@")[0],
-coins:0,
-highscore:0
+ id:result.user.id,
+ username:
+ result.user.user_metadata?.username||
+ email.split("@")[0],
+ coins:0,
+ highscore:0
 };
 
 await loadPlayer();
@@ -1039,80 +1115,32 @@ $("loginMsg").textContent=
 };
 
 
-/* =========================================
-ACCOUNT AUTOMATISCH LADEN
-========================================= */
-
-async function restoreSession(){
-
-const session=loadSavedSession();
-
-if(!session)return;
-
-try{
-
-accessToken=session.access_token;
-refreshToken=session.refresh_token;
-
-const user=await api(
-"/auth/v1/user"
-);
-
-if(!user?.id)return;
-
-player={
-id:user.id,
-username:
-user.user_metadata?.username||
-"user",
-coins:0,
-highscore:0
-};
-
-await loadPlayer();
-
-openMenu();
-
-}catch(error){
-
-localStorage.removeItem("cubeRush_session");
-
-accessToken="";
-refreshToken="";
-
-}
-
-}
-
-
-/* =========================================
+/* =====================================================
 PLAYER
-========================================= */
+===================================================== */
 
 async function createPlayer(){
 
 try{
 
 await api(
-"/rest/v1/Players",
-{
-method:"POST",
-headers:{
-Prefer:"resolution=ignore-duplicates"
-},
-body:JSON.stringify({
-id:player.id,
-username:player.username,
-coins:0,
-highscore:0
-})
-}
+ "/rest/v1/Players",
+ {
+  method:"POST",
+  headers:{
+   Prefer:"resolution=ignore-duplicates"
+  },
+  body:JSON.stringify({
+   id:player.id,
+   username:player.username,
+   coins:0,
+   highscore:0
+  })
+ }
 );
 
 }catch(error){
-
-console.log(error);
-
+ console.log(error);
 }
 
 }
@@ -1123,22 +1151,22 @@ async function loadPlayer(){
 try{
 
 const rows=await api(
-"/rest/v1/Players?id=eq."+
-encodeURIComponent(player.id)+
-"&select=*"
+ "/rest/v1/Players?id=eq."+
+ encodeURIComponent(player.id)+
+ "&select=*"
 );
 
 if(rows&&rows.length){
 
 player.username=
-rows[0].username||
-player.username;
+ rows[0].username||
+ player.username;
 
 player.coins=
-Number(rows[0].coins||0);
+ Number(rows[0].coins||0);
 
 player.highscore=
-Number(rows[0].highscore||0);
+ Number(rows[0].highscore||0);
 
 }
 
@@ -1156,19 +1184,19 @@ async function savePlayer(){
 try{
 
 await api(
-"/rest/v1/Players?id=eq."+
-encodeURIComponent(player.id),
-{
-method:"PATCH",
-headers:{
-Prefer:"return=minimal"
-},
-body:JSON.stringify({
-username:player.username,
-coins:Math.floor(player.coins),
-highscore:Math.floor(player.highscore)
-})
-}
+ "/rest/v1/Players?id=eq."+
+ encodeURIComponent(player.id),
+ {
+  method:"PATCH",
+  headers:{
+   Prefer:"return=minimal"
+  },
+  body:JSON.stringify({
+   username:player.username,
+   coins:Math.floor(player.coins),
+   highscore:Math.floor(player.highscore)
+  })
+ }
 );
 
 }catch(error){
@@ -1180,9 +1208,9 @@ console.log(error);
 }
 
 
-/* =========================================
-MENU
-========================================= */
+/* =====================================================
+MENÜ
+===================================================== */
 
 function openMenu(){
 
@@ -1202,39 +1230,38 @@ show("menu");
 
 $("logout").onclick=()=>{
 
-localStorage.removeItem("cubeRush_session");
+localStorage.removeItem(
+ "cubeRush_session"
+);
 
 accessToken="";
 refreshToken="";
 player=null;
-
-$("email").value="";
-$("password").value="";
 
 show("login");
 
 };
 
 
-/* =========================================
+/* =====================================================
 SHOP
-========================================= */
+===================================================== */
 
 $("shop").onclick=()=>{
-renderCharacters();
-show("shopScreen");
+ renderCharacters();
+ show("shopScreen");
 };
 
 $("charTab").onclick=()=>{
-$("charTab").classList.add("active");
-$("cityTab").classList.remove("active");
-renderCharacters();
+ $("charTab").classList.add("active");
+ $("cityTab").classList.remove("active");
+ renderCharacters();
 };
 
 $("cityTab").onclick=()=>{
-$("cityTab").classList.add("active");
-$("charTab").classList.remove("active");
-renderWorlds();
+ $("cityTab").classList.add("active");
+ $("charTab").classList.remove("active");
+ renderWorlds();
 };
 
 $("shopBack").onclick=openMenu;
@@ -1245,25 +1272,46 @@ function renderCharacters(){
 const grid=$("shopGrid");
 const d=getData();
 
-const owned=d.chars||[0];
-const selected=Number(d.char||0);
+const owned=
+ d.chars||[0];
+
+const selected=
+ Number(d.char||0);
+
+const adminUnlocked=
+ d.adminSkin===true;
 
 grid.innerHTML="";
 
-characters.forEach((character,index)=>{
+characters.forEach(
+(character,index)=>{
 
-const item=document.createElement("div");
+/*
+Admin-Skin ist unsichtbar,
+bis Code 110 benutzt wurde.
+*/
+
+if(character.admin&&!adminUnlocked){
+ return;
+}
+
+const item=
+document.createElement("div");
 
 item.className=
 "item"+
-(selected===index?" selected":"");
+(selected===index?
+" selected":"");
 
 item.innerHTML=`
 
 <div class="preview">
 
 <div
- class="character"
+ class="character ${
+  character.admin?
+  "adminCharacter":""
+ }"
  style="
  background:${character.color};
  color:${character.color};
@@ -1273,17 +1321,21 @@ item.innerHTML=`
 </div>
 
 <div class="name">
-${character.name}
+${character.admin?
+"ADMIN":
+character.name}
 </div>
 
 <div class="price">
-${character.price===0?
+${character.admin?
+"ADMIN FREIGESCHALTET":
+character.price===0?
 "KOSTENLOS":
-"🪙 "+character.price.toLocaleString()}
+"COINS "+character.price.toLocaleString()}
 </div>
 
 <div class="mult">
-Münzen ×${character.mult}
+MÜNZEN ×${character.mult}
 </div>
 
 <button class="btn ${
@@ -1299,15 +1351,15 @@ owned.includes(index)?
 "KAUFEN"
 }
 </button>
-
 `;
 
-item.querySelector("button").onclick=
-async()=>{
+item.querySelector("button")
+.onclick=async()=>{
 
 const data=getData();
 
-data.chars=data.chars||[0];
+data.chars=
+ data.chars||[0];
 
 if(data.chars.includes(index)){
 
@@ -1318,16 +1370,41 @@ saveData(data);
 renderCharacters();
 
 return;
+
 }
 
-if(player.coins<character.price){
+if(character.admin){
 
-alert("Du hast nicht genug Münzen.");
+if(!data.adminSkin){
 
 return;
+
 }
 
-player.coins-=character.price;
+data.chars.push(index);
+data.char=index;
+
+saveData(data);
+
+renderCharacters();
+
+return;
+
+}
+
+if(player.coins<
+character.price){
+
+alert(
+"Du hast nicht genug Coins."
+);
+
+return;
+
+}
+
+player.coins-=
+character.price;
 
 data.chars.push(index);
 data.char=index;
@@ -1347,27 +1424,33 @@ grid.appendChild(item);
 }
 
 
-/* =========================================
-STÄDTE SHOP
-========================================= */
+/* =====================================================
+STÄDTE
+===================================================== */
 
 function renderWorlds(){
 
 const grid=$("shopGrid");
 const d=getData();
 
-const owned=d.worlds||[0];
-const selected=Number(d.world||0);
+const owned=
+ d.worlds||[0];
+
+const selected=
+ Number(d.world||0);
 
 grid.innerHTML="";
 
-worlds.forEach((world,index)=>{
+worlds.forEach(
+(world,index)=>{
 
-const item=document.createElement("div");
+const item=
+document.createElement("div");
 
 item.className=
 "item"+
-(selected===index?" selected":"");
+(selected===index?
+" selected":"");
 
 let buildings="";
 
@@ -1376,12 +1459,12 @@ for(let i=0;i<5;i++){
 buildings+=`
 
 <div
-class="building"
-style="
-left:${i*21+3}%;
-width:${18+i*2}px;
-height:${35+i*10}px;
-">
+ class="building"
+ style="
+ left:${i*21+3}%;
+ width:${18+i*2}px;
+ height:${35+i*10}px;
+ ">
 </div>
 
 `;
@@ -1409,11 +1492,11 @@ ${world.name}
 <div class="price">
 ${world.price===0?
 "KOSTENLOS":
-"🪙 "+world.price.toLocaleString()}
+"COINS "+world.price.toLocaleString()}
 </div>
 
 <div class="mult">
-Münzen ×${world.mult}
+MÜNZEN ×${world.mult}
 </div>
 
 <button class="btn ${
@@ -1432,12 +1515,13 @@ owned.includes(index)?
 
 `;
 
-item.querySelector("button").onclick=
-async()=>{
+item.querySelector("button")
+.onclick=async()=>{
 
 const data=getData();
 
-data.worlds=data.worlds||[0];
+data.worlds=
+ data.worlds||[0];
 
 if(data.worlds.includes(index)){
 
@@ -1448,16 +1532,22 @@ saveData(data);
 renderWorlds();
 
 return;
+
 }
 
-if(player.coins<world.price){
+if(player.coins<
+world.price){
 
-alert("Nicht genug Münzen.");
+alert(
+"Du hast nicht genug Coins."
+);
 
 return;
+
 }
 
-player.coins-=world.price;
+player.coins-=
+world.price;
 
 data.worlds.push(index);
 data.world=index;
@@ -1477,14 +1567,17 @@ grid.appendChild(item);
 }
 
 
-/* =========================================
+/* =====================================================
 ADMIN CODES
-========================================= */
+===================================================== */
 
 $("codeBtn").onclick=()=>{
+
 $("codeInput").value="";
 $("codeMsg").textContent="";
+
 show("codeScreen");
+
 };
 
 $("codeBack").onclick=openMenu;
@@ -1492,54 +1585,131 @@ $("codeBack").onclick=openMenu;
 
 $("useCode").onclick=async()=>{
 
-const code=$("codeInput").value.trim();
+const code=
+$("codeInput").value.trim();
+
 const data=getData();
+
+data.chars=
+ data.chars||[0];
+
+data.worlds=
+ data.worlds||[0];
+
+
+/* ==========================
+110
+========================== */
 
 if(code==="110"){
 
-player.coins=1000000;
-player.highscore=1000000;
+/*
+JEDES MAL:
++1.000.000 Coins
++1.000.000 Highscore
+*/
 
-data.chars=
-characters.map((_,i)=>i);
+player.coins+=1000000;
+player.highscore+=1000000;
 
-data.worlds=
-worlds.map((_,i)=>i);
 
-data.char=0;
-data.world=0;
+/*
+ALLE 20 normalen Charaktere
+*/
+
+data.chars=[];
+
+for(let i=0;i<20;i++){
+
+data.chars.push(i);
+
+}
+
+
+/*
+ADMIN-SKIN
+*/
+
+data.adminSkin=true;
+
+data.chars.push(20);
+
+
+/*
+ALLE 10 STÄDTE
+*/
+
+data.worlds=[];
+
+for(let i=0;i<10;i++){
+
+data.worlds.push(i);
+
+}
+
+data.char=20;
+
+data.world=9;
 
 saveData(data);
 
 await savePlayer();
 
 $("codeMsg").textContent=
-"Code 110 aktiviert.";
+"110 aktiviert – ADMIN freigeschaltet.";
 
 return;
+
 }
 
+
+/* ==========================
+112
+========================== */
 
 if(code==="112"){
 
-player.coins=100000;
+/*
+JEDES MAL:
++100.000 Coins
+*/
 
-data.chars=[0,1,2,3,4];
-data.worlds=[0,1,2];
+player.coins+=100000;
 
-data.char=0;
-data.world=0;
+
+/*
+5 Charaktere
+*/
+
+data.chars=[
+...new Set([
+ ...(data.chars||[]),
+ 0,1,2,3,4
+])
+];
+
+
+/*
+3 Städte
+*/
+
+data.worlds=[
+...new Set([
+ ...(data.worlds||[]),
+ 0,1,2
+])
+];
 
 saveData(data);
 
 await savePlayer();
 
 $("codeMsg").textContent=
-"Code 112 aktiviert.";
+"112 aktiviert.";
 
 return;
-}
 
+}
 
 $("codeMsg").textContent=
 "Ungültiger Code.";
@@ -1547,9 +1717,9 @@ $("codeMsg").textContent=
 };
 
 
-/* =========================================
+/* =====================================================
 RANGLISTE
-========================================= */
+===================================================== */
 
 $("rankBtn").onclick=async()=>{
 
@@ -1558,23 +1728,27 @@ show("rankScreen");
 try{
 
 const rows=await api(
-"/rest/v1/Players"+
-"?select=username,highscore"+
-"&order=highscore.desc"+
-"&limit=50"
+ "/rest/v1/Players"+
+ "?select=username,highscore"+
+ "&order=highscore.desc"+
+ "&limit=50"
 );
 
 $("rankList").innerHTML=
-rows.map((row,index)=>`
+rows.map(
+(row,index)=>`
 
 <div class="rank">
 <b>${index+1}.</b>
 ${String(row.username)}
-—
-${Number(row.highscore||0).toLocaleString()}
+ —
+${Number(
+ row.highscore||0
+).toLocaleString()}
 </div>
 
-`).join("");
+`
+).join("");
 
 }catch(error){
 
@@ -1588,9 +1762,9 @@ $("rankList").textContent=
 $("rankBack").onclick=openMenu;
 
 
-/* =========================================
-GAME ENGINE
-========================================= */
+/* =====================================================
+GAME
+===================================================== */
 
 const canvas=$("game");
 const ctx=canvas.getContext("2d");
@@ -1609,7 +1783,6 @@ canvas.height=H;
 }
 
 addEventListener("resize",resize);
-
 resize();
 
 
@@ -1636,13 +1809,9 @@ let lastTime=performance.now();
 
 function roadWidth(){
 
-return Math.min(
-W*.86,
-650
-);
+return Math.min(W*.86,650);
 
 }
-
 
 function roadLeft(){
 
@@ -1650,13 +1819,11 @@ return (W-roadWidth())/2;
 
 }
 
-
 function laneWidth(){
 
 return roadWidth()/3;
 
 }
-
 
 function laneX(index){
 
@@ -1667,9 +1834,9 @@ laneWidth()/2;
 }
 
 
-/* =========================================
+/* =====================================================
 GAME START
-========================================= */
+===================================================== */
 
 $("start").onclick=startGame;
 
@@ -1705,97 +1872,93 @@ magnetTime=0;
 
 lastTime=performance.now();
 
+const d=getData();
+
 $("hudWorld").textContent=
-worlds[Number(getData().world||0)].name;
+worlds[
+ Number(d.world||0)
+].name;
 
 updatePower();
 
 }
 
 
-/* =========================================
-MÜNZEN
-========================================= */
+/* =====================================================
+COINS
+===================================================== */
 
 function coinAmount(){
 
 const world=
-worlds[Number(getData().world||0)];
+worlds[
+ Number(getData().world||0)
+];
 
 return Math.floor(
-world.min+
-Math.random()*
-(world.max-world.min+1)
+ world.min+
+ Math.random()*
+ (world.max-world.min+1)
 );
 
 }
 
-
-/* =========================================
-FREIE SPUR
-========================================= */
-
 function freeLane(y){
 
 const possible=[-1,0,1]
-.filter(laneNumber=>{
-
-return !objects.some(object=>
-
-object.lane===laneNumber&&
-Math.abs(object.y-y)<180
-
+.filter(l=>
+ !objects.some(
+  o=>
+   o.lane===l&&
+   Math.abs(o.y-y)<180
+ )
 );
-
-});
 
 if(!possible.length)return null;
 
 return possible[
-Math.floor(Math.random()*possible.length)
+ Math.floor(
+  Math.random()*possible.length
+ )
 ];
 
 }
 
 
-/* =========================================
-MÜNZEN SPAWNEN
-========================================= */
-
 function spawnCoins(){
 
-const amount=coinAmount();
+const amount=
+coinAmount();
 
-let selectedLane=
-Math.floor(Math.random()*3)-1;
+let l=
+Math.floor(
+ Math.random()*3
+)-1;
 
 for(let i=0;i<amount;i++){
 
 const y=-50-i*48;
 
-const blocked=
-objects.some(object=>
+const free=
+freeLane(y);
 
-object.type==="car"&&
-object.lane===selectedLane&&
-Math.abs(object.y-y)<180
+if(
+objects.some(
+ o=>
+ o.type==="car"&&
+ o.lane===l&&
+ Math.abs(o.y-y)<180
+ )
+){
 
-);
-
-if(blocked){
-
-const free=freeLane(y);
-
-if(free!==null){
-selectedLane=free;
-}
+if(free!==null)l=free;
 
 }
 
 objects.push({
-type:"coin",
-lane:selectedLane,
-y
+ type:"coin",
+ lane:l,
+ y
 });
 
 }
@@ -1803,34 +1966,27 @@ y
 }
 
 
-/* =========================================
-AUTOS
-========================================= */
-
 function spawnCar(){
 
-const laneNumber=
+const l=
 freeLane(-130);
 
-if(laneNumber===null)return;
-
-const colors=[
-"#ff1744",
-"#008cff",
-"#ff9800",
-"#ffffff",
-"#8e44ad"
-];
+if(l===null)return;
 
 objects.push({
 
 type:"car",
-lane:laneNumber,
+lane:l,
 y:-130,
 
-color:
-colors[
-Math.floor(Math.random()*colors.length)
+color:[
+ "#ff1744",
+ "#008cff",
+ "#ff9800",
+ "#ffffff",
+ "#8e44ad"
+][
+ Math.floor(Math.random()*5)
 ]
 
 });
@@ -1838,78 +1994,64 @@ Math.floor(Math.random()*colors.length)
 }
 
 
-/* =========================================
-POWERUPS
-========================================= */
-
 function spawnPower(type){
 
-const laneNumber=
+const l=
 freeLane(-100);
 
-if(laneNumber===null)return;
+if(l===null)return;
 
 objects.push({
-
-type,
-lane:laneNumber,
-y:-100
-
+ type,
+ lane:l,
+ y:-100
 });
 
 }
 
 
-/* =========================================
-HINTERGRUND
-========================================= */
+/* =====================================================
+BACKGROUND
+===================================================== */
 
 function drawBackground(){
 
 const world=
-worlds[Number(getData().world||0)];
+worlds[
+ Number(getData().world||0)
+];
 
 const gradient=
-ctx.createLinearGradient(0,0,0,H);
+ctx.createLinearGradient(
+0,0,0,H
+);
 
-gradient.addColorStop(0,world.sky);
-gradient.addColorStop(1,world.ground);
+gradient.addColorStop(
+0,world.sky
+);
+
+gradient.addColorStop(
+1,world.ground
+);
 
 ctx.fillStyle=gradient;
 ctx.fillRect(0,0,W,H);
-
-
-/* Sterne */
-
-if(Number(getData().world||0)>=5){
-
-ctx.fillStyle="#ffffff99";
-
-for(let i=0;i<70;i++){
-
-const x=(i*97)%W;
-const y=(i*53)%H;
-
-ctx.fillRect(x,y,2,2);
-
-}
-
-}
 
 
 /* Gebäude */
 
 for(let i=0;i<24;i++){
 
-const width=20+(i%5)*10;
+const width=
+20+(i%5)*10;
 
 const height=
 70+((i*43)%220);
 
-const x=i*(W/24);
+const x=
+i*(W/24);
 
-ctx.fillStyle=
-"#071820";
+ctx.fillStyle="#071820";
 
 ctx.fillRect(
 x,
@@ -1927,10 +2069,7 @@ y+=22
 ){
 
 ctx.fillRect(
-x+5,
-y,
-4,
-6
+x+5,y,4,6
 );
 
 }
@@ -1946,16 +2085,18 @@ const rl=roadLeft();
 ctx.fillStyle="#111820";
 
 ctx.fillRect(
-rl,
-0,
-rw,
-H
+rl,0,rw,H
 );
 
 ctx.fillStyle="#00eaff";
 
 ctx.fillRect(rl,0,3,H);
-ctx.fillRect(rl+rw-3,0,3,H);
+ctx.fillRect(
+rl+rw-3,
+0,
+3,
+H
+);
 
 
 const lw=laneWidth();
@@ -1990,17 +2131,17 @@ y,
 }
 
 
-/* =========================================
-OBJEKTE
-========================================= */
+/* =====================================================
+OBJECTS
+===================================================== */
 
 function drawObjects(){
 
-for(const object of objects){
+for(const o of objects){
 
-const x=laneX(object.lane);
+const x=laneX(o.lane);
 
-if(object.type==="coin"){
+if(o.type==="coin"){
 
 ctx.save();
 
@@ -2012,25 +2153,7 @@ ctx.fillStyle="#ffd000";
 ctx.beginPath();
 
 ctx.arc(
-x,
-object.y,
-13,
-0,
-Math.PI*2
-);
-
-ctx.fill();
-
-ctx.fillStyle="#fff5a0";
-
-ctx.beginPath();
-
-ctx.arc(
-x-4,
-object.y-4,
-4,
-0,
-Math.PI*2
+ x,o.y,13,0,Math.PI*2
 );
 
 ctx.fill();
@@ -2039,8 +2162,7 @@ ctx.restore();
 
 }
 
-
-else if(object.type==="double"){
+else if(o.type==="double"){
 
 ctx.save();
 
@@ -2052,32 +2174,26 @@ ctx.fillStyle="#00eaff";
 ctx.beginPath();
 
 ctx.arc(
-x,
-object.y,
-22,
-0,
-Math.PI*2
+ x,o.y,22,0,Math.PI*2
 );
 
 ctx.fill();
 
 ctx.fillStyle="#001018";
 
-ctx.font="bold 17px Arial";
+ctx.font="bold 16px Arial";
 ctx.textAlign="center";
 
 ctx.fillText(
-"×2",
-x,
-object.y+6
+"2X",
+x,o.y+6
 );
 
 ctx.restore();
 
 }
 
-
-else if(object.type==="magnet"){
+else if(o.type==="magnet"){
 
 ctx.save();
 
@@ -2089,56 +2205,30 @@ ctx.lineWidth=7;
 ctx.beginPath();
 
 ctx.arc(
-x,
-object.y,
-17,
-0,
-Math.PI
+ x,o.y,17,0,Math.PI
 );
 
 ctx.stroke();
-
-ctx.fillStyle="#ff1744";
-
-ctx.font="bold 20px Arial";
-ctx.textAlign="center";
-
-ctx.fillText(
-"M",
-x,
-object.y+7
-);
 
 ctx.restore();
 
 }
 
-
 else{
 
 ctx.save();
 
-ctx.translate(
-x,
-object.y
-);
+ctx.translate(x,o.y);
 
-ctx.shadowColor=
-object.color;
-
+ctx.shadowColor=o.color;
 ctx.shadowBlur=20;
 
-ctx.fillStyle=
-object.color;
+ctx.fillStyle=o.color;
 
 ctx.beginPath();
 
 ctx.roundRect(
--30,
--50,
-60,
-100,
-12
+ -30,-50,60,100,12
 );
 
 ctx.fill();
@@ -2148,10 +2238,7 @@ ctx.shadowBlur=0;
 ctx.fillStyle="#17303b";
 
 ctx.fillRect(
--18,
--27,
-36,
-22
+ -18,-27,36,22
 );
 
 ctx.restore();
@@ -2163,17 +2250,17 @@ ctx.restore();
 }
 
 
-/* =========================================
-CHARAKTER
-========================================= */
+/* =====================================================
+PLAYER
+===================================================== */
 
 function drawPlayer(){
 
 const d=getData();
 
-const character=
+const c=
 characters[
-Number(d.char||0)
+ Number(d.char||0)
 ];
 
 const x=laneX(lane);
@@ -2183,28 +2270,39 @@ ctx.save();
 
 ctx.translate(x,y);
 
-ctx.shadowColor=
-character.color;
+if(c.admin){
 
-ctx.shadowBlur=30;
+const g=
+ctx.createLinearGradient(
+-30,-30,30,30
+);
 
-ctx.fillStyle=
-character.color;
+g.addColorStop(0,"#ff00ff");
+g.addColorStop(.33,"#00eaff");
+g.addColorStop(.66,"#ffd000");
+g.addColorStop(1,"#ff00ff");
+
+ctx.fillStyle=g;
+
+ctx.shadowColor="#ff00ff";
+ctx.shadowBlur=35;
+
+}else{
+
+ctx.fillStyle=c.color;
+
+ctx.shadowColor=c.color;
+ctx.shadowBlur=28;
+
+}
 
 ctx.beginPath();
 
 ctx.roundRect(
--28,
--28,
-56,
-56,
-15
+ -28,-28,56,56,15
 );
 
 ctx.fill();
-
-
-/* Gesicht */
 
 ctx.shadowBlur=0;
 
@@ -2213,11 +2311,7 @@ ctx.fillStyle="#061018";
 ctx.beginPath();
 
 ctx.arc(
--11,
--6,
-5,
-0,
-Math.PI*2
+ -11,-6,5,0,Math.PI*2
 );
 
 ctx.fill();
@@ -2225,32 +2319,22 @@ ctx.fill();
 ctx.beginPath();
 
 ctx.arc(
-11,
--6,
-5,
-0,
-Math.PI*2
+ 11,-6,5,0,Math.PI*2
 );
 
 ctx.fill();
 
-
-/* Mund */
-
 ctx.fillRect(
--12,
-10,
-24,
-5
+ -12,10,24,5
 );
 
 
 /* Glitzer */
 
 const glitter=
-Math.min(
-24,
-Math.floor(character.mult*4)
+c.admin?35:
+Math.min(24,
+Math.floor(c.mult*4)
 );
 
 for(let i=0;i<glitter;i++){
@@ -2261,19 +2345,12 @@ performance.now()/450+i;
 const distance=
 32+(i%5)*4;
 
-const gx=
-Math.cos(angle)*distance;
-
-const gy=
-Math.sin(angle)*distance;
-
 ctx.fillStyle="#ffffffcc";
 
 ctx.fillRect(
-gx,
-gy,
-3,
-3
+ Math.cos(angle)*distance,
+ Math.sin(angle)*distance,
+ 3,3
 );
 
 }
@@ -2283,48 +2360,36 @@ ctx.restore();
 }
 
 
-/* =========================================
-TOUCH / WISCHEN
-========================================= */
+/* =====================================================
+SWIPE
+===================================================== */
 
 let touchStartX=0;
 let touchStartY=0;
 
 canvas.addEventListener(
 "touchstart",
-event=>{
+e=>{
 
-const touch=
-event.changedTouches[0];
+const t=e.changedTouches[0];
 
-touchStartX=
-touch.clientX;
-
-touchStartY=
-touch.clientY;
+touchStartX=t.clientX;
+touchStartY=t.clientY;
 
 },
 {passive:true}
 );
 
-
 canvas.addEventListener(
 "touchend",
-event=>{
+e=>{
 
 if(!running||paused)return;
 
-const touch=
-event.changedTouches[0];
+const t=e.changedTouches[0];
 
-const dx=
-touch.clientX-touchStartX;
-
-const dy=
-touch.clientY-touchStartY;
-
-
-/* Nur Wischen */
+const dx=t.clientX-touchStartX;
+const dy=t.clientY-touchStartY;
 
 if(
 Math.abs(dx)>45&&
@@ -2333,13 +2398,11 @@ Math.abs(dx)>Math.abs(dy)
 
 if(dx<0){
 
-lane=
-Math.max(-1,lane-1);
+lane=Math.max(-1,lane-1);
 
 }else{
 
-lane=
-Math.min(1,lane+1);
+lane=Math.min(1,lane+1);
 
 }
 
@@ -2350,9 +2413,9 @@ Math.min(1,lane+1);
 );
 
 
-/* =========================================
-POWER UI
-========================================= */
+/* =====================================================
+POWER
+===================================================== */
 
 function updatePower(){
 
@@ -2363,7 +2426,7 @@ const parts=[];
 if(doubleTime>0){
 
 parts.push(
-"×2 "+Math.ceil(doubleTime)+"s"
+"2X "+Math.ceil(doubleTime)+"s"
 );
 
 }
@@ -2392,35 +2455,34 @@ power.style.display="none";
 }
 
 
-/* =========================================
-MÜNZE EINSAMMELN
-========================================= */
+/* =====================================================
+COIN COLLECTION
+===================================================== */
 
 function collectCoin(){
 
 const d=getData();
 
-const character=
+const c=
 characters[
-Number(d.char||0)
+ Number(d.char||0)
 ];
 
-const world=
+const w=
 worlds[
-Number(d.world||0)
+ Number(d.world||0)
 ];
-
 
 /*
-Normale Münze = +1.
-Danach werden Charakter und Welt
-angewendet.
+Jede gesammelte Münze
+startet mit +1.
+
+Charakter und Stadt erhöhen
+den Wert.
 */
 
 let amount=
-1*
-character.mult*
-world.mult;
+1*c.mult*w.mult;
 
 if(doubleTime>0){
 
@@ -2433,9 +2495,9 @@ earned+=amount;
 }
 
 
-/* =========================================
-GAME UPDATE
-========================================= */
+/* =====================================================
+UPDATE
+===================================================== */
 
 function update(dt){
 
@@ -2452,7 +2514,7 @@ speed+seconds*3
 );
 
 
-/* Münzen */
+/* Coins */
 
 coinTimer-=seconds;
 
@@ -2461,13 +2523,12 @@ if(coinTimer<=0){
 spawnCoins();
 
 coinTimer=
-3.8+
-Math.random()*1.5;
+3.8+Math.random()*1.5;
 
 }
 
 
-/* Autos */
+/* Cars */
 
 obstacleTimer-=seconds;
 
@@ -2480,8 +2541,8 @@ Number(getData().world||0);
 
 obstacleTimer=
 Math.max(
-.65,
-1.35-world*.055
+ .65,
+ 1.35-world*.055
 );
 
 }
@@ -2507,27 +2568,19 @@ spawnPower("magnet");
 if(doubleTime>0){
 
 doubleTime=
-Math.max(
-0,
-doubleTime-seconds
-);
+Math.max(0,doubleTime-seconds);
 
 }
 
 if(magnetTime>0){
 
 magnetTime=
-Math.max(
-0,
-magnetTime-seconds
-);
+Math.max(0,magnetTime-seconds);
 
 }
 
 updatePower();
 
-
-/* Objekte bewegen */
 
 const playerY=H*.76;
 
@@ -2537,12 +2590,11 @@ i>=0;
 i--
 ){
 
-const object=objects[i];
+const o=objects[i];
 
-object.y+=speed*seconds;
+o.y+=speed*seconds;
 
-
-if(object.y>H+150){
+if(o.y>H+150){
 
 objects.splice(i,1);
 
@@ -2554,22 +2606,22 @@ continue;
 /* Magnet */
 
 if(
-object.type==="coin"&&
+o.type==="coin"&&
 magnetTime>0&&
-Math.abs(object.y-playerY)<150
+Math.abs(o.y-playerY)<160
 ){
 
-object.lane=lane;
+o.lane=lane;
 
 }
 
 
-/* Münze */
+/* Coin */
 
 if(
-object.type==="coin"&&
-object.lane===lane&&
-Math.abs(object.y-playerY)<55
+o.type==="coin"&&
+o.lane===lane&&
+Math.abs(o.y-playerY)<55
 ){
 
 collectCoin();
@@ -2581,12 +2633,12 @@ continue;
 }
 
 
-/* x2 */
+/* 2X */
 
 if(
-object.type==="double"&&
-object.lane===lane&&
-Math.abs(object.y-playerY)<65
+o.type==="double"&&
+o.lane===lane&&
+Math.abs(o.y-playerY)<65
 ){
 
 doubleTime=30;
@@ -2601,9 +2653,9 @@ continue;
 /* Magnet */
 
 if(
-object.type==="magnet"&&
-object.lane===lane&&
-Math.abs(object.y-playerY)<65
+o.type==="magnet"&&
+o.lane===lane&&
+Math.abs(o.y-playerY)<65
 ){
 
 magnetTime=30;
@@ -2615,12 +2667,12 @@ continue;
 }
 
 
-/* Auto */
+/* Car */
 
 if(
-object.type==="car"&&
-object.lane===lane&&
-Math.abs(object.y-playerY)<65
+o.type==="car"&&
+o.lane===lane&&
+Math.abs(o.y-playerY)<65
 ){
 
 endGame();
@@ -2631,8 +2683,6 @@ return;
 
 }
 
-
-/* HUD */
 
 $("hudCoins").textContent=
 Math.floor(
@@ -2645,9 +2695,9 @@ Math.floor(score).toLocaleString();
 }
 
 
-/* =========================================
-GAME LOOP
-========================================= */
+/* =====================================================
+LOOP
+===================================================== */
 
 function gameLoop(time){
 
@@ -2678,9 +2728,9 @@ requestAnimationFrame(gameLoop);
 requestAnimationFrame(gameLoop);
 
 
-/* =========================================
+/* =====================================================
 PAUSE
-========================================= */
+===================================================== */
 
 $("pause").onclick=()=>{
 
@@ -2688,7 +2738,8 @@ if(!running)return;
 
 paused=true;
 
-$("pauseMenu").style.display="flex";
+$("pauseMenu").style.display=
+"flex";
 
 };
 
@@ -2697,7 +2748,8 @@ $("resumeBtn").onclick=()=>{
 
 paused=false;
 
-$("pauseMenu").style.display="none";
+$("pauseMenu").style.display=
+"none";
 
 lastTime=performance.now();
 
@@ -2707,10 +2759,10 @@ lastTime=performance.now();
 $("giveUpBtn").onclick=()=>{
 
 paused=false;
-
-$("pauseMenu").style.display="none";
-
 running=false;
+
+$("pauseMenu").style.display=
+"none";
 
 canvas.style.display="none";
 $("hud").style.display="none";
@@ -2722,9 +2774,9 @@ openMenu();
 };
 
 
-/* =========================================
+/* =====================================================
 GAME OVER
-========================================= */
+===================================================== */
 
 async function endGame(){
 
@@ -2740,7 +2792,8 @@ Math.floor(earned);
 
 player.coins+=finalCoins;
 
-if(finalScore>player.highscore){
+if(finalScore>
+player.highscore){
 
 player.highscore=
 finalScore;
@@ -2756,13 +2809,9 @@ $("finalCoins").textContent=
 finalCoins.toLocaleString();
 
 canvas.style.display="none";
-
 $("hud").style.display="none";
-
 $("pause").style.display="none";
-
 $("power").style.display="none";
-
 $("pauseMenu").style.display="none";
 
 show("gameOver");
@@ -2770,18 +2819,14 @@ show("gameOver");
 }
 
 
-/* =========================================
-GAME OVER BUTTONS
-========================================= */
-
 $("again").onclick=startGame;
 
 $("gameMenu").onclick=openMenu;
 
 
-/* =========================================
+/* =====================================================
 START
-========================================= */
+===================================================== */
 
 show("login");
 
