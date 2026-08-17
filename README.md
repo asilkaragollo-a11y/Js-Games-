@@ -3,410 +3,335 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Cube Rush</title>
+<title>Cube Rush – Neon City</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html,body{
-  margin:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  font-family:Arial,sans-serif;
-  background:#02050a;
-  color:white;
-}
-
-button,input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-  touch-action:manipulation;
-  -webkit-user-select:none;
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02050a;color:white;font-family:Arial,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+.hidden{display:none!important}
 
 .screen{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
-  background:
-    radial-gradient(circle at top,#06394b,#02050a 65%);
+ position:fixed;inset:0;z-index:100;
+ display:flex;align-items:center;justify-content:center;
+ padding:20px;
+ background:radial-gradient(circle at top,#063d52,#02050a 70%);
 }
 
-.hidden{
-  display:none!important;
-}
-
-.box{
-  width:min(420px,100%);
-  padding:25px 20px;
-  border-radius:25px;
-  background:rgba(5,17,26,.97);
-  border:1px solid #00d9ff55;
-  box-shadow:0 0 40px #00d9ff18;
-  text-align:center;
+.card{
+ width:min(430px,100%);
+ padding:25px 20px;
+ border-radius:25px;
+ background:rgba(5,16,25,.97);
+ border:1px solid #00eaff55;
+ box-shadow:0 0 45px #00eaff22;
+ text-align:center;
 }
 
 .logo{
-  font-size:40px;
-  font-weight:1000;
-  color:#00eaff;
-  text-shadow:0 0 20px #00eaff;
-  margin-bottom:8px;
+ font-size:39px;font-weight:1000;color:#00eaff;
+ text-shadow:0 0 10px #00eaff,0 0 25px #00eaff;
+ margin-bottom:7px;
 }
 
-.text{
-  color:#91b7c3;
-  font-size:14px;
-  line-height:1.5;
-  margin-bottom:18px;
-}
+.sub{color:#8ba8b2;font-size:14px;margin-bottom:18px;line-height:1.5}
 
 input{
-  display:block;
-  width:100%;
-  height:54px;
-  margin:9px 0;
-  padding:0 15px;
-  border-radius:14px;
-  border:1px solid #00d9ff45;
-  outline:none;
-  background:#07141d;
-  color:white;
+ width:100%;height:53px;margin:7px 0;padding:0 15px;
+ border-radius:14px;border:1px solid #00eaff40;
+ background:#071923;color:white;outline:0;
 }
 
-input:focus{
-  border-color:#00eaff;
-}
+input:focus{border-color:#00eaff;box-shadow:0 0 15px #00eaff22}
 
 button{
-  display:block;
-  width:100%;
-  min-height:52px;
-  margin-top:9px;
-  border-radius:14px;
-  border:0;
+ width:100%;min-height:52px;margin-top:9px;border-radius:14px;
 }
 
-.mainBtn{
-  background:linear-gradient(135deg,#00eaff,#008cff);
-  color:#001018;
-  font-weight:900;
+.primary{
+ background:linear-gradient(135deg,#00eaff,#008cff);
+ color:#001017;font-weight:900;
 }
 
-.secondBtn{
-  background:#0a1b26;
-  color:white;
-  border:1px solid #00d9ff35;
+.secondary{
+ background:#091b26;color:white;border:1px solid #00eaff35;
 }
 
-.message{
-  min-height:22px;
-  margin-top:10px;
-  color:#8defff;
-  font-size:14px;
-}
+.msg{min-height:22px;margin-top:10px;color:#8beeff;font-size:14px}
 
-.stats{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin:18px 0;
-}
-
-.stat{
-  background:#07141d;
-  padding:15px 8px;
-  border-radius:15px;
-}
-
-.small{
-  color:#759aa6;
-  font-size:12px;
-}
-
-.big{
-  margin-top:5px;
-  font-size:22px;
-  font-weight:900;
-}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.stat{background:#071923;padding:14px;border-radius:14px}
+.label{font-size:11px;color:#75929d}
+.value{font-size:23px;font-weight:900;margin-top:4px}
 
 #game{
-  display:none;
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  background:#02050a;
+ position:fixed;inset:0;width:100%;height:100%;
+ display:none;background:#02050a;
 }
 
 #hud{
-  display:none;
-  position:fixed;
-  top:10px;
-  left:10px;
-  right:10px;
-  z-index:20;
-  justify-content:space-between;
-  pointer-events:none;
+ display:none;position:fixed;z-index:20;top:10px;left:10px;right:10px;
+ justify-content:space-between;gap:7px;pointer-events:none;
 }
 
 .hud{
-  background:#06151ecc;
-  border:1px solid #00d9ff45;
-  border-radius:12px;
-  padding:9px 12px;
-  font-weight:900;
-}
-
-.controls{
-  display:none;
-  position:fixed;
-  bottom:18px;
-  left:15px;
-  right:15px;
-  z-index:30;
-  justify-content:space-between;
-  pointer-events:none;
-}
-
-.controlGroup{
-  display:flex;
-  gap:8px;
-  pointer-events:auto;
-}
-
-.control{
-  width:65px;
-  height:60px;
-  border-radius:18px;
-  background:#071923e8;
-  border:1px solid #00d9ff55;
-  color:white;
-  font-size:24px;
-}
-
-.jump{
-  width:110px;
-  background:linear-gradient(135deg,#00eaff,#008cff);
-  color:#001018;
-  font-weight:900;
+ padding:9px 11px;border-radius:12px;background:#061923dd;
+ border:1px solid #00eaff40;font-weight:900;font-size:13px;
 }
 
 #pause{
-  display:none;
-  position:fixed;
-  top:60px;
-  right:12px;
-  z-index:40;
-  width:80px;
-  height:42px;
-  background:#071923;
-  color:white;
-  border:1px solid #00d9ff55;
+ display:none;position:fixed;z-index:30;top:60px;right:10px;
+ width:70px;height:40px;min-height:40px;background:#071923;
+ color:white;border:1px solid #00eaff55;
+}
+
+#controls{
+ display:none;position:fixed;z-index:30;left:12px;right:12px;bottom:15px;
+ justify-content:space-between;align-items:center;pointer-events:none;
+}
+
+.controlRow{display:flex;gap:8px;pointer-events:auto}
+
+.control{
+ width:62px;height:58px;min-height:58px;
+ background:#071923ee;color:white;border:1px solid #00eaff55;
+ font-size:24px;
+}
+
+.jump{
+ width:105px;
+ background:linear-gradient(135deg,#00eaff,#008cff);
+ color:#001017;font-weight:900;pointer-events:auto;
+}
+
+.rank{
+ text-align:left;max-height:330px;overflow:auto;line-height:1.9;
 }
 </style>
 </head>
 
 <body>
 
+<!-- ==================================================
+     SUPABASE EINSTELLUNGEN
+     ==================================================
+
+     DEINE SUPABASE URL:
+     https://lfsifdmaftztykpckdsh.supabase.co
+
+     NUR DIE NÄCHSTE ZEILE MUSST DU ÄNDERN:
+
+     SUPABASE_KEY = "DEIN_ANON_PUBLIC_KEY_HIER"
+
+     NICHT den service_role Key verwenden!
+================================================== -->
+
+<script>
+const SUPABASE_URL =
+"https://lfsifdmaftztykpckdsh.supabase.co";
+
+/* =====================================================
+   >>> HIER DEINEN ANON/PUBLIC/PUBLISHABLE KEY EINFÜGEN <<<
+===================================================== */
+
+const SUPABASE_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxmc2lmZG1hZnR6dHlrcGNrZHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDczMTksImV4cCI6MjEwMjQ4MzMxOX0.dfMS0zgHO_IYU7_YmR2Si6DVkD8MWiJJUt6iSJXZfi";
+
+/* ===================================================== */
+</script>
+
+
 <!-- LOGIN -->
+
 <div id="loginScreen" class="screen">
-  <div class="box">
+ <div class="card">
 
-    <div class="logo">CUBE RUSH</div>
+  <div class="logo">CUBE RUSH</div>
 
-    <div class="text">
-      Melde dich an und speichere deinen Highscore
-      in der Rangliste.
-    </div>
-
-    <input id="loginEmail" type="email" placeholder="E-Mail">
-    <input id="loginPassword" type="password" placeholder="Passwort">
-
-    <button id="loginButton" class="mainBtn">
-      ANMELDEN
-    </button>
-
-    <button id="registerOpen" class="secondBtn">
-      ACCOUNT ERSTELLEN
-    </button>
-
-    <div id="loginMessage" class="message"></div>
-
+  <div class="sub">
+   🌆 NEON CITY<br>
+   Laufe, springe, sammle Münzen und werde Nr. 1.
   </div>
+
+  <input id="loginEmail" type="email" placeholder="E-Mail">
+  <input id="loginPassword" type="password" placeholder="Passwort">
+
+  <button id="loginBtn" class="primary">
+   ANMELDEN
+  </button>
+
+  <button id="registerOpen" class="secondary">
+   ACCOUNT ERSTELLEN
+  </button>
+
+  <div id="loginMsg" class="msg"></div>
+
+ </div>
 </div>
 
 
-<!-- REGISTER -->
+<!-- REGISTRIERUNG -->
+
 <div id="registerScreen" class="screen hidden">
-  <div class="box">
+ <div class="card">
 
-    <div class="logo">CUBE RUSH</div>
+  <div class="logo">ACCOUNT</div>
 
-    <div class="text">
-      Erstelle deinen Account mit eigenem
-      Benutzernamen.
-    </div>
-
-    <input id="registerUsername"
-           type="text"
-           maxlength="20"
-           placeholder="Benutzername">
-
-    <input id="registerEmail"
-           type="email"
-           placeholder="E-Mail">
-
-    <input id="registerPassword"
-           type="password"
-           placeholder="Passwort">
-
-    <button id="registerButton" class="mainBtn">
-      ACCOUNT ERSTELLEN
-    </button>
-
-    <button id="registerBack" class="secondBtn">
-      ZURÜCK
-    </button>
-
-    <div id="registerMessage" class="message"></div>
-
+  <div class="sub">
+   Erstelle deinen eigenen Spieler.
   </div>
+
+  <input id="username" type="text" maxlength="20" placeholder="Benutzername">
+  <input id="registerEmail" type="email" placeholder="E-Mail">
+  <input id="registerPassword" type="password" placeholder="Passwort">
+
+  <button id="registerBtn" class="primary">
+   ACCOUNT ERSTELLEN
+  </button>
+
+  <button id="backLogin" class="secondary">
+   ZURÜCK
+  </button>
+
+  <div id="registerMsg" class="msg"></div>
+
+ </div>
 </div>
 
 
-<!-- MENU -->
+<!-- HAUPTMENÜ -->
+
 <div id="menuScreen" class="screen hidden">
-  <div class="box">
+ <div class="card">
 
-    <div class="logo">CUBE RUSH</div>
+  <div class="logo">CUBE RUSH</div>
 
-    <div class="text">
-      Willkommen <b id="menuUsername">Spieler</b>
-    </div>
+  <div class="sub">
+   Willkommen,
+   <b id="menuName">Spieler</b>
+  </div>
 
-    <div class="stats">
+  <div class="stats">
 
-      <div class="stat">
-        <div class="small">COINS</div>
-        <div id="menuCoins" class="big">0</div>
-      </div>
+   <div class="stat">
+    <div class="label">MÜNZEN</div>
+    <div id="menuCoins" class="value">0</div>
+   </div>
 
-      <div class="stat">
-        <div class="small">HIGHSCORE</div>
-        <div id="menuScore" class="big">0</div>
-      </div>
-
-    </div>
-
-    <button id="startButton" class="mainBtn">
-      ▶ SPIEL STARTEN
-    </button>
-
-    <button id="rankingButton" class="secondBtn">
-      🏆 RANGLISTE
-    </button>
-
-    <button id="logoutButton" class="secondBtn">
-      ABMELDEN
-    </button>
+   <div class="stat">
+    <div class="label">HIGHSCORE</div>
+    <div id="menuScore" class="value">0</div>
+   </div>
 
   </div>
+
+  <button id="startBtn" class="primary">
+   ▶ SPIEL STARTEN
+  </button>
+
+  <button id="rankingBtn" class="secondary">
+   🏆 RANGLISTE
+  </button>
+
+  <button id="logoutBtn" class="secondary">
+   ABMELDEN
+  </button>
+
+ </div>
 </div>
 
 
-<!-- RANKING -->
+<!-- RANGLISTE -->
+
 <div id="rankingScreen" class="screen hidden">
-  <div class="box">
+ <div class="card">
 
-    <div class="logo">RANGLISTE</div>
+  <div class="logo">🏆 TOP SPIELER</div>
 
-    <div id="rankingContent" class="text">
-      Lade Rangliste...
-    </div>
-
-    <button id="rankingBack" class="secondBtn">
-      ZURÜCK
-    </button>
-
+  <div id="ranking" class="rank">
+   Lade Rangliste...
   </div>
+
+  <button id="rankingBack" class="secondary">
+   ZURÜCK
+  </button>
+
+ </div>
 </div>
 
 
 <!-- GAME OVER -->
+
 <div id="gameOverScreen" class="screen hidden">
-  <div class="box">
+ <div class="card">
 
-    <div class="logo">CRASH!</div>
+  <div class="logo">CRASH!</div>
 
-    <div class="stats">
+  <div class="sub">
+   Deine Runde ist vorbei.
+  </div>
 
-      <div class="stat">
-        <div class="small">SCORE</div>
-        <div id="finalScore" class="big">0</div>
-      </div>
+  <div class="stats">
 
-      <div class="stat">
-        <div class="small">COINS</div>
-        <div id="finalCoins" class="big">0</div>
-      </div>
+   <div class="stat">
+    <div class="label">SCORE</div>
+    <div id="finalScore" class="value">0</div>
+   </div>
 
-    </div>
-
-    <button id="againButton" class="mainBtn">
-      🔄 NOCHMAL
-    </button>
-
-    <button id="gameMenuButton" class="secondBtn">
-      MENÜ
-    </button>
+   <div class="stat">
+    <div class="label">MÜNZEN</div>
+    <div id="finalCoins" class="value">0</div>
+   </div>
 
   </div>
+
+  <button id="againBtn" class="primary">
+   🔄 NOCHMAL
+  </button>
+
+  <button id="gameMenuBtn" class="secondary">
+   MENÜ
+  </button>
+
+ </div>
 </div>
 
 
-<!-- GAME -->
+<!-- SPIEL -->
+
 <canvas id="game"></canvas>
 
 <div id="hud">
 
-  <div class="hud">
-    🪙 <span id="hudCoins">0</span>
-  </div>
+ <div class="hud">
+  🪙 <span id="hudCoins">0</span>
+ </div>
 
-  <div class="hud">
-    🏆 <span id="hudScore">0</span>
-  </div>
+ <div class="hud">
+  🏆 <span id="hudScore">0</span>
+ </div>
 
-  <div class="hud">
-    🌆 Neon City
-  </div>
+ <div class="hud">
+  🌆 NEON CITY
+ </div>
 
 </div>
 
 <button id="pause">⏸</button>
 
-<div id="controls" class="controls">
+<div id="controls">
 
-  <div class="controlGroup">
-    <button id="left" class="control">←</button>
-    <button id="right" class="control">→</button>
-  </div>
+ <div class="controlRow">
 
-  <button id="jump" class="control jump">
-    SPRINGEN
-  </button>
+  <button id="left" class="control">←</button>
+  <button id="right" class="control">→</button>
+
+ </div>
+
+ <button id="jump" class="control jump">
+  SPRINGEN
+ </button>
 
 </div>
 
@@ -414,1741 +339,1258 @@ button{
 <script>
 
 /* =====================================================
-   1. SUPABASE
-===================================================== */
-
-const SUPABASE_URL =
-"https://lfsifdmaftztykpckdsh.supabase.co";
-
-/*
-   NUR HIER DEINEN NEUEN
-   PUBLISHABLE / ANON KEY EINSETZEN.
-*/
-
-const SUPABASE_ANON_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxmc2lmZG1hZnR6dHlrcGNrZHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDczMTksImV4cCI6MjEwMjQ4MzMxOX0.dfMS0zgHO_IYU7_YmR2Si6DVkD8MWiJJUt6iSJXZfi
-
-
-/* =====================================================
-   2. SPIELER
+   GRUNDVARIABLEN
 ===================================================== */
 
 let token = "";
+let player = null;
 
-let player = {
-  id:"",
-  username:"",
-  coins:0,
-  highscore:0
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let W = innerWidth;
+let H = innerHeight;
+
+canvas.width = W;
+canvas.height = H;
+
+addEventListener("resize",()=>{
+ W=innerWidth;
+ H=innerHeight;
+ canvas.width=W;
+ canvas.height=H;
+});
+
+
+/* =====================================================
+   SUPABASE API
+===================================================== */
+
+async function api(path,options={}){
+
+ if(
+  !SUPABASE_KEY ||
+  SUPABASE_KEY === "DEIN_ANON_PUBLIC_KEY_HIER"
+ ){
+  throw new Error(
+   "Supabase-Key fehlt. Trage oben deinen ANON/PUBLIC-Key ein."
+  );
+ }
+
+ const headers={
+  "apikey":SUPABASE_KEY,
+  "Content-Type":"application/json",
+  ...(token?{"Authorization":"Bearer "+token}:{}),
+  ...(options.headers||{})
+ };
+
+ const response=await fetch(
+  SUPABASE_URL+path,
+  {
+   ...options,
+   headers
+  }
+ );
+
+ const text=await response.text();
+
+ let data=null;
+
+ try{
+  data=text?JSON.parse(text):null;
+ }catch{}
+
+ if(!response.ok){
+  throw new Error(
+   data?.message ||
+   data?.msg ||
+   data?.error_description ||
+   text ||
+   "Supabase Fehler"
+  );
+ }
+
+ return data;
+}
+
+
+/* =====================================================
+   SCREENS
+===================================================== */
+
+function screen(id){
+
+ document.querySelectorAll(".screen")
+ .forEach(x=>x.classList.add("hidden"));
+
+ document.getElementById(id)
+ .classList.remove("hidden");
+}
+
+
+function msg(id,text){
+
+ document.getElementById(id).textContent=text;
+}
+
+
+/* =====================================================
+   ACCOUNT ERSTELLEN
+===================================================== */
+
+document.getElementById("registerBtn").onclick=
+async()=>{
+
+ const name=
+  document.getElementById("username")
+  .value.trim();
+
+ const email=
+  document.getElementById("registerEmail")
+  .value.trim();
+
+ const password=
+  document.getElementById("registerPassword")
+  .value;
+
+
+ if(name.length<3){
+  msg("registerMsg","Benutzername muss mindestens 3 Zeichen haben.");
+  return;
+ }
+
+ if(!email.includes("@")){
+  msg("registerMsg","Bitte eine gültige E-Mail eingeben.");
+  return;
+ }
+
+ if(password.length<6){
+  msg("registerMsg","Passwort muss mindestens 6 Zeichen haben.");
+  return;
+ }
+
+ msg("registerMsg","Account wird erstellt...");
+
+ try{
+
+  const data=await api(
+   "/auth/v1/signup",
+   {
+    method:"POST",
+    body:JSON.stringify({
+     email,
+     password,
+     data:{
+      username:name
+     }
+    })
+   }
+  );
+
+  if(!data.user){
+   throw new Error("Account konnte nicht erstellt werden.");
+  }
+
+  if(data.access_token){
+
+   token=data.access_token;
+
+   player={
+    id:data.user.id,
+    username:name,
+    coins:0,
+    highscore:0
+   };
+
+   await createProfile();
+
+   openMenu();
+
+  }else{
+
+   msg(
+    "registerMsg",
+    "✅ Account erstellt. Bestätige deine E-Mail und melde dich danach an."
+   );
+
+  }
+
+ }catch(e){
+
+  msg("registerMsg","❌ "+e.message);
+
+ }
 };
 
 
 /* =====================================================
-   3. HILFSFUNKTIONEN
+   PROFIL ERSTELLEN
 ===================================================== */
 
-function show(id){
+async function createProfile(){
 
-  document
-    .querySelectorAll(".screen")
-    .forEach(x =>
-      x.classList.add("hidden")
-    );
+ try{
 
-  document
-    .getElementById(id)
-    .classList.remove("hidden");
+  await api(
+   "/rest/v1/Players",
+   {
+    method:"POST",
+    headers:{
+     "Prefer":"resolution=ignore-duplicates"
+    },
+    body:JSON.stringify({
+     id:player.id,
+     username:player.username,
+     coins:0,
+     highscore:0
+    })
+   }
+  );
+
+ }catch(e){
+
+  console.log("Profil:",e.message);
+
+ }
 }
 
 
-function message(id,text){
+/* =====================================================
+   LOGIN
+===================================================== */
 
-  document
-    .getElementById(id)
-    .textContent = text;
-}
+document.getElementById("loginBtn").onclick=
+async()=>{
 
+ const email=
+  document.getElementById("loginEmail")
+  .value.trim();
 
-async function supabase(path,options={}){
+ const password=
+  document.getElementById("loginPassword")
+  .value;
 
-  if(
-    !SUPABASE_ANON_KEY ||
-    SUPABASE_ANON_KEY ===
-    "DEIN_ANON_KEY_HIER"
-  ){
+ if(!email || !password){
 
-    throw new Error(
-      "Supabase-Key fehlt."
-    );
-  }
+  msg(
+   "loginMsg",
+   "Bitte E-Mail und Passwort eingeben."
+  );
 
+  return;
+ }
 
-  const headers = {
+ msg("loginMsg","Anmeldung...");
 
-    apikey:
-      SUPABASE_ANON_KEY,
+ try{
 
-    "Content-Type":
-      "application/json",
+  const data=await api(
+   "/auth/v1/token?grant_type=password",
+   {
+    method:"POST",
+    body:JSON.stringify({
+     email,
+     password
+    })
+   }
+  );
 
-    ...(token
-      ? {
-          Authorization:
-          "Bearer " + token
-        }
-      : {}),
+  token=data.access_token;
 
-    ...(options.headers || {})
-
+  player={
+   id:data.user.id,
+   username:
+    data.user.user_metadata?.username ||
+    email.split("@")[0],
+   coins:0,
+   highscore:0
   };
 
+  await loadProfile();
 
-  const response =
-    await fetch(
-      SUPABASE_URL + path,
-      {
-        ...options,
-        headers
-      }
-    );
+  openMenu();
+
+ }catch(e){
+
+  msg(
+   "loginMsg",
+   "❌ "+e.message
+  );
+
+ }
+};
 
 
-  const text =
-    await response.text();
+/* =====================================================
+   PROFIL LADEN
+===================================================== */
 
+async function loadProfile(){
 
-  let data = null;
+ try{
 
-  try{
-    data =
-      text
-      ? JSON.parse(text)
-      : null;
+  const rows=await api(
+   "/rest/v1/Players"+
+   "?id=eq."+
+   encodeURIComponent(player.id)+
+   "&select=*"
+  );
+
+  if(rows && rows.length){
+
+   player.username=
+    rows[0].username ||
+    player.username;
+
+   player.coins=
+    Number(rows[0].coins||0);
+
+   player.highscore=
+    Number(rows[0].highscore||0);
   }
-  catch{
-    data = null;
-  }
 
+ }catch(e){
 
-  if(!response.ok){
+  console.log("Profil laden:",e.message);
 
-    throw new Error(
-      data?.message ||
-      data?.msg ||
-      data?.error_description ||
-      text ||
-      "Fehler"
-    );
-  }
-
-
-  return data;
+ }
 }
 
 
 /* =====================================================
-   4. REGISTRIEREN
+   PROFIL SPEICHERN
 ===================================================== */
 
-document
-  .getElementById("registerButton")
-  .addEventListener(
-    "click",
-    register
+async function saveProfile(){
+
+ try{
+
+  await api(
+   "/rest/v1/Players?id=eq."+
+   encodeURIComponent(player.id),
+   {
+    method:"PATCH",
+    headers:{
+     "Prefer":"return=minimal"
+    },
+    body:JSON.stringify({
+     username:player.username,
+     coins:player.coins,
+     highscore:player.highscore
+    })
+   }
   );
 
+ }catch(e){
 
-async function register(){
+  console.log("Speichern:",e.message);
 
-  const username =
-    document
-      .getElementById("registerUsername")
-      .value
-      .trim();
-
-  const email =
-    document
-      .getElementById("registerEmail")
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById("registerPassword")
-      .value;
-
-
-  if(username.length < 3){
-
-    message(
-      "registerMessage",
-      "Benutzername mindestens 3 Zeichen."
-    );
-
-    return;
-  }
-
-
-  if(!email.includes("@")){
-
-    message(
-      "registerMessage",
-      "Bitte eine gültige E-Mail eingeben."
-    );
-
-    return;
-  }
-
-
-  if(password.length < 6){
-
-    message(
-      "registerMessage",
-      "Passwort mindestens 6 Zeichen."
-    );
-
-    return;
-  }
-
-
-  message(
-    "registerMessage",
-    "Account wird erstellt..."
-  );
-
-
-  try{
-
-    const data =
-      await supabase(
-        "/auth/v1/signup",
-        {
-          method:"POST",
-
-          body:JSON.stringify({
-
-            email,
-            password,
-
-            data:{
-              username
-            }
-
-          })
-        }
-      );
-
-
-    if(!data.user){
-
-      throw new Error(
-        "Account konnte nicht erstellt werden."
-      );
-    }
-
-
-    player.id =
-      data.user.id;
-
-    player.username =
-      username;
-
-
-    /*
-      Falls E-Mail-Bestätigung
-      aktiviert ist:
-    */
-
-    if(!data.access_token){
-
-      message(
-        "registerMessage",
-        "Account erstellt. Bestätige deine E-Mail und melde dich danach an."
-      );
-
-      return;
-    }
-
-
-    token =
-      data.access_token;
-
-
-    await createPlayer();
-
-
-    loadLocal();
-
-    updateMenu();
-
-    show("menuScreen");
-
-  }
-  catch(error){
-
-    message(
-      "registerMessage",
-      "❌ " + error.message
-    );
-  }
+ }
 }
 
 
 /* =====================================================
-   5. PLAYER IN PLAYERS
+   MENU
 ===================================================== */
 
-async function createPlayer(){
+function openMenu(){
 
-  try{
+ document.getElementById("menuName")
+ .textContent=player.username;
 
-    await supabase(
-      "/rest/v1/Players",
-      {
-        method:"POST",
+ document.getElementById("menuCoins")
+ .textContent=player.coins.toLocaleString();
 
-        headers:{
-          Prefer:
-          "resolution=ignore-duplicates"
-        },
+ document.getElementById("menuScore")
+ .textContent=player.highscore.toLocaleString();
 
-        body:JSON.stringify({
-
-          id:player.id,
-
-          username:
-            player.username,
-
-          highscore:0
-
-        })
-      }
-    );
-
-  }
-  catch(error){
-
-    console.log(
-      "Players:",
-      error.message
-    );
-  }
+ screen("menuScreen");
 }
 
 
 /* =====================================================
-   6. LOGIN
+   NAVIGATION
 ===================================================== */
 
-document
-  .getElementById("loginButton")
-  .addEventListener(
-    "click",
-    login
+document.getElementById("registerOpen").onclick=()=>{
+ msg("registerMsg","");
+ screen("registerScreen");
+};
+
+document.getElementById("backLogin").onclick=()=>{
+ screen("loginScreen");
+};
+
+document.getElementById("logoutBtn").onclick=()=>{
+ token="";
+ player=null;
+ screen("loginScreen");
+};
+
+
+/* =====================================================
+   RANGLISTE
+===================================================== */
+
+document.getElementById("rankingBtn").onclick=
+async()=>{
+
+ screen("rankingScreen");
+
+ const box=document.getElementById("ranking");
+
+ box.innerHTML="Lade Rangliste...";
+
+ try{
+
+  const rows=await api(
+   "/rest/v1/Players"+
+   "?select=username,highscore"+
+   "&order=highscore.desc"+
+   "&limit=50"
   );
 
+  if(!rows.length){
 
-async function login(){
+   box.innerHTML="Noch keine Spieler.";
 
-  const email =
-    document
-      .getElementById("loginEmail")
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById("loginPassword")
-      .value;
-
-
-  if(!email || !password){
-
-    message(
-      "loginMessage",
-      "E-Mail und Passwort eingeben."
-    );
-
-    return;
+   return;
   }
 
+  box.innerHTML=rows.map(
+   (x,i)=>`
+    <div>
+     <b>${i+1}.</b>
+     ${safe(x.username)}
+     — ${Number(x.highscore||0).toLocaleString()}
+    </div>
+   `
+  ).join("");
 
-  message(
-    "loginMessage",
-    "Anmeldung..."
-  );
+ }catch(e){
 
+  box.innerHTML="❌ "+safe(e.message);
 
-  try{
+ }
+};
 
-    const data =
-      await supabase(
-        "/auth/v1/token?grant_type=password",
-        {
-          method:"POST",
-
-          body:JSON.stringify({
-
-            email,
-            password
-
-          })
-        }
-      );
+document.getElementById("rankingBack").onclick=
+()=>{
+ openMenu();
+};
 
 
-    token =
-      data.access_token;
+function safe(text){
 
-
-    player.id =
-      data.user.id;
-
-
-    player.username =
-      data.user.user_metadata?.username ||
-      email.split("@")[0];
-
-
-    await loadPlayer();
-
-    loadLocal();
-
-    updateMenu();
-
-    show("menuScreen");
-
-  }
-  catch(error){
-
-    message(
-      "loginMessage",
-      "❌ " + error.message
-    );
-  }
+ return String(text)
+ .replaceAll("&","&amp;")
+ .replaceAll("<","&lt;")
+ .replaceAll(">","&gt;")
+ .replaceAll('"',"&quot;");
 }
 
 
 /* =====================================================
-   7. PLAYER LADEN
+   SPIELVARIABLEN
 ===================================================== */
-
-async function loadPlayer(){
-
-  try{
-
-    const rows =
-      await supabase(
-        "/rest/v1/Players" +
-        "?id=eq." +
-        encodeURIComponent(
-          player.id
-        ) +
-        "&select=*"
-      );
-
-
-    if(rows.length){
-
-      player.username =
-        rows[0].username ||
-        player.username;
-
-      player.highscore =
-        Number(
-          rows[0].highscore || 0
-        );
-    }
-
-  }
-  catch(error){
-
-    console.log(
-      error.message
-    );
-  }
-}
-
-
-/* =====================================================
-   8. HIGHSCORE SPEICHERN
-===================================================== */
-
-async function saveHighscore(){
-
-  try{
-
-    await supabase(
-      "/rest/v1/Players?id=eq." +
-      encodeURIComponent(
-        player.id
-      ),
-      {
-        method:"PATCH",
-
-        headers:{
-          Prefer:
-          "return=minimal"
-        },
-
-        body:JSON.stringify({
-
-          username:
-            player.username,
-
-          highscore:
-            player.highscore
-
-        })
-      }
-    );
-
-  }
-  catch(error){
-
-    console.log(
-      "Highscore konnte nicht gespeichert werden:",
-      error.message
-    );
-  }
-}
-
-
-/* =====================================================
-   9. RANGLISTE
-===================================================== */
-
-document
-  .getElementById("rankingButton")
-  .addEventListener(
-    "click",
-    ranking
-  );
-
-
-async function ranking(){
-
-  show("rankingScreen");
-
-
-  const box =
-    document
-      .getElementById(
-        "rankingContent"
-      );
-
-
-  box.textContent =
-    "Lade Rangliste...";
-
-
-  try{
-
-    const rows =
-      await supabase(
-        "/rest/v1/Players" +
-        "?select=username,highscore" +
-        "&order=highscore.desc" +
-        "&limit=50"
-      );
-
-
-    if(!rows.length){
-
-      box.textContent =
-        "Noch keine Spieler.";
-
-      return;
-    }
-
-
-    box.innerHTML =
-      rows.map(
-        (x,i)=>
-        `${i+1}. ${escapeHTML(
-          x.username
-        )} — ${Number(
-          x.highscore || 0
-        ).toLocaleString()}`
-      )
-      .join("<br><br>");
-
-  }
-  catch(error){
-
-    box.textContent =
-      "❌ " + error.message;
-  }
-}
-
-
-function escapeHTML(value){
-
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;");
-}
-
-
-/* =====================================================
-   10. NAVIGATION
-===================================================== */
-
-document
-  .getElementById("registerOpen")
-  .addEventListener(
-    "click",
-    ()=>{
-      show("registerScreen");
-    }
-  );
-
-
-document
-  .getElementById("registerBack")
-  .addEventListener(
-    "click",
-    ()=>{
-      show("loginScreen");
-    }
-  );
-
-
-document
-  .getElementById("rankingBack")
-  .addEventListener(
-    "click",
-    ()=>{
-      show("menuScreen");
-    }
-  );
-
-
-document
-  .getElementById("logoutButton")
-  .addEventListener(
-    "click",
-    ()=>{
-      token="";
-      show("loginScreen");
-    }
-  );
-
-
-/* =====================================================
-   11. LOCAL DATEN
-===================================================== */
-
-function loadLocal(){
-
-  player.coins =
-    Number(
-      localStorage.getItem(
-        "cubeCoins"
-      ) || 0
-    );
-}
-
-
-function saveLocal(){
-
-  localStorage.setItem(
-    "cubeCoins",
-    player.coins
-  );
-}
-
-
-function updateMenu(){
-
-  document
-    .getElementById(
-      "menuUsername"
-    )
-    .textContent =
-      player.username ||
-      "Spieler";
-
-
-  document
-    .getElementById(
-      "menuCoins"
-    )
-    .textContent =
-      player.coins.toLocaleString();
-
-
-  document
-    .getElementById(
-      "menuScore"
-    )
-    .textContent =
-      player.highscore.toLocaleString();
-}
-
-
-/* =====================================================
-   12. GAME
-===================================================== */
-
-const canvas =
-  document.getElementById(
-    "game"
-  );
-
-const ctx =
-  canvas.getContext("2d");
-
 
 let playing=false;
 let paused=false;
 
 let lane=0;
 
+/*
+ -1 = LINKS
+  0 = MITTE
+  1 = RECHTS
+
+Alle drei Spuren funktionieren.
+*/
+
 let score=0;
 let roundCoins=0;
 
-let playerY=0;
-let jumpSpeed=0;
-
-let speed=300;
+let speed=330;
 
 let objects=[];
 
-let coinTimer=1;
 let carTimer=1;
+let coinTimer=2;
 
-let lastTime=0;
+let jumpY=0;
+let jumpVelocity=0;
+
+let lastTime=performance.now();
 
 
-function resize(){
+/* =====================================================
+   SPUREN
+===================================================== */
 
-  canvas.width =
-    innerWidth;
+function road(){
 
-  canvas.height =
-    innerHeight;
+ return Math.min(W*.86,650);
 }
 
 
-addEventListener(
-  "resize",
-  resize
-);
+function roadLeft(){
 
-resize();
+ return (W-road())/2;
+}
 
 
-function laneX(l){
+function laneWidth(){
 
-  const width =
-    Math.min(
-      canvas.width*.86,
-      650
-    );
+ return road()/3;
+}
 
 
-  const left =
-    (canvas.width-width)/2;
+function laneX(n){
 
-
-  const laneWidth =
-    width/3;
-
-
-  return (
-    left +
-    laneWidth*(l+1) +
-    laneWidth/2
-  );
+ return (
+  roadLeft()+
+  laneWidth()*(n+1)+
+  laneWidth()/2
+ );
 }
 
 
 /* =====================================================
-   13. START
+   SPIEL STARTEN
 ===================================================== */
 
-document
-  .getElementById("startButton")
-  .addEventListener(
-    "click",
-    startGame
-  );
+document.getElementById("startBtn").onclick=
+()=>{
+ startGame();
+};
 
 
 function startGame(){
 
-  document
-    .querySelectorAll(".screen")
-    .forEach(
-      x =>
-      x.classList.add("hidden")
-    );
+ document.querySelectorAll(".screen")
+ .forEach(x=>x.classList.add("hidden"));
 
+ canvas.style.display="block";
 
-  canvas.style.display =
-    "block";
+ document.getElementById("hud")
+ .style.display="flex";
 
+ document.getElementById("controls")
+ .style.display="flex";
 
-  document
-    .getElementById("hud")
-    .style.display =
-    "flex";
+ document.getElementById("pause")
+ .style.display="block";
 
+ playing=true;
+ paused=false;
 
-  document
-    .getElementById("controls")
-    .style.display =
-    "flex";
+ lane=0;
 
+ score=0;
+ roundCoins=0;
 
-  document
-    .getElementById("pause")
-    .style.display =
-    "block";
+ speed=330;
 
+ objects=[];
 
-  playing=true;
-  paused=false;
+ carTimer=1;
+ coinTimer=2;
 
-  lane=0;
+ jumpY=0;
+ jumpVelocity=0;
 
-  score=0;
-  roundCoins=0;
+ lastTime=performance.now();
 
-  playerY=0;
-  jumpSpeed=0;
-
-  speed=300;
-
-  objects=[];
-
-  coinTimer=1.5;
-  carTimer=1;
-
-  lastTime=
-    performance.now();
-
+ document.getElementById("pause")
+ .textContent="⏸";
 }
 
 
 /* =====================================================
-   14. BACKGROUND
+   NEON CITY HINTERGRUND
 ===================================================== */
 
-function background(){
+function drawBackground(){
 
-  const gradient =
-    ctx.createLinearGradient(
-      0,0,
-      0,canvas.height
-    );
+ const g=ctx.createLinearGradient(
+  0,0,0,H
+ );
 
+ g.addColorStop(0,"#073a4d");
+ g.addColorStop(1,"#02050a");
 
-  gradient.addColorStop(
-    0,
-    "#052333"
-  );
+ ctx.fillStyle=g;
+ ctx.fillRect(0,0,W,H);
 
 
-  gradient.addColorStop(
-    1,
-    "#02050a"
-  );
+ /* Gebäude */
 
+ for(let i=0;i<22;i++){
 
-  ctx.fillStyle =
-    gradient;
+  const bw=28+(i%4)*12;
+  const bh=100+(i*37)%250;
 
+  const bx=i*(W/21);
+
+  ctx.fillStyle="#07151e";
 
   ctx.fillRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
+   bx,
+   H-bh-140,
+   bw,
+   bh
   );
 
+  /* Fenster */
 
-  /*
-    Stadt
-  */
+  ctx.fillStyle="#00eaff55";
 
   for(
-    let i=0;
-    i<16;
-    i++
+   let y=H-bh-125;
+   y<H-150;
+   y+=25
   ){
 
-    const w =
-      35+(i%3)*18;
+   ctx.fillRect(
+    bx+7,
+    y,
+    5,
+    8
+   );
 
-    const h =
-      100+(i*47)%200;
-
-    ctx.fillStyle =
-      "#07151f";
-
-
-    ctx.fillRect(
-      i*canvas.width/16,
-      canvas.height-h-140,
-      w,
-      h
-    );
   }
+ }
 
 
-  /*
-    Straße
-  */
+ /* Straße */
 
-  const width =
-    Math.min(
-      canvas.width*.86,
-      650
-    );
+ const rw=road();
+ const rl=roadLeft();
+
+ ctx.fillStyle="#111820";
+
+ ctx.fillRect(
+  rl,
+  0,
+  rw,
+  H
+ );
 
 
-  const left =
-    (canvas.width-width)/2;
+ /* Neon-Ränder */
+
+ ctx.fillStyle="#00eaff";
+
+ ctx.fillRect(
+  rl,
+  0,
+  3,
+  H
+ );
+
+ ctx.fillRect(
+  rl+rw-3,
+  0,
+  3,
+  H
+ );
 
 
-  ctx.fillStyle =
-    "#11181e";
+ /* Spurmarkierungen */
 
+ const lw=laneWidth();
+
+ const offset=(score*9)%90;
+
+ ctx.fillStyle="#ffffff88";
+
+ for(
+  let y=-90+offset;
+  y<H;
+  y+=90
+ ){
 
   ctx.fillRect(
-    left,
-    0,
-    width,
-    canvas.height
+   rl+lw-2,
+   y,
+   4,
+   45
   );
-
-
-  ctx.fillStyle =
-    "#00eaff";
-
 
   ctx.fillRect(
-    left,
-    0,
-    3,
-    canvas.height
+   rl+lw*2-2,
+   y,
+   4,
+   45
   );
-
-
-  ctx.fillRect(
-    left+width-3,
-    0,
-    3,
-    canvas.height
-  );
-
-
-  const lw =
-    width/3;
-
-
-  const offset =
-    (score*8)%90;
-
-
-  ctx.fillStyle =
-    "#ffffff99";
-
-
-  for(
-    let y=-90+offset;
-    y<canvas.height;
-    y+=90
-  ){
-
-    ctx.fillRect(
-      left+lw-2,
-      y,
-      4,
-      45
-    );
-
-
-    ctx.fillRect(
-      left+lw*2-2,
-      y,
-      4,
-      45
-    );
-  }
+ }
 }
 
 
 /* =====================================================
-   15. AUTOS
+   AUTOS
 ===================================================== */
 
-function car(){
+function spawnCar(){
 
-  /*
-    Die drei Spuren bleiben frei bewegbar.
-    Es werden niemals alle Spuren
-    gleichzeitig blockiert.
-  */
+ /*
+   Niemals die komplette Straße blockieren.
+   So bleibt mindestens eine Spur frei.
+ */
 
-  const possible =
-    [-1,0,1].filter(
-      l =>
-      !objects.some(
-        o =>
-        o.type==="car" &&
-        o.lane===l &&
-        o.y<250
-      )
-    );
+ const free=[-1,0,1].filter(
+  n=>!objects.some(
+   o=>o.type==="car" &&
+      o.lane===n &&
+      o.y<230
+  )
+ );
+
+ if(!free.length)return;
+
+ const n=
+  free[
+   Math.floor(
+    Math.random()*free.length
+   )
+  ];
+
+ objects.push({
+  type:"car",
+  lane:n,
+  y:-100,
+  color:[
+   "#ff1744",
+   "#008cff",
+   "#ff9800",
+   "#ffffff"
+  ][Math.floor(Math.random()*4)]
+ });
+}
 
 
-  if(!possible.length)
-    return;
+/* =====================================================
+   MÜNZEN
+===================================================== */
 
+function spawnCoins(){
 
-  const l =
-    possible[
-      Math.floor(
-        Math.random()*
-        possible.length
-      )
-    ];
+ /*
+   NEON CITY:
+   Immer nur 3–6 Münzen
+   in einer Gruppe.
+ */
 
+ const amount=
+  3+
+  Math.floor(
+   Math.random()*4
+  );
+
+ const n=
+  [-1,0,1][
+   Math.floor(
+    Math.random()*3
+   )
+  ];
+
+ for(let i=0;i<amount;i++){
 
   objects.push({
-
-    type:"car",
-
-    lane:l,
-
-    y:-100,
-
-    color:
-      [
-        "#ff1744",
-        "#008cff",
-        "#ff9800",
-        "#ffffff"
-      ][
-        Math.floor(
-          Math.random()*4
-        )
-      ]
-
+   type:"coin",
+   lane:n,
+   y:-50-i*65
   });
+ }
 }
 
 
 /* =====================================================
-   16. MÜNZEN
-===================================================== */
-
-function coins(){
-
-  /*
-    NEON CITY:
-    Immer zwischen 3 und 6 Münzen.
-  */
-
-  const amount =
-    3+
-    Math.floor(
-      Math.random()*4
-    );
-
-
-  const l =
-    [-1,0,1][
-      Math.floor(
-        Math.random()*3
-      )
-    ];
-
-
-  for(
-    let i=0;
-    i<amount;
-    i++
-  ){
-
-    objects.push({
-
-      type:"coin",
-
-      lane:l,
-
-      y:-50-i*60
-
-    });
-  }
-}
-
-
-/* =====================================================
-   17. ZEICHNEN
+   OBJEKTE ZEICHNEN
 ===================================================== */
 
 function drawObjects(){
 
-  objects.forEach(
-    o=>{
+ for(const o of objects){
 
-      const x =
-        laneX(o.lane);
+  const x=laneX(o.lane);
 
+  if(o.type==="coin"){
 
-      if(o.type==="coin"){
+   ctx.save();
 
-        ctx.save();
+   ctx.shadowColor="#ffd600";
+   ctx.shadowBlur=20;
 
-        ctx.fillStyle =
-          "#ffd600";
+   ctx.fillStyle="#ffd600";
 
-        ctx.shadowColor =
-          "#ffd600";
+   ctx.beginPath();
 
-        ctx.shadowBlur =
-          20;
+   ctx.arc(
+    x,
+    o.y,
+    14,
+    0,
+    Math.PI*2
+   );
 
+   ctx.fill();
 
-        ctx.beginPath();
+   ctx.restore();
 
-        ctx.arc(
-          x,
-          o.y,
-          14,
-          0,
-          Math.PI*2
-        );
+  }else{
 
+   ctx.save();
 
-        ctx.fill();
+   ctx.translate(x,o.y);
 
-        ctx.restore();
+   ctx.shadowColor=o.color;
+   ctx.shadowBlur=20;
 
-      }
-      else{
+   ctx.fillStyle=o.color;
 
-        ctx.save();
+   ctx.beginPath();
 
-        ctx.translate(
-          x,
-          o.y
-        );
+   ctx.roundRect(
+    -30,
+    -50,
+    60,
+    100,
+    12
+   );
 
+   ctx.fill();
 
-        ctx.shadowColor =
-          o.color;
+   ctx.shadowBlur=0;
 
-        ctx.shadowBlur =
-          18;
+   ctx.fillStyle="#17303b";
 
+   ctx.fillRect(
+    -19,
+    -29,
+    38,
+    24
+   );
 
-        ctx.fillStyle =
-          o.color;
-
-
-        ctx.beginPath();
-
-        ctx.roundRect(
-          -30,
-          -50,
-          60,
-          100,
-          12
-        );
-
-
-        ctx.fill();
-
-
-        ctx.shadowBlur=0;
-
-
-        ctx.fillStyle =
-          "#17303d";
-
-
-        ctx.fillRect(
-          -19,
-          -28,
-          38,
-          24
-        );
-
-
-        ctx.restore();
-      }
-
-    }
-  );
+   ctx.restore();
+  }
+ }
 }
 
+
+/* =====================================================
+   SPIELER
+===================================================== */
 
 function drawPlayer(){
 
-  const x =
-    laneX(lane);
+ const x=laneX(lane);
 
+ const y=
+  H*.76-jumpY;
 
-  const y =
-    canvas.height*.76-
-    playerY;
+ ctx.save();
 
+ ctx.translate(x,y);
 
-  ctx.save();
+ ctx.shadowColor="#00eaff";
+ ctx.shadowBlur=25;
 
+ ctx.fillStyle="#00eaff";
 
-  ctx.translate(
-    x,
-    y
-  );
+ ctx.beginPath();
 
+ ctx.roundRect(
+  -26,
+  -26,
+  52,
+  52,
+  10
+ );
 
-  ctx.shadowColor =
-    "#00eaff";
+ ctx.fill();
 
-  ctx.shadowBlur =
-    25;
+ ctx.shadowBlur=0;
 
+ ctx.fillStyle="#021017";
 
-  ctx.fillStyle =
-    "#00eaff";
+ ctx.fillRect(
+  -13,
+  -9,
+  26,
+  9
+ );
 
-
-  ctx.beginPath();
-
-  ctx.roundRect(
-    -26,
-    -26,
-    52,
-    52,
-    10
-  );
-
-
-  ctx.fill();
-
-
-  ctx.restore();
+ ctx.restore();
 }
 
 
 /* =====================================================
-   18. SPRINGEN
-===================================================== */
-
-function jump(){
-
-  if(
-    !playing ||
-    paused
-  )
-    return;
-
-
-  if(playerY<=1){
-
-    jumpSpeed=820;
-  }
-}
-
-
-document
-  .getElementById("jump")
-  .addEventListener(
-    "click",
-    jump
-  );
-
-
-/* =====================================================
-   19. LINKS / RECHTS
+   LINKS / RECHTS
 ===================================================== */
 
 function left(){
 
-  if(!playing || paused)
-    return;
+ if(!playing||paused)return;
 
-  lane=
-    Math.max(
-      -1,
-      lane-1
-    );
+ lane=Math.max(-1,lane-1);
 }
 
 
 function right(){
 
-  if(!playing || paused)
-    return;
+ if(!playing||paused)return;
 
-  lane=
-    Math.min(
-      1,
-      lane+1
-    );
+ lane=Math.min(1,lane+1);
 }
 
 
-document
-  .getElementById("left")
-  .addEventListener(
-    "click",
-    left
-  );
-
-
-document
-  .getElementById("right")
-  .addEventListener(
-    "click",
-    right
-  );
+document.getElementById("left").onclick=left;
+document.getElementById("right").onclick=right;
 
 
 /* =====================================================
-   20. UPDATE
+   SPRINGEN
+===================================================== */
+
+function jump(){
+
+ if(!playing||paused)return;
+
+ if(jumpY<=0){
+
+  jumpVelocity=850;
+ }
+}
+
+
+document.getElementById("jump").onclick=jump;
+
+
+/* =====================================================
+   UPDATE
 ===================================================== */
 
 function update(dt){
 
-  if(!playing || paused)
-    return;
+ if(!playing||paused)return;
+
+ const s=dt/1000;
+
+ score+=s*10;
+
+ speed=Math.min(
+  700,
+  speed+s*3
+ );
 
 
-  const s =
-    dt/1000;
+ /* Sprung */
+
+ jumpVelocity-=1900*s;
+
+ jumpY+=jumpVelocity*s;
+
+ if(jumpY<0){
+
+  jumpY=0;
+  jumpVelocity=0;
+ }
 
 
-  score +=
-    s*10;
+ /* Münzen */
+
+ coinTimer-=s;
+
+ if(coinTimer<=0){
+
+  spawnCoins();
+
+  coinTimer=
+   4+
+   Math.random()*1.5;
+ }
 
 
-  speed =
-    Math.min(
-      700,
-      speed+s*3
-    );
+ /* Autos */
+
+ carTimer-=s;
+
+ if(carTimer<=0){
+
+  spawnCar();
+
+  carTimer=
+   1.25+
+   Math.random()*.75;
+ }
 
 
-  /*
-    Sprung
-  */
+ /* Objekte */
 
-  jumpSpeed -=
-    1900*s;
+ for(
+  let i=objects.length-1;
+  i>=0;
+  i--
+ ){
+
+  const o=objects[i];
+
+  o.y+=speed*s;
 
 
-  playerY +=
-    jumpSpeed*s;
+  if(o.y>H+120){
 
-
-  if(playerY<0){
-
-    playerY=0;
-    jumpSpeed=0;
+   objects.splice(i,1);
+   continue;
   }
 
 
-  /*
-    Münzen
-  */
-
-  coinTimer -= s;
+  const playerY=
+   H*.76-jumpY;
 
 
-  if(coinTimer<=0){
+  /* Münze einsammeln */
 
-    coins();
-
-    coinTimer =
-      3.5+
-      Math.random()*1.5;
-  }
-
-
-  /*
-    Autos
-  */
-
-  carTimer -= s;
-
-
-  if(carTimer<=0){
-
-    car();
-
-    carTimer =
-      1.3+
-      Math.random()*.8;
-  }
-
-
-  /*
-    Objekte
-  */
-
-  for(
-    let i=objects.length-1;
-    i>=0;
-    i--
+  if(
+   o.type==="coin" &&
+   o.lane===lane &&
+   Math.abs(o.y-playerY)<55
   ){
 
-    const o=
-      objects[i];
+   roundCoins++;
 
+   objects.splice(i,1);
 
-    o.y +=
-      speed*s;
-
-
-    if(
-      o.y>
-      canvas.height+100
-    ){
-
-      objects.splice(i,1);
-
-      continue;
-    }
-
-
-    /*
-      Münze
-    */
-
-    if(
-      o.type==="coin" &&
-      o.lane===lane &&
-      Math.abs(
-        o.y-
-        (
-          canvas.height*.76-
-          playerY
-        )
-      )<50
-    ){
-
-      roundCoins++;
-
-      objects.splice(i,1);
-
-      continue;
-    }
-
-
-    /*
-      Auto
-    */
-
-    if(
-      o.type==="car" &&
-      o.lane===lane &&
-      Math.abs(
-        o.y-
-        (
-          canvas.height*.76-
-          playerY
-        )
-      )<65
-    ){
-
-      /*
-        Wenn hoch genug gesprungen:
-        Auto überspringen.
-      */
-
-      if(playerY<85){
-
-        endGame();
-
-        return;
-      }
-    }
+   continue;
   }
 
 
-  document
-    .getElementById("hudCoins")
-    .textContent =
-      (
-        player.coins+
-        roundCoins
-      ).toLocaleString();
+  /* Auto */
+
+  if(
+   o.type==="car" &&
+   o.lane===lane &&
+   Math.abs(o.y-playerY)<65
+  ){
+
+   /*
+     Wenn der Spieler hoch genug springt,
+     kommt er über das Auto.
+   */
+
+   if(jumpY<90){
+
+    endGame();
+
+    return;
+   }
+  }
+ }
 
 
-  document
-    .getElementById("hudScore")
-    .textContent =
-      Math.floor(
-        score
-      ).toLocaleString();
+ document.getElementById("hudCoins")
+ .textContent=
+  (
+   player.coins+
+   roundCoins
+  ).toLocaleString();
+
+ document.getElementById("hudScore")
+ .textContent=
+  Math.floor(score).toLocaleString();
 }
 
 
 /* =====================================================
-   21. LOOP
+   GAME LOOP
 ===================================================== */
 
 function loop(time){
 
-  const dt =
-    Math.min(
-      40,
-      time-lastTime
-    );
+ const dt=Math.min(
+  40,
+  time-lastTime
+ );
 
+ lastTime=time;
 
-  lastTime=time;
+ if(
+  canvas.style.display!=="none"
+ ){
 
+  drawBackground();
+  drawObjects();
+  drawPlayer();
 
-  if(
-    canvas.style.display !==
-    "none"
-  ){
+  update(dt);
+ }
 
-    background();
-
-    drawObjects();
-
-    drawPlayer();
-
-    update(dt);
-  }
-
-
-  requestAnimationFrame(
-    loop
-  );
+ requestAnimationFrame(loop);
 }
 
-
-requestAnimationFrame(
-  loop
-);
+requestAnimationFrame(loop);
 
 
 /* =====================================================
-   22. TASTATUR
+   TASTATUR
 ===================================================== */
 
 document.addEventListener(
-  "keydown",
-  e=>{
+ "keydown",
+ e=>{
 
-    if(e.key==="ArrowLeft")
-      left();
-
-    if(e.key==="ArrowRight")
-      right();
-
-    if(
-      e.key==="ArrowUp" ||
-      e.key===" "
-    ){
-
-      e.preventDefault();
-
-      jump();
-    }
+  if(e.key==="ArrowLeft"){
+   e.preventDefault();
+   left();
   }
+
+  if(e.key==="ArrowRight"){
+   e.preventDefault();
+   right();
+  }
+
+  if(
+   e.key==="ArrowUp"||
+   e.key===" "
+  ){
+   e.preventDefault();
+   jump();
+  }
+ }
 );
 
 
 /* =====================================================
-   23. TOUCH SWIPE
+   TOUCH / SWIPE
 ===================================================== */
 
-let startX=0;
-let startY=0;
-
+let touchX=0;
+let touchY=0;
 
 canvas.addEventListener(
-  "touchstart",
-  e=>{
+ "touchstart",
+ e=>{
 
-    const t=
-      e.changedTouches[0];
+  const t=e.changedTouches[0];
 
-    startX=t.clientX;
-    startY=t.clientY;
+  touchX=t.clientX;
+  touchY=t.clientY;
 
-  },
-  {passive:true}
+ },
+ {passive:true}
 );
 
-
 canvas.addEventListener(
-  "touchend",
-  e=>{
+ "touchend",
+ e=>{
 
-    const t=
-      e.changedTouches[0];
+  const t=e.changedTouches[0];
 
+  const dx=t.clientX-touchX;
+  const dy=t.clientY-touchY;
 
-    const dx=
-      t.clientX-startX;
+  if(Math.abs(dx)>Math.abs(dy)){
 
-    const dy=
-      t.clientY-startY;
+   if(dx>35)right();
+   if(dx<-35)left();
 
+  }else if(dy<-35){
 
-    if(
-      Math.abs(dx)>
-      Math.abs(dy)
-    ){
+   jump();
+  }
 
-      if(dx>30)
-        right();
-
-      if(dx<-30)
-        left();
-
-    }
-    else if(
-      dy<-30
-    ){
-
-      jump();
-    }
-
-  },
-  {passive:true}
+ },
+ {passive:true}
 );
 
 
 /* =====================================================
-   24. PAUSE
+   PAUSE
 ===================================================== */
 
-document
-  .getElementById("pause")
-  .addEventListener(
-    "click",
-    ()=>{
-      paused=true;
-    }
-  );
+document.getElementById("pause").onclick=()=>{
+
+ paused=!paused;
+
+ document.getElementById("pause")
+ .textContent=
+  paused?"▶":"⏸";
+};
 
 
 /* =====================================================
-   25. GAME OVER
+   GAME OVER
 ===================================================== */
 
 async function endGame(){
 
-  playing=false;
+ playing=false;
+
+ const finalScore=
+  Math.floor(score);
+
+ player.coins+=roundCoins;
+
+ if(finalScore>player.highscore){
+
+  player.highscore=finalScore;
+ }
+
+ /*
+   Spielstand speichern
+ */
+
+ await saveProfile();
 
 
-  player.coins +=
-    roundCoins;
+ document.getElementById("finalScore")
+ .textContent=
+  finalScore.toLocaleString();
+
+ document.getElementById("finalCoins")
+ .textContent=
+  roundCoins.toLocaleString();
 
 
-  const final =
-    Math.floor(score);
+ canvas.style.display="none";
 
+ document.getElementById("hud")
+ .style.display="none";
 
-  if(
-    final>
-    player.highscore
-  ){
+ document.getElementById("controls")
+ .style.display="none";
 
-    player.highscore=
-      final;
+ document.getElementById("pause")
+ .style.display="none";
 
-    await saveHighscore();
-  }
-
-
-  saveLocal();
-
-
-  document
-    .getElementById(
-      "finalScore"
-    )
-    .textContent =
-      final.toLocaleString();
-
-
-  document
-    .getElementById(
-      "finalCoins"
-    )
-    .textContent =
-      roundCoins.toLocaleString();
-
-
-  canvas.style.display=
-    "none";
-
-
-  document
-    .getElementById(
-      "hud"
-    )
-    .style.display=
-    "none";
-
-
-  document
-    .getElementById(
-      "controls"
-    )
-    .style.display=
-    "none";
-
-
-  document
-    .getElementById(
-      "pause"
-    )
-    .style.display=
-    "none";
-
-
-  show(
-    "gameOverScreen"
-  );
+ screen("gameOverScreen");
 }
 
 
 /* =====================================================
-   26. NOCHMAL / MENÜ
+   NOCHMAL
 ===================================================== */
 
-document
-  .getElementById("againButton")
-  .addEventListener(
-    "click",
-    startGame
-  );
-
-
-document
-  .getElementById("gameMenuButton")
-  .addEventListener(
-    "click",
-    ()=>{
-      updateMenu();
-      show("menuScreen");
-    }
-  );
+document.getElementById("againBtn").onclick=()=>{
+ startGame();
+};
 
 
 /* =====================================================
-   27. START
+   MENÜ
 ===================================================== */
 
-loadLocal();
+document.getElementById("gameMenuBtn").onclick=()=>{
+ openMenu();
+};
 
-show("loginScreen");
+
+/* =====================================================
+   START
+===================================================== */
+
+screen("loginScreen");
 
 </script>
 
